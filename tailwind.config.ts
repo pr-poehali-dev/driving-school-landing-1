@@ -7,7 +7,6 @@ export default {
 		"./components/**/*.{ts,tsx}",
 		"./app/**/*.{ts,tsx}",
 		"./src/**/*.{ts,tsx}",
-			"./1776350285824293688.html"
 	],
 	prefix: "",
 	theme: {
@@ -24,10 +23,12 @@ export default {
 		},
 		extend: {
 			colors: {
-				neon: '#F5E642',
-				dark: '#0D0D0D',
-				'dark-card': '#161616',
-				'dark-border': '#2A2A2A',
+				brand: {
+					blue: '#3B82F6',
+					'blue-light': '#5A9BFF',
+					'blue-dark': '#1E2A3E',
+					'sky': '#E6F0FA',
+				},
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -61,16 +62,6 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
-				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -94,13 +85,21 @@ export default {
 					from: { opacity: '0' },
 					to: { opacity: '1' }
 				},
-				'slide-right': {
+				'slide-left': {
 					from: { opacity: '0', transform: 'translateX(-30px)' },
 					to: { opacity: '1', transform: 'translateX(0)' }
 				},
-				'pulse-glow': {
-					'0%, 100%': { boxShadow: '0 0 20px rgba(245,230,66,0.4)' },
-					'50%': { boxShadow: '0 0 40px rgba(245,230,66,0.8)' }
+				'scale-in': {
+					from: { opacity: '0', transform: 'scale(0.9)' },
+					to: { opacity: '1', transform: 'scale(1)' }
+				},
+				'blink': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.2' }
+				},
+				'car-drive': {
+					from: { transform: 'translateY(0)' },
+					to: { transform: 'translateY(calc(100vh - 60px))' }
 				}
 			},
 			animation: {
@@ -108,10 +107,11 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-up': 'fade-up 0.6s ease-out forwards',
 				'fade-in': 'fade-in 0.5s ease-out forwards',
-				'slide-right': 'slide-right 0.6s ease-out forwards',
-				'pulse-glow': 'pulse-glow 2s ease-in-out infinite'
+				'slide-left': 'slide-left 0.6s ease-out forwards',
+				'scale-in': 'scale-in 0.5s ease-out forwards',
+				'blink': 'blink 0.6s ease-in-out infinite',
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;
