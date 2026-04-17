@@ -42,8 +42,8 @@ const Index = () => {
           {/* Дорожка с машинкой — правая сторона */}
           <DrivingCar sectionIds={SECTION_IDS} />
 
-          {/* Контент с отступом справа для дорожки */}
-          <div style={{ paddingRight: '88px' }} className="lg:pr-[88px]">
+          {/* Контент с отступом справа для дорожки (fixed) */}
+          <div className="lg:pr-24">
             <Hero />
             <PainPoints />
             <Instructors />
