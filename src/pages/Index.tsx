@@ -39,11 +39,11 @@ const Index = () => {
 
       <main className="relative" style={{ paddingTop: '68px' }}>
         <div className="relative">
-          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-20 z-10 hidden lg:block">
-            <DrivingCar sectionIds={SECTION_IDS} />
-          </div>
+          {/* Дорожка с машинкой — правая сторона */}
+          <DrivingCar sectionIds={SECTION_IDS} />
 
-          <div className="lg:pl-20">
+          {/* Контент с отступом справа для дорожки */}
+          <div style={{ paddingRight: '88px' }} className="lg:pr-[88px]">
             <Hero />
             <PainPoints />
             <Instructors />
