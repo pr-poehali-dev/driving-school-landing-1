@@ -4,34 +4,36 @@ interface DrivingCarProps {
   sectionIds: string[];
 }
 
-// Знаки вдоль дороги (pos = 0..1 от начала до конца скролла)
-const ROAD_SIGNS = [
-  { pos: 0.06,  type: 'traffic-light', label: 'Светофор' },
-  { pos: 0.17,  type: 'yield',         label: 'Уступи дорогу' },
-  { pos: 0.27,  type: 'main-road',     label: 'Главная дорога' },
-  { pos: 0.38,  type: 'no-entry',      label: 'Въезд запрещён' },
-  { pos: 0.49,  type: 'pedestrian',    label: 'Пешеходный переход' },
-  { pos: 0.60,  type: 'no-stop',       label: 'Остановка запрещена' },
-  { pos: 0.71,  type: 'parking',       label: 'Парковка' },
-  { pos: 0.82,  type: 'intersection',  label: 'Перекрёсток' },
-  { pos: 0.93,  type: 'traffic-light', label: 'Светофор' },
-];
+// Знак привязан к секции сайта — по одному на блок
+// maneuver: что делает машинка при подъезде к знаку
+const SECTION_SIGNS: Record<string, { img: string; label: string; maneuver: 'brake' | 'left' | 'right' | 'hazard' | 'stop' }> = {
+  'hero':          { img: 'https://cdn.poehali.dev/files/7323fd50-7a02-4305-ab2e-9273d0fe414c.jpeg', label: 'Главная дорога',        maneuver: 'right'  },
+  'pain-points':   { img: 'https://cdn.poehali.dev/files/c0b816cf-759e-459c-987b-b95d934508c2.jpg',  label: 'Уступи дорогу',        maneuver: 'brake'  },
+  'instructors':   { img: 'https://cdn.poehali.dev/files/0bac1acf-dbce-4ad9-8634-41fb5df01eae.jpeg', label: 'Въезд запрещён',       maneuver: 'stop'   },
+  'triggers':      { img: 'https://cdn.poehali.dev/files/772f9c7a-0197-4b6a-8dad-a04deff562cf.png',  label: 'Пешеходный переход',   maneuver: 'brake'  },
+  'advantages':    { img: 'https://cdn.poehali.dev/files/395a17bb-cae0-406b-b19d-d1337ad24252.png',  label: 'Парковка',             maneuver: 'left'   },
+  'pricing':       { img: 'https://cdn.poehali.dev/files/c0b816cf-759e-459c-987b-b95d934508c2.jpg',  label: 'Уступи дорогу',       maneuver: 'right'  },
+  'reviews':       { img: 'https://cdn.poehali.dev/files/772f9c7a-0197-4b6a-8dad-a04deff562cf.png',  label: 'Пешеходный переход',   maneuver: 'hazard' },
+  'map':           { img: 'https://cdn.poehali.dev/files/395a17bb-cae0-406b-b19d-d1337ad24252.png',  label: 'Парковка',             maneuver: 'stop'   },
+  'contact-form':  { img: 'https://cdn.poehali.dev/files/7323fd50-7a02-4305-ab2e-9273d0fe414c.jpeg', label: 'Главная дорога',       maneuver: 'brake'  },
+};
 
-// Путь (горизонтальные смещения машинки) — повороты
+// Путь X — разные смещения для поворотов
 const PATH = [
-  { pos: 0.00, x: 24 },
-  { pos: 0.12, x: 24 },
-  { pos: 0.20, x: 44 },
-  { pos: 0.28, x: 24 },
-  { pos: 0.36, x: 10 },
-  { pos: 0.44, x: 24 },
-  { pos: 0.52, x: 44 },
-  { pos: 0.60, x: 24 },
-  { pos: 0.68, x: 10 },
-  { pos: 0.76, x: 24 },
-  { pos: 0.84, x: 44 },
-  { pos: 0.92, x: 24 },
-  { pos: 1.00, x: 24 },
+  { pos: 0.00, x: 30 },
+  { pos: 0.08, x: 30 },
+  { pos: 0.14, x: 52 }, // вправо
+  { pos: 0.22, x: 30 },
+  { pos: 0.30, x: 12 }, // влево
+  { pos: 0.38, x: 30 },
+  { pos: 0.46, x: 52 }, // вправо
+  { pos: 0.54, x: 30 },
+  { pos: 0.62, x: 12 }, // влево
+  { pos: 0.70, x: 30 },
+  { pos: 0.78, x: 52 }, // вправо
+  { pos: 0.86, x: 30 },
+  { pos: 0.93, x: 12 }, // влево
+  { pos: 1.00, x: 30 },
 ];
 
 function lerpX(pos: number) {
@@ -42,160 +44,96 @@ function lerpX(pos: number) {
       return a.x + (b.x - a.x) * t;
     }
   }
-  return 24;
+  return 30;
 }
 
 function lerpRot(pos: number) {
-  const d = 0.015;
+  const d = 0.012;
   const dx = lerpX(Math.min(1, pos + d)) - lerpX(Math.max(0, pos - d));
-  return Math.max(-30, Math.min(30, dx * 4.5));
+  return Math.max(-32, Math.min(32, dx * 5));
 }
 
-// ─── SVG знаки ───────────────────────────────────────
-const TrafficLight = ({ active }: { active: boolean }) => (
-  <svg viewBox="0 0 24 46" width="24" height="46">
-    <rect x="4" y="1" width="16" height="34" rx="4" fill="#1a1a1a" stroke="#333" strokeWidth="1"/>
-    <circle cx="12" cy="8"  r="5" fill={active ? '#ef4444' : '#4b0000'}/>
-    <circle cx="12" cy="18" r="5" fill={active ? '#f59e0b' : '#451a03'}/>
-    <circle cx="12" cy="28" r="5" fill={active ? '#22c55e' : '#052e16'}/>
-    <rect x="11" y="35" width="2" height="9" fill="#555"/>
-    <rect x="7"  y="42" width="10" height="2.5" rx="1" fill="#555"/>
-  </svg>
-);
-const Yield = ({ active }: { active: boolean }) => (
-  <svg viewBox="0 0 28 46" width="28" height="46">
-    <polygon points="14,3 27,24 1,24" fill="white" stroke={active ? '#e11d48' : '#881337'} strokeWidth="2.5"/>
-    <polygon points="14,9 23,23 5,23"  fill="white" stroke={active ? '#e11d48' : '#881337'} strokeWidth="1.5"/>
-    <text x="14" y="20" textAnchor="middle" fontSize="6" fontWeight="bold" fill={active ? '#e11d48' : '#881337'}>УД</text>
-    <rect x="13" y="27" width="2" height="16" fill="#555"/>
-    <rect x="9"  y="41" width="10" height="2.5" rx="1" fill="#555"/>
-  </svg>
-);
-const MainRoad = ({ active }: { active: boolean }) => (
-  <svg viewBox="0 0 28 46" width="28" height="46">
-    <rect x="5" y="2" width="18" height="18" rx="2" fill={active ? '#f59e0b' : '#78350f'} transform="rotate(45 14 11)"/>
-    <rect x="13" y="27" width="2" height="16" fill="#555"/>
-    <rect x="9"  y="41" width="10" height="2.5" rx="1" fill="#555"/>
-  </svg>
-);
-const NoEntry = ({ active }: { active: boolean }) => (
-  <svg viewBox="0 0 28 46" width="28" height="46">
-    <circle cx="14" cy="13" r="12" fill={active ? '#ef4444' : '#7f1d1d'} stroke="#450a0a" strokeWidth="1"/>
-    <rect x="5" y="10" width="18" height="6" rx="2" fill="white"/>
-    <rect x="13" y="27" width="2" height="16" fill="#555"/>
-    <rect x="9"  y="41" width="10" height="2.5" rx="1" fill="#555"/>
-  </svg>
-);
-const Pedestrian = ({ active }: { active: boolean }) => (
-  <svg viewBox="0 0 28 46" width="28" height="46">
-    <rect x="2" y="2" width="24" height="22" rx="3" fill={active ? '#3b82f6' : '#1e3a8a'} stroke="#1d4ed8" strokeWidth="1"/>
-    <circle cx="14" cy="8"  r="3"   fill="white"/>
-    <line x1="14" y1="11" x2="14" y2="19" stroke="white" strokeWidth="2.5"/>
-    <line x1="8"  y1="14" x2="20" y2="14" stroke="white" strokeWidth="2.5"/>
-    <line x1="14" y1="19" x2="9"  y2="24" stroke="white" strokeWidth="2"/>
-    <line x1="14" y1="19" x2="19" y2="24" stroke="white" strokeWidth="2"/>
-    <rect x="13" y="27" width="2" height="16" fill="#555"/>
-    <rect x="9"  y="41" width="10" height="2.5" rx="1" fill="#555"/>
-  </svg>
-);
-const NoStop = ({ active }: { active: boolean }) => (
-  <svg viewBox="0 0 28 46" width="28" height="46">
-    <circle cx="14" cy="13" r="12" fill="white" stroke={active ? '#ef4444' : '#7f1d1d'} strokeWidth="3"/>
-    <line x1="4" y1="3" x2="24" y2="23" stroke={active ? '#ef4444' : '#7f1d1d'} strokeWidth="3.5"/>
-    <rect x="13" y="27" width="2" height="16" fill="#555"/>
-    <rect x="9"  y="41" width="10" height="2.5" rx="1" fill="#555"/>
-  </svg>
-);
-const ParkingSign = ({ active }: { active: boolean }) => (
-  <svg viewBox="0 0 28 46" width="28" height="46">
-    <rect x="2" y="2" width="24" height="22" rx="3" fill={active ? '#3b82f6' : '#1e3a8a'} stroke="#1d4ed8" strokeWidth="1"/>
-    <text x="14" y="20" textAnchor="middle" fontSize="18" fontWeight="bold" fill="white">P</text>
-    <rect x="13" y="27" width="2" height="16" fill="#555"/>
-    <rect x="9"  y="41" width="10" height="2.5" rx="1" fill="#555"/>
-  </svg>
-);
-const Crossroad = ({ active }: { active: boolean }) => (
-  <svg viewBox="0 0 28 46" width="28" height="46">
-    <rect x="2" y="2" width="24" height="22" rx="3" fill="white" stroke={active ? '#f59e0b' : '#78350f'} strokeWidth="2.5"/>
-    <rect x="11" y="5"  width="6" height="16" rx="1" fill={active ? '#f59e0b' : '#78350f'}/>
-    <rect x="5"  y="10" width="18" height="6"  rx="1" fill={active ? '#f59e0b' : '#78350f'}/>
-    <rect x="13" y="27" width="2" height="16" fill="#555"/>
-    <rect x="9"  y="41" width="10" height="2.5" rx="1" fill="#555"/>
-  </svg>
-);
+// ─── Машинка 61×102 (×1.7 от оригинала 36×60) ───────
+// Фары ВВЕРХУ (машинка едет вниз по дороге)
+const CAR_W = 61;
+const CAR_H = 102;
 
-const SIGN_MAP: Record<string, React.FC<{ active: boolean }>> = {
-  'traffic-light': TrafficLight,
-  'yield':         Yield,
-  'main-road':     MainRoad,
-  'no-entry':      NoEntry,
-  'pedestrian':    Pedestrian,
-  'no-stop':       NoStop,
-  'parking':       ParkingSign,
-  'intersection':  Crossroad,
-};
-
-// ─── Машинка (синяя, вид сверху) ─────────────────────
-const Car = ({ rot, brake, hazard, turning }: {
-  rot: number; brake: boolean; hazard: boolean; turning: boolean;
+const Car = ({ rot, brake, hazard, turnLeft, turnRight }: {
+  rot: number; brake: boolean; hazard: boolean; turnLeft: boolean; turnRight: boolean;
 }) => {
-  const blink = hazard || turning;
+  const leftBlink  = hazard || turnLeft;
+  const rightBlink = hazard || turnRight;
   return (
-    <div style={{ transform: `rotate(${rot}deg)`, transition: 'transform 0.25s ease', width: 36, height: 60 }}>
-      <svg viewBox="0 0 36 60" width="36" height="60">
-        <ellipse cx="18" cy="57" rx="12" ry="3" fill="rgba(0,0,0,0.18)"/>
-        <rect x="3" y="10" width="30" height="42" rx="8" fill="#5b9bd5"/>
-        <path d="M6 10 Q18 1 30 10" fill="#4a88c5"/>
-        <rect x="7" y="16" width="22" height="22" rx="5" fill="#1a3356"/>
-        <rect x="9" y="18" width="18" height="9" rx="2" fill="#7ec8e3" opacity="0.9"/>
-        <rect x="9" y="28" width="18" height="7" rx="2" fill="#7ec8e3" opacity="0.7"/>
-        <line x1="18" y1="10" x2="18" y2="52" stroke="#4a88c5" strokeWidth="0.8" opacity="0.4"/>
-        {/* Фары */}
-        <ellipse cx="9"  cy="7" rx="4" ry="2.5" fill="#fffde7" opacity="0.95"/>
-        <ellipse cx="27" cy="7" rx="4" ry="2.5" fill="#fffde7" opacity="0.95"/>
-        {/* Стоп-сигналы */}
-        <rect x="4"  y="49" width="8" height="5" rx="2"
+    <div style={{
+      transform: `rotate(${rot}deg)`,
+      transition: 'transform 0.3s ease',
+      width: CAR_W,
+      height: CAR_H,
+    }}>
+      <svg viewBox="0 0 61 102" width={CAR_W} height={CAR_H}>
+        {/* Тень */}
+        <ellipse cx="30.5" cy="97" rx="20" ry="5" fill="rgba(0,0,0,0.2)"/>
+        {/* Корпус */}
+        <rect x="5" y="16" width="51" height="72" rx="13" fill="#5b9bd5"/>
+        {/* Капот — ВВЕРХУ (нос машины) */}
+        <path d="M10 16 Q30.5 2 51 16" fill="#4a88c5"/>
+        {/* Крыша */}
+        <rect x="12" y="27" width="37" height="37" rx="8" fill="#1a3356"/>
+        {/* Лобовое стекло (верхнее) */}
+        <rect x="15" y="29" width="31" height="15" rx="3" fill="#7ec8e3" opacity="0.9"/>
+        {/* Заднее стекло (нижнее) */}
+        <rect x="15" y="47" width="31" height="12" rx="3" fill="#7ec8e3" opacity="0.7"/>
+        {/* Линия по центру */}
+        <line x1="30.5" y1="17" x2="30.5" y2="88" stroke="#4a88c5" strokeWidth="1.2" opacity="0.35"/>
+        {/* ФАРЫ — вверху (перед машины) */}
+        <ellipse cx="15"  cy="12" rx="7" ry="4" fill="#fffde7" opacity="0.95"/>
+        <ellipse cx="46"  cy="12" rx="7" ry="4" fill="#fffde7" opacity="0.95"/>
+        {/* СТОП-СИГНАЛЫ — внизу (зад машины) */}
+        <rect x="7"  y="83" width="14" height="8" rx="3"
           fill={brake ? '#ef4444' : '#7f1d1d'}
           style={brake ? { animation: 'blink-brake 0.4s ease-in-out infinite' } : {}}/>
-        <rect x="24" y="49" width="8" height="5" rx="2"
+        <rect x="40" y="83" width="14" height="8" rx="3"
           fill={brake ? '#ef4444' : '#7f1d1d'}
           style={brake ? { animation: 'blink-brake 0.4s ease-in-out infinite' } : {}}/>
-        {/* Поворотники */}
-        <rect x="2"  y="46" width="5" height="4" rx="1.5"
-          fill={blink ? '#fbbf24' : 'transparent'}
-          style={blink ? { animation: 'blink-turn 0.5s ease-in-out infinite' } : {}}/>
-        <rect x="29" y="46" width="5" height="4" rx="1.5"
-          fill={blink ? '#fbbf24' : 'transparent'}
-          style={blink ? { animation: 'blink-turn 0.5s ease-in-out infinite' } : {}}/>
+        {/* ПОВОРОТНИКИ — снизу */}
+        <rect x="3"  y="79" width="8" height="6" rx="2"
+          fill={leftBlink ? '#fbbf24' : 'transparent'}
+          style={leftBlink ? { animation: 'blink-turn 0.5s ease-in-out infinite' } : {}}/>
+        <rect x="50" y="79" width="8" height="6" rx="2"
+          fill={rightBlink ? '#fbbf24' : 'transparent'}
+          style={rightBlink ? { animation: 'blink-turn 0.5s ease-in-out infinite' } : {}}/>
         {/* Колёса */}
-        <rect x="0"  y="14" width="5" height="13" rx="2.5" fill="#111"/>
-        <rect x="31" y="14" width="5" height="13" rx="2.5" fill="#111"/>
-        <rect x="0"  y="35" width="5" height="13" rx="2.5" fill="#111"/>
-        <rect x="31" y="35" width="5" height="13" rx="2.5" fill="#111"/>
-        <circle cx="2.5"  cy="20.5" r="2" fill="#999"/>
-        <circle cx="33.5" cy="20.5" r="2" fill="#999"/>
-        <circle cx="2.5"  cy="41.5" r="2" fill="#999"/>
-        <circle cx="33.5" cy="41.5" r="2" fill="#999"/>
+        <rect x="0"  y="24" width="8" height="22" rx="4" fill="#111"/>
+        <rect x="53" y="24" width="8" height="22" rx="4" fill="#111"/>
+        <rect x="0"  y="60" width="8" height="22" rx="4" fill="#111"/>
+        <rect x="53" y="60" width="8" height="22" rx="4" fill="#111"/>
+        {/* Диски */}
+        <circle cx="4"  cy="35" r="3.5" fill="#999"/>
+        <circle cx="57" cy="35" r="3.5" fill="#999"/>
+        <circle cx="4"  cy="71" r="3.5" fill="#999"/>
+        <circle cx="57" cy="71" r="3.5" fill="#999"/>
         {/* Зеркала */}
-        <rect x="-2" y="18" width="5" height="9" rx="2" fill="#3a78b5"/>
-        <rect x="33" y="18" width="5" height="9" rx="2" fill="#3a78b5"/>
+        <rect x="-4" y="30" width="9" height="14" rx="3" fill="#3a78b5"/>
+        <rect x="56" y="30" width="9" height="14" rx="3" fill="#3a78b5"/>
       </svg>
     </div>
   );
 };
 
-// ─── Главный компонент ───────────────────────────────
-const ROAD_W = 84;
+// ─── Главный компонент ────────────────────────────────
+const ROAD_W = 100;
 
-const DrivingCar = ({ sectionIds: _ }: DrivingCarProps) => {
-  const [scrollPct, setScrollPct]   = useState(0);
-  const [carState, setCarState]     = useState<'driving'|'braking'|'stopped'|'hazard'|'turning'>('hazard');
-  const [activeSign, setActiveSign] = useState<number | null>(null);
-  const [vh, setVh]                 = useState(window.innerHeight);
+const DrivingCar = ({ sectionIds }: DrivingCarProps) => {
+  const [scrollPct, setScrollPct]       = useState(0);
+  const [carState, setCarState]         = useState<'driving' | 'braking' | 'stopped' | 'hazard' | 'turnLeft' | 'turnRight'>('hazard');
+  const [activeSignId, setActiveSignId] = useState<string | null>(null);
+  const [vh, setVh]                     = useState(window.innerHeight);
 
-  const stateRef = useRef(carState);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastY    = useRef(0);
+  // позиции секций (pos 0..1) вычисляем при скролле
+  const sectionPosRef = useRef<Record<string, number>>({});
+  const stateRef      = useRef(carState);
+  const timerRef      = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastY         = useRef(0);
 
   useEffect(() => { stateRef.current = carState; }, [carState]);
 
@@ -205,11 +143,31 @@ const DrivingCar = ({ sectionIds: _ }: DrivingCarProps) => {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
+  // Вычитываем позиции секций
+  const updateSectionPos = useCallback(() => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    if (docH <= 0) return;
+    const result: Record<string, number> = {};
+    sectionIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      // pos = когда секция попадает в середину экрана
+      const midY = el.offsetTop + el.offsetHeight * 0.3;
+      result[id] = Math.min(1, Math.max(0, (midY - vh * 0.5) / docH));
+    });
+    sectionPosRef.current = result;
+  }, [sectionIds, vh]);
+
+  useEffect(() => {
+    updateSectionPos();
+    window.addEventListener('resize', updateSectionPos);
+    return () => window.removeEventListener('resize', updateSectionPos);
+  }, [updateSectionPos]);
+
   const clearTimer = useCallback(() => {
     if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; }
   }, []);
 
-  // Старт — аварийка → едем
   useEffect(() => {
     const t = setTimeout(() => setCarState('driving'), 1500);
     return () => clearTimeout(t);
@@ -226,46 +184,46 @@ const DrivingCar = ({ sectionIds: _ }: DrivingCarProps) => {
       const cur = stateRef.current;
 
       // Быстрый скролл
-      if (Math.abs(delta) > 110) {
+      if (Math.abs(delta) > 120) {
         clearTimer();
         setCarState('hazard');
-        setActiveSign(null);
+        setActiveSignId(null);
         timerRef.current = setTimeout(() => setCarState('driving'), 1100);
         return;
       }
 
-      // Знак рядом
-      let hit = false;
-      ROAD_SIGNS.forEach((sign, idx) => {
-        if (Math.abs(pct - sign.pos) < 0.024) {
-          hit = true;
-          setActiveSign(idx);
-          if (cur !== 'braking' && cur !== 'stopped') {
-            clearTimer();
-            setCarState('braking');
-            timerRef.current = setTimeout(() => {
-              setCarState('stopped');
-              timerRef.current = setTimeout(() => {
-                setActiveSign(null);
-                setCarState('driving');
-              }, 900);
-            }, 550);
-          }
-        }
+      // Проверяем близость к секции
+      let hitId: string | null = null;
+      const poses = sectionPosRef.current;
+      Object.keys(poses).forEach(id => {
+        if (Math.abs(pct - poses[id]) < 0.030) hitId = id;
       });
 
-      if (!hit && cur === 'driving') setActiveSign(null);
-
-      // Поворот
-      if (!hit && cur === 'driving') {
-        const isTurn = PATH.some(pt =>
-          Math.abs(pct - pt.pos) < 0.013 && (pt.x > 36 || pt.x < 16)
-        );
-        if (isTurn) {
+      if (hitId && SECTION_SIGNS[hitId]) {
+        const sign = SECTION_SIGNS[hitId];
+        setActiveSignId(hitId);
+        if (cur !== 'braking' && cur !== 'stopped' && cur !== 'turnLeft' && cur !== 'turnRight') {
           clearTimer();
-          setCarState('turning');
-          timerRef.current = setTimeout(() => setCarState('driving'), 850);
+          // Разные маневры
+          if (sign.maneuver === 'left') {
+            setCarState('turnLeft');
+            timerRef.current = setTimeout(() => { setCarState('braking'); timerRef.current = setTimeout(() => { setActiveSignId(null); setCarState('driving'); }, 800); }, 700);
+          } else if (sign.maneuver === 'right') {
+            setCarState('turnRight');
+            timerRef.current = setTimeout(() => { setActiveSignId(null); setCarState('driving'); }, 900);
+          } else if (sign.maneuver === 'hazard') {
+            setCarState('hazard');
+            timerRef.current = setTimeout(() => { setCarState('braking'); timerRef.current = setTimeout(() => { setActiveSignId(null); setCarState('driving'); }, 700); }, 800);
+          } else if (sign.maneuver === 'stop') {
+            setCarState('braking');
+            timerRef.current = setTimeout(() => { setCarState('stopped'); timerRef.current = setTimeout(() => { setActiveSignId(null); setCarState('driving'); }, 1100); }, 600);
+          } else { // brake
+            setCarState('braking');
+            timerRef.current = setTimeout(() => { setActiveSignId(null); setCarState('driving'); }, 900);
+          }
         }
+      } else if (!hitId) {
+        setActiveSignId(null);
       }
 
       if (pct >= 0.99) setCarState('stopped');
@@ -275,24 +233,27 @@ const DrivingCar = ({ sectionIds: _ }: DrivingCarProps) => {
     return () => window.removeEventListener('scroll', onScroll);
   }, [clearTimer]);
 
-  // Машинка: Y в viewport = 15%..85% высоты экрана, плавно следует за скроллом
-  const carViewY = vh * 0.15 + scrollPct * vh * 0.70;
+  // Машинка в viewport: Y от 12% до 88% высоты экрана
+  const carViewY = vh * 0.12 + scrollPct * vh * 0.76;
   const carX     = lerpX(scrollPct);
   const carRot   = lerpRot(scrollPct);
 
-  // Знаки: их viewport Y = та же формула, но с их pos
-  // Они нарисованы прямо на fixed-полосе относительно viewport
-  const signPositions = ROAD_SIGNS.map(s => ({
-    ...s,
-    vy: vh * 0.15 + s.pos * vh * 0.70,
-  }));
+  // Позиции знаков в viewport-координатах
+  const signItems = sectionIds
+    .filter(id => SECTION_SIGNS[id] && sectionPosRef.current[id] !== undefined)
+    .map(id => ({
+      id,
+      sign: SECTION_SIGNS[id],
+      vy: vh * 0.12 + sectionPosRef.current[id] * vh * 0.76,
+    }));
 
   return (
     <>
       <style>{`
         @keyframes blink-turn  { 0%,100%{opacity:1}50%{opacity:0.08} }
-        @keyframes blink-brake { 0%,100%{opacity:1}50%{opacity:0.3}  }
-        @keyframes sign-pop    { 0%,100%{transform:scale(1)translateY(0)}50%{transform:scale(1.18)translateY(-2px)} }
+        @keyframes blink-brake { 0%,100%{opacity:1}50%{opacity:0.28} }
+        @keyframes sign-pop    { 0%,100%{transform:scale(1)}50%{transform:scale(1.22)} }
+        @keyframes sign-glow   { 0%,100%{filter:drop-shadow(0 0 6px rgba(59,130,246,0.9))}50%{filter:drop-shadow(0 0 14px rgba(59,130,246,1))} }
       `}</style>
 
       {/* Дорожка — fixed, всегда справа */}
@@ -305,47 +266,66 @@ const DrivingCar = ({ sectionIds: _ }: DrivingCarProps) => {
         zIndex: 40,
         pointerEvents: 'none',
         background: `
-          repeating-linear-gradient(transparent,transparent 3px,rgba(255,255,255,0.03) 3px,rgba(255,255,255,0.03) 4px),
-          repeating-linear-gradient(90deg,transparent,transparent 5px,rgba(255,255,255,0.02) 5px,rgba(255,255,255,0.02) 6px),
-          linear-gradient(to right,#353535 0%,#464646 35%,#464646 65%,#353535 100%)
+          repeating-linear-gradient(transparent,transparent 2px,rgba(255,255,255,0.025) 2px,rgba(255,255,255,0.025) 3px),
+          repeating-linear-gradient(90deg,transparent,transparent 4px,rgba(255,255,255,0.018) 4px,rgba(255,255,255,0.018) 5px),
+          linear-gradient(to right,#2e2e2e 0%,#404040 25%,#484848 50%,#404040 75%,#2e2e2e 100%)
         `,
       }}>
-        {/* Левая разметка */}
-        <div style={{ position:'absolute',left:5,top:0,bottom:0,width:2,
-          background:'repeating-linear-gradient(to bottom,#d4d4d4 0,#d4d4d4 14px,transparent 14px,transparent 28px)',
-          opacity:0.4 }}/>
-        {/* Правая разметка */}
-        <div style={{ position:'absolute',right:5,top:0,bottom:0,width:2,
-          background:'repeating-linear-gradient(to bottom,#d4d4d4 0,#d4d4d4 14px,transparent 14px,transparent 28px)',
-          opacity:0.4 }}/>
+        {/* Левая белая разметка */}
+        <div style={{ position:'absolute',left:6,top:0,bottom:0,width:2,
+          background:'repeating-linear-gradient(to bottom,#c8c8c8 0,#c8c8c8 12px,transparent 12px,transparent 26px)',
+          opacity:0.45 }}/>
+        {/* Правая белая разметка */}
+        <div style={{ position:'absolute',right:6,top:0,bottom:0,width:2,
+          background:'repeating-linear-gradient(to bottom,#c8c8c8 0,#c8c8c8 12px,transparent 12px,transparent 26px)',
+          opacity:0.45 }}/>
         {/* Осевая жёлтая */}
-        <div style={{ position:'absolute',left:'50%',top:0,bottom:0,width:2,transform:'translateX(-50%)',
-          background:'repeating-linear-gradient(to bottom,#facc15 0,#facc15 12px,transparent 12px,transparent 24px)',
-          opacity:0.55 }}/>
+        <div style={{ position:'absolute',left:'50%',top:0,bottom:0,width:3,transform:'translateX(-50%)',
+          background:'repeating-linear-gradient(to bottom,#facc15 0,#facc15 14px,transparent 14px,transparent 28px)',
+          opacity:0.5 }}/>
 
-        {/* Дорожные знаки */}
-        {signPositions.map((sign, idx) => {
-          const Comp = SIGN_MAP[sign.type];
-          if (!Comp) return null;
-          const isActive = activeSign === idx;
+        {/* Знаки — по одному на секцию */}
+        {signItems.map(({ id, sign, vy }) => {
+          const isActive = activeSignId === id;
           return (
-            <div key={idx} style={{
+            <div key={id} style={{
               position: 'absolute',
-              top: sign.vy - 46,
-              left: 3,
+              top: vy - 52,
+              left: 4,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              animation: isActive ? 'sign-pop 0.55s ease-in-out infinite' : 'none',
               zIndex: 50,
+              animation: isActive ? 'sign-pop 0.55s ease-in-out infinite' : 'none',
             }}>
-              <Comp active={isActive} />
+              {/* Знак — реальное изображение */}
+              <div style={{
+                width: 44,
+                height: 44,
+                borderRadius: 6,
+                overflow: 'hidden',
+                boxShadow: isActive ? '0 0 12px rgba(59,130,246,0.9)' : '0 2px 6px rgba(0,0,0,0.5)',
+                animation: isActive ? 'sign-glow 0.6s ease-in-out infinite' : 'none',
+                flexShrink: 0,
+              }}>
+                <img src={sign.img} alt={sign.label} style={{ width:'100%', height:'100%', objectFit:'contain' }}/>
+              </div>
+              {/* Столбик */}
+              <div style={{ width: 3, height: 18, background: '#666', marginTop: 1 }}/>
+              <div style={{ width: 18, height: 3, background: '#666', borderRadius: 2 }}/>
+              {/* Подпись при активации */}
               {isActive && (
                 <div style={{
-                  fontSize: 8, background: '#1e40af', color: '#fff',
-                  padding: '1px 5px', borderRadius: 4,
-                  whiteSpace: 'nowrap', marginTop: 1,
+                  marginTop: 4,
+                  fontSize: 9,
+                  background: '#1e40af',
+                  color: '#fff',
+                  padding: '2px 6px',
+                  borderRadius: 5,
+                  whiteSpace: 'nowrap',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
+                  fontFamily: 'Golos Text, sans-serif',
+                  fontWeight: 600,
                 }}>
                   {sign.label}
                 </div>
@@ -357,16 +337,17 @@ const DrivingCar = ({ sectionIds: _ }: DrivingCarProps) => {
         {/* Машинка */}
         <div style={{
           position: 'absolute',
-          top: carViewY - 30,
-          left: carX,
-          transition: 'top 0.1s linear, left 0.2s ease-out',
+          top: carViewY - CAR_H / 2,
+          left: carX - CAR_W / 2,
+          transition: 'top 0.1s linear, left 0.22s ease-out',
           zIndex: 60,
         }}>
           <Car
             rot={carRot}
             brake={carState === 'braking' || carState === 'stopped'}
             hazard={carState === 'hazard'}
-            turning={carState === 'turning'}
+            turnLeft={carState === 'turnLeft'}
+            turnRight={carState === 'turnRight'}
           />
         </div>
       </div>

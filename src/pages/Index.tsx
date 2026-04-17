@@ -12,7 +12,7 @@ import ContactForm from '@/components/sections/ContactForm';
 import Footer from '@/components/sections/Footer';
 import DrivingCar from '@/components/driving-car/DrivingCar';
 
-const SECTION_IDS = ['pain-points', 'instructors', 'triggers', 'advantages', 'pricing', 'reviews', 'map', 'contact-form'];
+const SECTION_IDS = ['hero', 'pain-points', 'instructors', 'triggers', 'advantages', 'pricing', 'reviews', 'map', 'contact-form'];
 
 const Index = () => {
   useEffect(() => {
