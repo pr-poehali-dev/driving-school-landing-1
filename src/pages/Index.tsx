@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import Header from '@/components/sections/Header';
 import Hero from '@/components/sections/Hero';
 import PainPoints from '@/components/sections/PainPoints';
@@ -16,6 +16,16 @@ import DrivingCar from '@/components/driving-car/DrivingCar';
 const SECTION_IDS = ['hero', 'pain-points', 'instructors', 'triggers', 'advantages', 'pricing', 'reviews', 'map', 'faq', 'contact-form'];
 
 const Index = () => {
+  const faqOpenRef = useRef<((idx: number) => void) | null>(null);
+
+  // Пробрасываем функцию открытия FAQ-вопроса из машинки
+  const handleFaqOpen = useCallback((idx: number) => {
+    faqOpenRef.current?.(idx);
+    // Скроллим к FAQ
+    const el = document.getElementById('faq');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -41,7 +51,7 @@ const Index = () => {
       <main className="relative" style={{ paddingTop: '68px' }}>
         <div className="relative">
           {/* Дорожка с машинкой — правая сторона */}
-          <DrivingCar sectionIds={SECTION_IDS} />
+          <DrivingCar sectionIds={SECTION_IDS} onFaqOpen={handleFaqOpen} />
 
           {/* Контент с отступом справа для дорожки (fixed) */}
           <div className="lg:pr-24">
@@ -52,7 +62,7 @@ const Index = () => {
             <Advantages />
             <Pricing />
             <Reviews />
-            <FAQ />
+            <FAQ registerOpen={(fn) => { faqOpenRef.current = fn; }} />
             <MapSection />
             <ContactForm />
           </div>

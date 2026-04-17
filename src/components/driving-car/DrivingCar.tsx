@@ -1,141 +1,349 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-interface DrivingCarProps {
-  sectionIds: string[];
-}
+/* ═══════════════════════════════════════════════════════════════════
+   ТИПЫ
+═══════════════════════════════════════════════════════════════════ */
+type SignType =
+  | 'start'         // 🚩 старт
+  | 'hill'          // 🏞️ холм — машинка скрывается
+  | 'warning'       // ⚠️ предупреждение — экран трясётся
+  | 'traffic-light' // 🚦 светофор
+  | 'stop'          // 🛑 стоп
+  | 'roadwork'      // 🚧 дорожные работы
+  | 'parking'       // 🅿️ парковка
+  | 'children'      // 🚸 дети
+  | 'trigger'       // 👩/🎖️/🚗 — триггеры
+  | 'gas'           // ⛽ заправка
+  | 'question'      // ❓ FAQ
+  | 'reviews-tl'    // 🚦 перед отзывами
+  | 'finish';       // 🏁 финиш
 
-// ─── Конфигурация секций ────────────────────────────────────────
-type StationType = 'traffic-light' | 'parking' | 'gas-station' | 'sign' | 'finish' | 'bump' | 'none';
-
-interface Station {
-  id: string;
-  type: StationType;
-  roadBend: number;       // смещение дороги: -1=левый поворот, 0=прямо, 1=правый поворот
-  label: string;
+interface RoadSign {
+  pct: number;          // 0..1 — позиция по скроллу
+  side: 'left' | 'right';
+  type: SignType;
   emoji: string;
+  label: string;
+  faqIdx?: number;      // для type=question — индекс вопроса FAQ
 }
 
-const STATIONS: Station[] = [
-  { id: 'hero',         type: 'none',          roadBend:  0,    label: '',                    emoji: '' },
-  { id: 'pain-points',  type: 'traffic-light', roadBend:  1,    label: 'Светофор!',            emoji: '🚦' },
-  { id: 'instructors',  type: 'parking',       roadBend: -1,    label: 'Парковка инструкторов',emoji: '🅿️' },
-  { id: 'triggers',     type: 'sign',          roadBend:  0.5,  label: 'Дорожные знаки',       emoji: '⚠️' },
-  { id: 'advantages',   type: 'bump',          roadBend: -0.5,  label: 'Лежачий полицейский',  emoji: '🛑' },
-  { id: 'pricing',      type: 'gas-station',   roadBend:  0,    label: 'Заправка',             emoji: '⛽' },
-  { id: 'reviews',      type: 'sign',          roadBend:  0.8,  label: 'Отзывы впереди',       emoji: '💬' },
-  { id: 'map',          type: 'bump',          roadBend: -0.6,  label: 'Осторожно — яма!',     emoji: '⚠️' },
-  { id: 'contact-form', type: 'finish',        roadBend:  0,    label: '🏁 Финиш!',            emoji: '🏁' },
+/* ═══════════════════════════════════════════════════════════════════
+   ВСЕ ЗНАКИ ПО СХЕМЕ
+═══════════════════════════════════════════════════════════════════ */
+const SIGNS: RoadSign[] = [
+  // 0 — Старт
+  { pct: 0.00, side: 'left',  type: 'start',         emoji: '🚩', label: 'Поехали!' },
+  // 0.1 — Холм
+  { pct: 0.03, side: 'left',  type: 'hill',           emoji: '🏞️', label: '' },
+  // 0.2 — Выезд на главную
+  { pct: 0.07, side: 'right', type: 'warning',        emoji: '⚠️', label: 'Выезд на главную' },
+  // 1 — 1-й экран: светофор
+  { pct: 0.09, side: 'left',  type: 'traffic-light',  emoji: '🚦', label: 'Светофор' },
+  { pct: 0.12, side: 'left',  type: 'stop',           emoji: '🛑', label: '' },
+  // 1.1 — Скользкая дорога
+  { pct: 0.16, side: 'right', type: 'warning',        emoji: '⚠️', label: 'Скользкая дорога' },
+  // 2 — Блок проблем: светофор + стоп
+  { pct: 0.20, side: 'left',  type: 'traffic-light',  emoji: '🚦', label: 'Уступи дорогу' },
+  { pct: 0.26, side: 'left',  type: 'stop',           emoji: '🛑', label: '' },
+  // 2.1 — Дорожные работы
+  { pct: 0.33, side: 'right', type: 'roadwork',       emoji: '🚧', label: 'Дорожные работы' },
+  // 3 — Инструкторы: 5 парковочных мест
+  { pct: 0.36, side: 'right', type: 'parking',        emoji: '🅿️', label: 'Инструктор 1' },
+  { pct: 0.39, side: 'right', type: 'parking',        emoji: '🅿️', label: 'Инструктор 2' },
+  { pct: 0.42, side: 'right', type: 'parking',        emoji: '🅿️', label: 'Инструктор 3' },
+  { pct: 0.45, side: 'right', type: 'parking',        emoji: '🅿️', label: 'Инструктор 4' },
+  { pct: 0.48, side: 'right', type: 'parking',        emoji: '🅿️', label: 'Инструктор 5' },
+  // 3.1 — Дети
+  { pct: 0.40, side: 'left',  type: 'children',       emoji: '🚸', label: 'Новый инструктор!' },
+  // 3.2 — Холм внутри инструкторов
+  { pct: 0.45, side: 'left',  type: 'hill',           emoji: '🏞️', label: '' },
+  // 4 — Триггеры: 3 знака
+  { pct: 0.51, side: 'left',  type: 'trigger',        emoji: '👩', label: 'Инструктор-женщина' },
+  { pct: 0.54, side: 'left',  type: 'trigger',        emoji: '🎖️', label: 'Скидка для СВО' },
+  { pct: 0.57, side: 'left',  type: 'trigger',        emoji: '🚗', label: 'Свой автодром' },
+  // 4.1 — Вопрос со скидкой
+  { pct: 0.59, side: 'left',  type: 'question',       emoji: '❓', label: 'Скидка 5000 ₽', faqIdx: 5 },
+  // 5 — Цена: заправка
+  { pct: 0.64, side: 'right', type: 'gas',            emoji: '⛽', label: 'Заправка' },
+  // 5.1 — Крутой спуск
+  { pct: 0.70, side: 'left',  type: 'warning',        emoji: '⚠️', label: 'Крутой спуск' },
+  // 6 — FAQ: 8 знаков
+  { pct: 0.73, side: 'left',  type: 'question',       emoji: '❓', label: 'Вопрос 1', faqIdx: 0 },
+  { pct: 0.74, side: 'right', type: 'question',       emoji: '❓', label: 'Вопрос 2', faqIdx: 1 },
+  { pct: 0.75, side: 'left',  type: 'question',       emoji: '❓', label: 'Вопрос 3', faqIdx: 2 },
+  { pct: 0.76, side: 'right', type: 'question',       emoji: '❓', label: 'Вопрос 4', faqIdx: 3 },
+  // 6.1 — Холм
+  { pct: 0.76, side: 'left',  type: 'hill',           emoji: '🏞️', label: '' },
+  { pct: 0.77, side: 'left',  type: 'question',       emoji: '❓', label: 'Вопрос 5', faqIdx: 4 },
+  { pct: 0.78, side: 'right', type: 'question',       emoji: '❓', label: 'Вопрос 6', faqIdx: 5 },
+  // 6.2 — Дорожные работы
+  { pct: 0.79, side: 'right', type: 'roadwork',       emoji: '🚧', label: 'Сложный вопрос!' },
+  { pct: 0.80, side: 'left',  type: 'question',       emoji: '❓', label: 'Вопрос 7', faqIdx: 6 },
+  { pct: 0.81, side: 'right', type: 'question',       emoji: '❓', label: 'Вопрос 8', faqIdx: 7 },
+  // 7 — Отзывы
+  { pct: 0.84, side: 'left',  type: 'reviews-tl',     emoji: '🚦', label: 'Отзывы впереди' },
+  // 8 — Карта
+  { pct: 0.90, side: 'right', type: 'parking',        emoji: '🅿️', label: 'Мы здесь!' },
+  // 9 — Форма
+  { pct: 0.93, side: 'right', type: 'finish',         emoji: '🏁', label: 'Финиш!' },
+  { pct: 0.94, side: 'left',  type: 'stop',           emoji: '🛑', label: '' },
+  { pct: 0.96, side: 'left',  type: 'warning',        emoji: '⚠️', label: 'Проверь телефон' },
+  // 10 — Подвал
+  { pct: 0.99, side: 'left',  type: 'finish',         emoji: '🏁', label: 'Вы доехали!' },
 ];
 
-// ─── Путь дороги — X меняется с учётом поворотов ───────────────
-// базовая ширина дорожки = 96px, машинка = 61px
-// x = смещение от левого края дорожки
-const BASE_X = 17; // центр при прямой дороге
-const ROAD_W = 96;
+/* ═══════════════════════════════════════════════════════════════════
+   ИЗГИБ ДОРОГИ ПО % СКРОЛЛА
+═══════════════════════════════════════════════════════════════════ */
+const ROAD_CURVE: { pct: number; x: number }[] = [
+  { pct: 0.00, x: 28 },
+  { pct: 0.07, x: 38 }, // выезд → правее
+  { pct: 0.12, x: 18 }, // 1й экран → левее
+  { pct: 0.20, x: 12 }, // боли → влево
+  { pct: 0.33, x: 32 }, // дорожные работы
+  { pct: 0.38, x: 40 }, // парковки → правее
+  { pct: 0.51, x: 16 }, // триггеры → влево
+  { pct: 0.60, x: 28 }, // прямо
+  { pct: 0.64, x: 36 }, // заправка → правее
+  { pct: 0.70, x: 22 }, // спуск → влево
+  { pct: 0.73, x: 28 }, // FAQ
+  { pct: 0.84, x: 36 }, // отзывы → правее
+  { pct: 0.90, x: 40 }, // парковка
+  { pct: 0.93, x: 28 }, // финиш
+  { pct: 1.00, x: 28 },
+];
 
-function getRoadBend(pct: number, stations: Station[], poses: Record<string, number>): number {
-  // Интерполируем bend между станциями
-  const sorted = stations
-    .filter(s => poses[s.id] !== undefined)
-    .sort((a, b) => poses[a.id] - poses[b.id]);
-
-  for (let i = 0; i < sorted.length - 1; i++) {
-    const a = sorted[i], b = sorted[i + 1];
-    const pa = poses[a.id], pb = poses[b.id];
-    if (pct >= pa && pct <= pb) {
-      const t = (pct - pa) / (pb - pa);
-      // ease in-out
+function curveX(pct: number): number {
+  for (let i = 0; i < ROAD_CURVE.length - 1; i++) {
+    const a = ROAD_CURVE[i], b = ROAD_CURVE[i + 1];
+    if (pct >= a.pct && pct <= b.pct) {
+      const t = (pct - a.pct) / (b.pct - a.pct);
       const et = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-      return a.roadBend + (b.roadBend - a.roadBend) * et;
+      return a.x + (b.x - a.x) * et;
     }
   }
-  return 0;
+  return 28;
 }
 
-function getCarX(bend: number): number {
-  // bend -1..1 → x 5..29 (смещение по дороге)
-  return BASE_X + bend * 12;
+function carRotFromCurve(pct: number): number {
+  const d = 0.015;
+  const dx = curveX(Math.min(1, pct + d)) - curveX(Math.max(0, pct - d));
+  return Math.max(-30, Math.min(30, dx * 3.5));
 }
 
-function getCarRotation(bend: number, prevBend: number): number {
-  const delta = bend - prevBend;
-  return Math.max(-28, Math.min(28, delta * 60));
+/* ═══════════════════════════════════════════════════════════════════
+   КОНФЕТТИ
+═══════════════════════════════════════════════════════════════════ */
+const CONFETTI_COLORS = ['#ef4444','#f59e0b','#22c55e','#3b82f6','#a855f7','#ec4899'];
+
+function launchConfetti() {
+  const container = document.createElement('div');
+  container.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden';
+  document.body.appendChild(container);
+  for (let i = 0; i < 80; i++) {
+    const p = document.createElement('div');
+    const size = 6 + Math.random() * 8;
+    p.style.cssText = `
+      position:absolute;
+      width:${size}px;height:${size}px;
+      left:${Math.random() * 100}%;
+      top:-${size}px;
+      background:${CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)]};
+      border-radius:${Math.random() > 0.5 ? '50%' : '2px'};
+      animation:confetti-fall ${1.2 + Math.random() * 1.5}s ${Math.random() * 0.8}s ease-in forwards;
+    `;
+    container.appendChild(p);
+  }
+  setTimeout(() => container.remove(), 4000);
 }
 
-// ─── Цена с анимацией накопления ───────────────────────────────
-const PriceCounter = ({ active }: { active: boolean }) => {
-  const [val, setVal] = useState(0);
-  const rafRef = useRef<number | null>(null);
+/* ═══════════════════════════════════════════════════════════════════
+   ТРЯСКА ЭКРАНА
+═══════════════════════════════════════════════════════════════════ */
+function shakeScreen(intensity = 6, ms = 350) {
+  const el = document.documentElement;
+  const kf = `@keyframes screen-shake {
+    0%,100%{transform:translate(0,0)}
+    20%{transform:translate(-${intensity}px,${intensity/2}px)}
+    40%{transform:translate(${intensity}px,-${intensity/2}px)}
+    60%{transform:translate(-${intensity/2}px,${intensity}px)}
+    80%{transform:translate(${intensity/2}px,-${intensity}px)}
+  }`;
+  const style = document.createElement('style');
+  style.textContent = kf;
+  document.head.appendChild(style);
+  el.style.animation = `screen-shake ${ms}ms ease-in-out`;
+  setTimeout(() => { el.style.animation = ''; style.remove(); }, ms + 50);
+}
 
-  useEffect(() => {
-    if (!active) { setVal(0); return; }
-    const target = 64000;
-    const duration = 1800;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / duration);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setVal(Math.round(ease * target));
-      if (t < 1) rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
-  }, [active]);
+/* ═══════════════════════════════════════════════════════════════════
+   КОМПОНЕНТЫ ЗНАКОВ
+═══════════════════════════════════════════════════════════════════ */
 
-  return (
-    <div style={{
-      position: 'absolute',
-      top: -60,
-      left: '50%',
-      transform: 'translateX(-50%)',
-      background: '#1a1a1a',
-      color: '#facc15',
-      fontFamily: 'monospace',
-      fontSize: 13,
-      fontWeight: 'bold',
-      padding: '4px 8px',
-      borderRadius: 4,
-      whiteSpace: 'nowrap',
-      boxShadow: '0 2px 12px rgba(0,0,0,0.5)',
-      letterSpacing: 1,
-      zIndex: 80,
-    }}>
-      ⛽ {val.toLocaleString('ru')} ₽
-    </div>
-  );
-};
-
-// ─── Светофор ──────────────────────────────────────────────────
-const TrafficLight = ({ phase }: { phase: 'red' | 'yellow' | 'green' | 'off' }) => (
+// Светофор
+const TrafficLight = ({ phase }: { phase: 'red'|'yellow'|'green'|'off' }) => (
   <div style={{
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 2,
-    background: '#111',
-    borderRadius: 5,
-    padding: '4px 3px',
-    border: '1.5px solid #333',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
+    display:'flex', flexDirection:'column', alignItems:'center', gap:2,
+    background:'#111', borderRadius:5, padding:'4px 3px',
+    border:'1.5px solid #333', boxShadow:'0 2px 10px rgba(0,0,0,0.6)',
   }}>
     {[
-      { color: '#ef4444', on: phase === 'red',    glow: '#ef444480' },
-      { color: '#f59e0b', on: phase === 'yellow', glow: '#f59e0b80' },
-      { color: '#22c55e', on: phase === 'green',  glow: '#22c55e80' },
-    ].map((l, i) => (
+      { color:'#ef4444', on: phase==='red',    glow:'#ef444488' },
+      { color:'#f59e0b', on: phase==='yellow', glow:'#f59e0b88' },
+      { color:'#22c55e', on: phase==='green',  glow:'#22c55e88' },
+    ].map((l,i) => (
       <div key={i} style={{
-        width: 10, height: 10, borderRadius: '50%',
-        background: l.on ? l.color : '#222',
-        boxShadow: l.on ? `0 0 8px ${l.glow}` : 'none',
-        transition: 'background 0.3s, box-shadow 0.3s',
+        width:10,height:10,borderRadius:'50%',
+        background: l.on ? l.color : '#1f1f1f',
+        boxShadow: l.on ? `0 0 10px 2px ${l.glow}` : 'none',
+        transition:'background 0.25s,box-shadow 0.25s',
       }}/>
     ))}
   </div>
 );
 
-// ─── Машинка (SVG, вид сверху) ─────────────────────────────────
-const CAR_W = 56;
-const CAR_H = 92;
+// Дорожный знак (треугольник предупреждения / круглый / прямоугольный)
+const SignPost = ({ sign, active, tlPhase, onFaqClick }: {
+  sign: RoadSign;
+  active: boolean;
+  tlPhase: 'red'|'yellow'|'green'|'off';
+  onFaqClick?: (idx: number) => void;
+}) => {
+  const pulse = active ? 'sign-pulse 0.6s ease-in-out infinite alternate' : 'none';
+
+  // Светофор — отдельно
+  if (sign.type === 'traffic-light' || sign.type === 'reviews-tl') {
+    return (
+      <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2 }}>
+        <TrafficLight phase={active ? tlPhase : 'off'} />
+        {/* Стойка */}
+        <div style={{ width:2, height:14, background:'#555' }}/>
+      </div>
+    );
+  }
+
+  // FAQ знак — кликабельный
+  if (sign.type === 'question') {
+    return (
+      <div
+        title={sign.label}
+        onClick={() => sign.faqIdx !== undefined && onFaqClick?.(sign.faqIdx)}
+        style={{
+          cursor:'pointer',
+          display:'flex', flexDirection:'column', alignItems:'center', gap:1,
+          animation: pulse,
+        }}>
+        <div style={{
+          width:22,height:22,borderRadius:'50%',
+          background: active ? '#f59e0b' : '#1e40af',
+          border:'2px solid white',
+          display:'flex', alignItems:'center', justifyContent:'center',
+          fontSize:11, fontWeight:'bold', color:'white',
+          boxShadow: active ? '0 0 12px rgba(245,158,11,0.8)' : '0 2px 6px rgba(0,0,0,0.4)',
+          transition:'all 0.2s',
+        }}>?</div>
+        {active && sign.label && (
+          <div style={{
+            background:'#f59e0b', color:'#1a1a1a',
+            fontSize:7, fontWeight:'bold',
+            padding:'1px 4px', borderRadius:3,
+            whiteSpace:'nowrap', maxWidth:60, textAlign:'center',
+            fontFamily:'Golos Text,sans-serif',
+          }}>{sign.label}</div>
+        )}
+        <div style={{ width:2, height:10, background:'#555' }}/>
+      </div>
+    );
+  }
+
+  // Холм — невидимый (эффект скрытия)
+  if (sign.type === 'hill') return null;
+
+  // Парковка
+  if (sign.type === 'parking') {
+    return (
+      <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:1 }}>
+        <div style={{
+          width:20,height:20,borderRadius:3,
+          background: active ? '#3b82f6' : '#1e3a8a',
+          border:'2px solid white',
+          display:'flex', alignItems:'center', justifyContent:'center',
+          fontWeight:'bold', fontSize:11, color:'white',
+          boxShadow: active ? '0 0 12px rgba(59,130,246,0.9)' : '0 2px 6px rgba(0,0,0,0.4)',
+          animation: pulse,
+          transition:'all 0.2s',
+        }}>P</div>
+        {active && <div style={{ fontSize:7, color:'#93c5fd', fontFamily:'Golos Text,sans-serif', whiteSpace:'nowrap' }}>{sign.label}</div>}
+        <div style={{ width:2, height:10, background:'#555' }}/>
+      </div>
+    );
+  }
+
+  // Заправка
+  if (sign.type === 'gas') {
+    return (
+      <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:1 }}>
+        <div style={{
+          background:'#111', border:'2px solid #f59e0b',
+          borderRadius:4, padding:'3px 4px',
+          fontSize:14, lineHeight:1,
+          boxShadow: active ? '0 0 14px rgba(245,158,11,0.8)' : '0 2px 6px rgba(0,0,0,0.4)',
+          animation: pulse,
+        }}>⛽</div>
+        {active && (
+          <div style={{ background:'#f59e0b', color:'#111', fontSize:7, fontWeight:'bold', padding:'1px 4px', borderRadius:3, fontFamily:'Golos Text,sans-serif' }}>
+            Заправка!
+          </div>
+        )}
+        <div style={{ width:2, height:10, background:'#555' }}/>
+      </div>
+    );
+  }
+
+  // Финиш
+  if (sign.type === 'finish') {
+    return (
+      <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:1, animation: active ? 'flag-wave 0.4s ease-in-out infinite alternate' : 'none' }}>
+        <div style={{ fontSize: active ? 22 : 16, lineHeight:1, transition:'font-size 0.3s' }}>🏁</div>
+        {active && (
+          <div style={{ background:'#16a34a', color:'white', fontSize:7, fontWeight:'bold', padding:'1px 5px', borderRadius:3, whiteSpace:'nowrap', fontFamily:'Golos Text,sans-serif' }}>
+            {sign.label}
+          </div>
+        )}
+        <div style={{ width:2, height:10, background:'#555' }}/>
+      </div>
+    );
+  }
+
+  // Все остальные знаки — emoji + стойка
+  const emojiSize = sign.type === 'stop' ? 16 : sign.type === 'children' ? 18 : 14;
+  return (
+    <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:1 }}>
+      <div style={{
+        fontSize:emojiSize, lineHeight:1,
+        filter: active ? 'drop-shadow(0 0 6px rgba(255,200,50,0.9))' : 'none',
+        animation: pulse,
+        transition:'filter 0.2s',
+      }}>{sign.emoji}</div>
+      {active && sign.label && (
+        <div style={{
+          background:'#1e40af', color:'white',
+          fontSize:7, fontWeight:'bold',
+          padding:'1px 4px', borderRadius:3,
+          whiteSpace:'nowrap', maxWidth:55, textAlign:'center',
+          fontFamily:'Golos Text,sans-serif',
+        }}>{sign.label}</div>
+      )}
+      <div style={{ width:2, height:10, background:'#555' }}/>
+    </div>
+  );
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   МАШИНКА SVG
+═══════════════════════════════════════════════════════════════════ */
+const CAR_W = 52;
+const CAR_H = 88;
 
 interface CarProps {
   rot: number;
@@ -143,134 +351,163 @@ interface CarProps {
   hazard: boolean;
   turnLeft: boolean;
   turnRight: boolean;
-  bounce: number;    // 0..1 — прыжок на яме
-  tilt: number;      // градусы наклона вперёд (лежачий полицейский)
-  glow: boolean;     // подсветка при достижении блока
+  bounceY: number;
+  forwardTilt: number;
+  glow: boolean;
   headlights: boolean;
+  hidden: boolean; // за холмом
 }
 
-const Car = ({ rot, brake, hazard, turnLeft, turnRight, bounce, tilt, glow, headlights }: CarProps) => {
-  const leftBlink  = hazard || turnLeft;
-  const rightBlink = hazard || turnRight;
-  const translateY = bounce > 0 ? -bounce * 14 : 0;
-  const tiltAngle  = rot + tilt;
+const Car = ({ rot, brake, hazard, turnLeft, turnRight, bounceY, forwardTilt, glow, headlights, hidden }: CarProps) => {
+  const lb = hazard || turnLeft;
+  const rb = hazard || turnRight;
+  const angle = rot + forwardTilt;
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{
+      position:'relative',
+      opacity: hidden ? 0 : 1,
+      transition:'opacity 0.3s ease',
+    }}>
       {glow && (
         <div style={{
-          position: 'absolute',
-          inset: -12,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(250,204,21,0.5) 0%, transparent 70%)',
-          animation: 'car-glow 1s ease-in-out infinite alternate',
-          zIndex: 0,
-          pointerEvents: 'none',
+          position:'absolute', inset:-14, borderRadius:'50%',
+          background:'radial-gradient(circle,rgba(250,204,21,0.55) 0%,transparent 70%)',
+          animation:'car-glow 0.9s ease-in-out infinite alternate',
+          pointerEvents:'none', zIndex:0,
         }}/>
       )}
       <div style={{
-        transform: `rotate(${tiltAngle}deg) translateY(${translateY}px)`,
-        transition: 'transform 0.3s cubic-bezier(0.22,1,0.36,1)',
-        width: CAR_W, height: CAR_H,
-        position: 'relative', zIndex: 1,
+        transform: `rotate(${angle}deg) translateY(${bounceY}px)`,
+        transition:'transform 0.28s cubic-bezier(0.22,1,0.36,1)',
+        width:CAR_W, height:CAR_H, position:'relative', zIndex:1,
       }}>
-        <svg viewBox="0 0 56 92" width={CAR_W} height={CAR_H}>
-          <ellipse cx="28" cy="88" rx="18" ry="4" fill="rgba(0,0,0,0.2)"/>
-          <rect x="4" y="14" width="48" height="66" rx="12" fill="#5b9bd5"/>
-          <path d="M9 14 Q28 2 47 14" fill="#4a88c5"/>
-          <rect x="10" y="24" width="36" height="34" rx="7" fill="#1a3356"/>
-          <rect x="13" y="26" width="30" height="13" rx="3" fill="#7ec8e3" opacity="0.9"/>
-          <rect x="13" y="42" width="30" height="11" rx="3" fill="#7ec8e3" opacity="0.7"/>
-          <line x1="28" y1="15" x2="28" y2="80" stroke="#4a88c5" strokeWidth="1" opacity="0.3"/>
+        <svg viewBox="0 0 52 88" width={CAR_W} height={CAR_H}>
+          <ellipse cx="26" cy="84" rx="17" ry="4" fill="rgba(0,0,0,0.18)"/>
+          <rect x="3" y="13" width="46" height="63" rx="11" fill="#5b9bd5"/>
+          <path d="M8 13 Q26 2 44 13" fill="#4a88c5"/>
+          <rect x="9" y="23" width="34" height="32" rx="6" fill="#1a3356"/>
+          <rect x="12" y="25" width="28" height="12" rx="3" fill="#7ec8e3" opacity="0.9"/>
+          <rect x="12" y="40" width="28" height="11" rx="3" fill="#7ec8e3" opacity="0.7"/>
+          <line x1="26" y1="14" x2="26" y2="76" stroke="#4a88c5" strokeWidth="1" opacity="0.28"/>
           {/* Фары */}
-          <ellipse cx="13" cy="10" rx="6" ry="3.5"
-            fill={headlights ? '#fffde7' : '#fffde7'}
-            opacity={headlights ? 1 : 0.9}
-            style={headlights ? { filter: 'drop-shadow(0 0 6px #fff8)' } : {}}/>
-          <ellipse cx="43" cy="10" rx="6" ry="3.5"
-            fill={headlights ? '#fffde7' : '#fffde7'}
-            opacity={headlights ? 1 : 0.9}
-            style={headlights ? { filter: 'drop-shadow(0 0 6px #fff8)' } : {}}/>
+          <ellipse cx="12" cy="9" rx="5.5" ry="3"
+            fill="#fffde7" opacity={headlights ? 1 : 0.85}
+            style={headlights ? {filter:'drop-shadow(0 0 5px rgba(255,255,200,0.9))'} : {}}/>
+          <ellipse cx="40" cy="9" rx="5.5" ry="3"
+            fill="#fffde7" opacity={headlights ? 1 : 0.85}
+            style={headlights ? {filter:'drop-shadow(0 0 5px rgba(255,255,200,0.9))'} : {}}/>
           {/* Стоп */}
-          <rect x="5"  y="76" width="12" height="7" rx="2.5"
+          <rect x="4"  y="72" width="11" height="7" rx="2.5"
             fill={brake ? '#ef4444' : '#7f1d1d'}
-            style={brake ? { animation: 'blink-brake 0.4s ease-in-out infinite' } : {}}/>
-          <rect x="39" y="76" width="12" height="7" rx="2.5"
+            style={brake ? {animation:'blink-brake 0.4s ease-in-out infinite'} : {}}/>
+          <rect x="37" y="72" width="11" height="7" rx="2.5"
             fill={brake ? '#ef4444' : '#7f1d1d'}
-            style={brake ? { animation: 'blink-brake 0.4s ease-in-out infinite' } : {}}/>
+            style={brake ? {animation:'blink-brake 0.4s ease-in-out infinite'} : {}}/>
           {/* Поворотники */}
-          <rect x="2"  y="72" width="7" height="5" rx="2"
-            fill={leftBlink ? '#fbbf24' : 'transparent'}
-            style={leftBlink ? { animation: 'blink-turn 0.5s ease-in-out infinite' } : {}}/>
-          <rect x="47" y="72" width="7" height="5" rx="2"
-            fill={rightBlink ? '#fbbf24' : 'transparent'}
-            style={rightBlink ? { animation: 'blink-turn 0.5s ease-in-out infinite' } : {}}/>
+          <rect x="1"  y="68" width="7" height="5" rx="2"
+            fill={lb ? '#fbbf24' : 'transparent'}
+            style={lb ? {animation:'blink-turn 0.5s ease-in-out infinite'} : {}}/>
+          <rect x="44" y="68" width="7" height="5" rx="2"
+            fill={rb ? '#fbbf24' : 'transparent'}
+            style={rb ? {animation:'blink-turn 0.5s ease-in-out infinite'} : {}}/>
           {/* Колёса */}
-          <rect x="0"  y="20" width="7" height="19" rx="3.5" fill="#111"/>
-          <rect x="49" y="20" width="7" height="19" rx="3.5" fill="#111"/>
-          <rect x="0"  y="53" width="7" height="19" rx="3.5" fill="#111"/>
-          <rect x="49" y="53" width="7" height="19" rx="3.5" fill="#111"/>
-          <circle cx="3.5"  cy="29.5" r="3" fill="#888"/>
-          <circle cx="52.5" cy="29.5" r="3" fill="#888"/>
-          <circle cx="3.5"  cy="62.5" r="3" fill="#888"/>
-          <circle cx="52.5" cy="62.5" r="3" fill="#888"/>
-          <rect x="-4" y="26" width="8" height="12" rx="2.5" fill="#3a78b5"/>
-          <rect x="52" y="26" width="8" height="12" rx="2.5" fill="#3a78b5"/>
+          <rect x="0"  y="18" width="7" height="18" rx="3.5" fill="#111"/>
+          <rect x="45" y="18" width="7" height="18" rx="3.5" fill="#111"/>
+          <rect x="0"  y="50" width="7" height="18" rx="3.5" fill="#111"/>
+          <rect x="45" y="50" width="7" height="18" rx="3.5" fill="#111"/>
+          <circle cx="3.5"  cy="27" r="2.8" fill="#888"/>
+          <circle cx="48.5" cy="27" r="2.8" fill="#888"/>
+          <circle cx="3.5"  cy="59" r="2.8" fill="#888"/>
+          <circle cx="48.5" cy="59" r="2.8" fill="#888"/>
+          <rect x="-4" y="24" width="8" height="11" rx="2.5" fill="#3a78b5"/>
+          <rect x="48" y="24" width="8" height="11" rx="2.5" fill="#3a78b5"/>
         </svg>
       </div>
     </div>
   );
 };
 
-// ─── Финишный флаг ────────────────────────────────────────────
-const FinishFlag = ({ active }: { active: boolean }) => (
-  <div style={{
-    display: 'flex', flexDirection: 'column', alignItems: 'center',
-    opacity: active ? 1 : 0.5,
-    transition: 'opacity 0.4s',
-  }}>
-    <div style={{ fontSize: 22, animation: active ? 'flag-wave 0.5s ease-in-out infinite alternate' : 'none' }}>
-      🏁
-    </div>
-    {active && (
-      <div style={{
-        background: '#16a34a', color: 'white',
-        fontSize: 9, fontWeight: 'bold', padding: '2px 6px',
-        borderRadius: 4, whiteSpace: 'nowrap', marginTop: 2,
-        fontFamily: 'Golos Text, sans-serif',
-      }}>
-        ФИНИШ!
-      </div>
-    )}
-  </div>
-);
+/* ═══════════════════════════════════════════════════════════════════
+   СЧЁТЧИК ЦЕНЫ (заправка)
+═══════════════════════════════════════════════════════════════════ */
+const PriceCounter = ({ active }: { active: boolean }) => {
+  const [val, setVal] = useState(0);
+  const raf = useRef<number | null>(null);
+  useEffect(() => {
+    if (!active) { setVal(0); return; }
+    const dur = 2000, target = 64000, start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / dur);
+      const e = 1 - Math.pow(1 - t, 3);
+      setVal(Math.round(e * target));
+      if (t < 1) raf.current = requestAnimationFrame(tick);
+    };
+    raf.current = requestAnimationFrame(tick);
+    return () => { if (raf.current) cancelAnimationFrame(raf.current); };
+  }, [active]);
+  return (
+    <div style={{
+      position:'absolute', top:-50, left:'50%', transform:'translateX(-50%)',
+      background:'#111', color:'#facc15', fontFamily:'monospace',
+      fontSize:12, fontWeight:'bold', padding:'3px 7px', borderRadius:4,
+      whiteSpace:'nowrap', boxShadow:'0 2px 10px rgba(0,0,0,0.6)',
+      letterSpacing:1, zIndex:90,
+    }}>⛽ {val.toLocaleString('ru')} ₽</div>
+  );
+};
 
-// ─── Главный компонент ──────────────────────────────────────────
-const DrivingCar = ({ sectionIds }: DrivingCarProps) => {
-  const [scrollPct, setScrollPct]       = useState(0);
-  const [vh, setVh]                     = useState(window.innerHeight);
-  const [carState, setCarState]         = useState<'idle'|'driving'|'braking'|'stopped'|'hazard'|'turnLeft'|'turnRight'|'parking'|'finish'>('idle');
-  const [activeStation, setActiveStation] = useState<string | null>(null);
-  const [tlPhase, setTlPhase]           = useState<'red'|'yellow'|'green'|'off'>('off');
-  const [bounce, setBounce]             = useState(0);
-  const [tilt, setTilt]                 = useState(0);
-  const [glow, setGlow]                 = useState(false);
-  const [headlights, setHeadlights]     = useState(false);
-  const [priceActive, setPriceActive]   = useState(false);
-  const [carVisible, setCarVisible]     = useState(false);
-  const [bend, setBend]                 = useState(0);
-  const [prevBend, setPrevBend]         = useState(0);
-  const [obstacleMsg, setObstacleMsg]   = useState('');
-  const [hazardLoop, setHazardLoop]     = useState(false);
+/* ═══════════════════════════════════════════════════════════════════
+   ГЛАВНЫЙ КОМПОНЕНТ
+═══════════════════════════════════════════════════════════════════ */
+const ROAD_W = 100; // px, ширина полосы
 
-  const sectionPosRef = useRef<Record<string, number>>({});
-  const stateRef      = useRef(carState);
-  const timerRef      = useRef<ReturnType<typeof setTimeout> | null>(null);
+interface DrivingCarProps {
+  sectionIds: string[];
+  onFaqOpen?: (idx: number) => void;
+}
+
+const DrivingCar = ({ onFaqOpen }: DrivingCarProps) => {
+  const [scrollPct, setScrollPct]   = useState(0);
+  const [vh, setVh]                 = useState(window.innerHeight);
+  const [carVisible, setCarVisible] = useState(false);
+
+  // Машинка
+  const [carX, setCarX]               = useState(28);
+  const [carRot, setCarRot]           = useState(0);
+  const [isBrake, setIsBrake]         = useState(false);
+  const [isHazard, setIsHazard]       = useState(true);
+  const [isTurnLeft, setIsTurnLeft]   = useState(false);
+  const [isTurnRight, setIsTurnRight] = useState(false);
+  const [bounceY, setBounceY]         = useState(0);
+  const [forwardTilt, setForwardTilt] = useState(0);
+  const [glow, setGlow]               = useState(false);
+  const [headlights, setHeadlights]   = useState(false);
+  const [carHidden, setCarHidden]     = useState(false);
+  const [tooltip, setTooltip]         = useState('');
+
+  // Светофор
+  const [tlPhase, setTlPhase] = useState<'red'|'yellow'|'green'|'off'>('off');
+
+  // Заправка
+  const [priceActive, setPriceActive] = useState(false);
+
+  // Активные знаки
+  const [activeSignPcts, setActiveSignPcts] = useState<Set<number>>(new Set());
+
+  // Дорожные работы — дрифт
+  const [driftOffset, setDriftOffset] = useState(0);
+
   const lastY         = useRef(0);
+  const timerRef      = useRef<ReturnType<typeof setTimeout>[]>([]);
   const lastObstacle  = useRef(0);
-  const prevBendRef   = useRef(0);
+  const tlRunning     = useRef(false);
 
-  useEffect(() => { stateRef.current = carState; }, [carState]);
+  const t = useCallback((fn: () => void, ms: number) => {
+    const id = setTimeout(fn, ms);
+    timerRef.current.push(id);
+    return id;
+  }, []);
 
   useEffect(() => {
     const onResize = () => setVh(window.innerHeight);
@@ -278,319 +515,307 @@ const DrivingCar = ({ sectionIds }: DrivingCarProps) => {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  const updateSectionPos = useCallback(() => {
-    const docH = document.documentElement.scrollHeight - window.innerHeight;
-    if (docH <= 0) return;
-    const result: Record<string, number> = {};
-    sectionIds.forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const midY = el.offsetTop + el.offsetHeight * 0.25;
-      result[id] = Math.min(1, Math.max(0, (midY - vh * 0.4) / docH));
-    });
-    sectionPosRef.current = result;
-  }, [sectionIds, vh]);
-
-  useEffect(() => {
-    const t = setTimeout(updateSectionPos, 500);
-    window.addEventListener('resize', updateSectionPos);
-    return () => { clearTimeout(t); window.removeEventListener('resize', updateSectionPos); };
-  }, [updateSectionPos]);
-
-  const clearTimer = useCallback(() => {
-    if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; }
-  }, []);
-
   // Появление машинки при первом скролле
   useEffect(() => {
-    const onFirstScroll = () => {
-      if (window.scrollY > 50) {
+    const handler = () => {
+      if (window.scrollY > 30) {
         setCarVisible(true);
-        setCarState('driving');
-        window.removeEventListener('scroll', onFirstScroll);
+        setIsHazard(false);
+        setCarState_driving();
+        window.removeEventListener('scroll', handler);
       }
     };
-    window.addEventListener('scroll', onFirstScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onFirstScroll);
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
   }, []);
+
+  const setCarState_driving = useCallback(() => {
+    setIsBrake(false); setIsHazard(false);
+    setIsTurnLeft(false); setIsTurnRight(false);
+  }, []);
+
+  // Запуск светофора
+  const runTrafficLight = useCallback(() => {
+    if (tlRunning.current) return;
+    tlRunning.current = true;
+    setIsBrake(true); setTlPhase('red');
+    t(() => setTlPhase('yellow'), 1300);
+    t(() => { setTlPhase('green'); setIsBrake(false); }, 2200);
+    t(() => { setTlPhase('off'); tlRunning.current = false; }, 3000);
+  }, [t]);
+
+  // Обработка знаков при приближении машинки
+  const handleSignActivation = useCallback((sign: RoadSign) => {
+    setActiveSignPcts(prev => new Set(prev).add(sign.pct));
+    t(() => setActiveSignPcts(prev => { const n = new Set(prev); n.delete(sign.pct); return n; }), 2500);
+
+    switch (sign.type) {
+      case 'traffic-light':
+      case 'reviews-tl':
+        runTrafficLight();
+        setGlow(true);
+        t(() => setGlow(false), 2500);
+        break;
+
+      case 'stop':
+        setIsBrake(true);
+        t(() => setIsBrake(false), 900);
+        break;
+
+      case 'warning':
+        shakeScreen(sign.pct < 0.20 ? 4 : 7, 400);
+        setIsHazard(true);
+        t(() => setIsHazard(false), 600);
+        if (sign.label) { setTooltip(sign.label); t(() => setTooltip(''), 1800); }
+        break;
+
+      case 'roadwork':
+        shakeScreen(3, 250);
+        setDriftOffset(8);
+        t(() => setDriftOffset(-6), 180);
+        t(() => setDriftOffset(0), 360);
+        if (sign.label) { setTooltip(sign.label); t(() => setTooltip(''), 1800); }
+        break;
+
+      case 'parking':
+        setIsTurnRight(true);
+        setIsBrake(true);
+        t(() => { setIsTurnRight(false); setIsBrake(false); }, 900);
+        if (sign.label) { setTooltip(sign.label); t(() => setTooltip(''), 2000); }
+        break;
+
+      case 'children':
+        setIsBrake(true);
+        t(() => setIsBrake(false), 700);
+        setTooltip(sign.label);
+        t(() => setTooltip(''), 2000);
+        break;
+
+      case 'trigger':
+        setIsHazard(true);
+        t(() => setIsHazard(false), 500);
+        setTooltip(sign.label);
+        t(() => setTooltip(''), 2200);
+        break;
+
+      case 'gas':
+        setIsBrake(true);
+        setPriceActive(true);
+        setGlow(true);
+        t(() => { setIsBrake(false); setGlow(false); }, 2200);
+        t(() => setPriceActive(false), 4000);
+        break;
+
+      case 'question':
+        setIsBrake(true);
+        t(() => setIsBrake(false), 500);
+        if (sign.label) { setTooltip(sign.label); t(() => setTooltip(''), 1500); }
+        break;
+
+      case 'hill':
+        setCarHidden(true);
+        t(() => setCarHidden(false), 1200);
+        break;
+
+      case 'finish':
+        setIsBrake(true);
+        setIsHazard(true);
+        setHeadlights(true);
+        setGlow(true);
+        launchConfetti();
+        setTooltip(sign.label);
+        break;
+
+      case 'start':
+        setIsHazard(true);
+        t(() => setIsHazard(false), 1200);
+        setTooltip('Поехали! 🚗');
+        t(() => setTooltip(''), 2000);
+        break;
+    }
+  }, [runTrafficLight, t]);
+
+  const triggeredRef = useRef<Set<number>>(new Set());
 
   useEffect(() => {
     const onScroll = () => {
-      if (!carVisible) return;
-
       const docH = document.documentElement.scrollHeight - window.innerHeight;
       const pct  = docH > 0 ? Math.min(1, window.scrollY / docH) : 0;
       setScrollPct(pct);
 
       const delta = window.scrollY - lastY.current;
       lastY.current = window.scrollY;
-      const cur = stateRef.current;
 
-      // Новый изгиб дороги
-      const newBend = getRoadBend(pct, STATIONS, sectionPosRef.current);
-      setPrevBend(prevBendRef.current);
-      prevBendRef.current = newBend;
-      setBend(newBend);
+      // Позиция и поворот машинки по кривой
+      const cx = curveX(pct);
+      const cr = carRotFromCurve(pct);
+      setCarX(cx);
+      setCarRot(cr);
 
-      // Случайные препятствия (раз в ~15 сек скролла)
-      const now = Date.now();
-      if (now - lastObstacle.current > 15000 && Math.random() < 0.08) {
-        lastObstacle.current = now;
-        const obstacles = [
-          { msg: '💧 Лужа!',            fn: () => { setObstacleMsg('💧 Лужа!'); setTimeout(() => setObstacleMsg(''), 1500); } },
-          { msg: '⚠️ Яма!',             fn: () => { setObstacleMsg('⚠️ Яма!'); setBounce(1); setTimeout(() => setBounce(0), 600); setTimeout(() => setObstacleMsg(''), 1500); } },
-          { msg: '🛑 Лежачий полицейский!', fn: () => { setObstacleMsg('🛑'); setTilt(12); setTimeout(() => setTilt(0), 700); setTimeout(() => setObstacleMsg(''), 1500); } },
-        ];
-        obstacles[Math.floor(Math.random() * obstacles.length)].fn();
+      // Поворотники по изгибу кривой
+      if (Math.abs(cr) > 8) {
+        if (cr < 0) setIsTurnLeft(true);
+        else setIsTurnRight(true);
+      } else {
+        setIsTurnLeft(false);
+        setIsTurnRight(false);
       }
 
-      // Быстрый скролл → аварийка
-      if (Math.abs(delta) > 130) {
-        clearTimer();
-        setCarState('hazard'); setGlow(false);
-        timerRef.current = setTimeout(() => setCarState('driving'), 900);
+      // Очень быстрый скролл → аварийка
+      if (Math.abs(delta) > 160) {
+        setIsHazard(true);
+        setTimeout(() => setIsHazard(false), 700);
         return;
       }
 
-      // Определяем ближайшую станцию
-      let hitStation: Station | null = null;
-      STATIONS.forEach(s => {
-        const sp = sectionPosRef.current[s.id];
-        if (sp === undefined) return;
-        if (Math.abs(pct - sp) < 0.026) hitStation = s;
-      });
-
-      if (hitStation) {
-        const st = hitStation as Station;
-        if (activeStation !== st.id) {
-          setActiveStation(st.id);
-          clearTimer();
-          setGlow(true);
-          timerRef.current = setTimeout(() => setGlow(false), 2500);
-
-          switch (st.type) {
-            case 'traffic-light':
-              if (cur !== 'stopped') {
-                setCarState('braking');
-                setTlPhase('red');
-                timerRef.current = setTimeout(() => {
-                  setTlPhase('yellow');
-                  timerRef.current = setTimeout(() => {
-                    setTlPhase('green');
-                    setCarState('driving');
-                    timerRef.current = setTimeout(() => {
-                      setTlPhase('off');
-                      setActiveStation(null);
-                    }, 800);
-                  }, 900);
-                }, 1200);
-              }
-              break;
-
-            case 'parking':
-              if (cur !== 'stopped' && cur !== 'parking') {
-                setCarState('turnRight');
-                timerRef.current = setTimeout(() => {
-                  setCarState('parking');
-                  timerRef.current = setTimeout(() => {
-                    setCarState('driving');
-                    setActiveStation(null);
-                  }, 1400);
-                }, 700);
-              }
-              break;
-
-            case 'gas-station':
-              if (cur !== 'stopped') {
-                setCarState('braking');
-                setPriceActive(true);
-                timerRef.current = setTimeout(() => {
-                  setCarState('driving');
-                  timerRef.current = setTimeout(() => {
-                    setPriceActive(false);
-                    setActiveStation(null);
-                  }, 2000);
-                }, 2200);
-              }
-              break;
-
-            case 'bump':
-              setBounce(1);
-              setTilt(10);
-              timerRef.current = setTimeout(() => { setBounce(0); setTilt(0); }, 600);
-              timerRef.current = setTimeout(() => setActiveStation(null), 1200);
-              break;
-
-            case 'finish':
-              setCarState('finish');
-              setHazardLoop(true);
-              setHeadlights(true);
-              break;
-
-            case 'sign':
-              setCarState('turnLeft');
-              timerRef.current = setTimeout(() => {
-                setCarState('driving');
-                setActiveStation(null);
-              }, 800);
-              break;
-
-            default:
-              break;
+      // Случайные препятствия
+      const now = Date.now();
+      if (carVisible && now - lastObstacle.current > 18000 && pct > 0.1 && pct < 0.95) {
+        if (Math.random() < 0.07) {
+          lastObstacle.current = now;
+          const roll = Math.random();
+          if (roll < 0.35) {
+            // Яма
+            setBounceY(-16);
+            shakeScreen(4, 300);
+            setTooltip('⚠️ Яма!');
+            setTimeout(() => { setBounceY(0); setTooltip(''); }, 700);
+          } else if (roll < 0.65) {
+            // Лужа
+            setTooltip('💧 Лужа!');
+            setTimeout(() => setTooltip(''), 1200);
+          } else {
+            // Лежачий
+            setForwardTilt(14);
+            setIsBrake(true);
+            setTooltip('🛑 Лежачий!');
+            setTimeout(() => { setForwardTilt(0); setIsBrake(false); setTooltip(''); }, 700);
           }
         }
-      } else if (activeStation && !hitStation) {
-        setActiveStation(null);
       }
 
-      // Поворот по изгибу дороги
-      if (!hitStation && cur === 'driving') {
-        if (newBend > 0.3) { setCarState('turnRight'); clearTimer(); timerRef.current = setTimeout(() => setCarState('driving'), 600); }
-        else if (newBend < -0.3) { setCarState('turnLeft'); clearTimer(); timerRef.current = setTimeout(() => setCarState('driving'), 600); }
-      }
-
-      if (pct >= 0.99) {
-        setCarState('finish');
-        setHeadlights(true);
-      }
+      // Проверка активации знаков
+      SIGNS.forEach(sign => {
+        const dist = Math.abs(pct - sign.pct);
+        if (dist < 0.018 && !triggeredRef.current.has(sign.pct)) {
+          triggeredRef.current.add(sign.pct);
+          if (carVisible || sign.type === 'start') handleSignActivation(sign);
+          // Через время — сброс триггера чтобы при обратном скролле сработало снова
+          setTimeout(() => triggeredRef.current.delete(sign.pct), 4000);
+        }
+      });
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [carVisible, activeStation, clearTimer]);
+  }, [carVisible, handleSignActivation]);
 
-  // Позиция машинки по вертикали в viewport
-  const carViewY = vh * 0.15 + scrollPct * vh * 0.70;
-  const carX     = getCarX(bend);
-  const carRot   = getCarRotation(bend, prevBend);
+  // Позиция машинки в viewport
+  const carViewY  = vh * 0.12 + scrollPct * (vh * 0.76);
 
-  // Состояния флагов машинки
-  const isBrake     = ['braking','stopped','parking','finish'].includes(carState);
-  const isHazard    = carState === 'hazard' || carState === 'finish' || hazardLoop;
-  const isTurnLeft  = carState === 'turnLeft';
-  const isTurnRight = carState === 'turnRight' || carState === 'parking';
-
-  // Найти активную станцию
-  const activeS = STATIONS.find(s => s.id === activeStation);
-
-  // Станции с их viewport-позицией
-  const stationItems = STATIONS
-    .filter(s => sectionPosRef.current[s.id] !== undefined && s.type !== 'none')
-    .map(s => ({
-      ...s,
-      vy: vh * 0.15 + sectionPosRef.current[s.id] * vh * 0.70,
-    }));
+  // Какие знаки показывать (в зоне видимости ±25% от текущего скролла)
+  const visibleSigns = SIGNS.filter(s =>
+    s.pct >= scrollPct - 0.28 && s.pct <= scrollPct + 0.28
+  );
 
   if (!carVisible) return null;
 
   return (
     <>
       <style>{`
-        @keyframes blink-turn   { 0%,100%{opacity:1} 50%{opacity:0.08} }
-        @keyframes blink-brake  { 0%,100%{opacity:1} 50%{opacity:0.28} }
-        @keyframes car-glow     { from{opacity:0.6} to{opacity:1} }
-        @keyframes flag-wave    { from{transform:rotate(-10deg)} to{transform:rotate(10deg)} }
-        @keyframes tl-pulse     { 0%,100%{opacity:1} 50%{opacity:0.5} }
-        @keyframes obstacle-in  { 0%{opacity:0;transform:translateX(-50%) translateY(10px)} 20%{opacity:1;transform:translateX(-50%) translateY(0)} 80%{opacity:1} 100%{opacity:0} }
+        @keyframes blink-turn  {0%,100%{opacity:1}50%{opacity:0.05}}
+        @keyframes blink-brake {0%,100%{opacity:1}50%{opacity:0.25}}
+        @keyframes car-glow    {from{opacity:0.55}to{opacity:1}}
+        @keyframes flag-wave   {from{transform:rotate(-12deg)}to{transform:rotate(12deg)}}
+        @keyframes sign-pulse  {from{opacity:0.7;transform:scale(0.95)}to{opacity:1;transform:scale(1.08)}}
+        @keyframes confetti-fall{
+          0%  {transform:translateY(-10px) rotate(0deg); opacity:1}
+          100%{transform:translateY(110vh) rotate(720deg); opacity:0}
+        }
+        @keyframes tooltip-in {
+          0%  {opacity:0;transform:translateX(-50%) translateY(6px)}
+          15% {opacity:1;transform:translateX(-50%) translateY(0)}
+          85% {opacity:1}
+          100%{opacity:0}
+        }
       `}</style>
 
-      {/* Дорожка — fixed справа, изгибается через transform */}
+      {/* ── ДОРОЖНАЯ ПОЛОСА (fixed, правая сторона) ── */}
       <div className="hidden lg:block" style={{
-        position: 'fixed',
-        right: 0,
-        top: 0,
-        bottom: 0,
-        width: ROAD_W,
-        zIndex: 40,
-        pointerEvents: 'none',
-        transform: `skewX(${bend * -4}deg)`,
-        transition: 'transform 0.6s cubic-bezier(0.22,1,0.36,1)',
-        background: `
-          repeating-linear-gradient(transparent,transparent 2px,rgba(255,255,255,0.022) 2px,rgba(255,255,255,0.022) 3px),
-          repeating-linear-gradient(90deg,transparent,transparent 4px,rgba(255,255,255,0.015) 4px,rgba(255,255,255,0.015) 5px),
-          linear-gradient(to right,#2e2e2e 0%,#444 25%,#4a4a4a 50%,#444 75%,#2e2e2e 100%)
-        `,
+        position:'fixed', right:0, top:0, bottom:0,
+        width:ROAD_W, zIndex:40, pointerEvents:'none',
+        // Изгиб через skewX
+        transform:`skewX(${(curveX(scrollPct) - 28) * -0.18}deg)`,
+        transition:'transform 0.5s cubic-bezier(0.22,1,0.36,1)',
       }}>
-        {/* Обочина левая */}
-        <div style={{ position:'absolute',left:5,top:0,bottom:0,width:2,
-          background:'repeating-linear-gradient(to bottom,#bbb 0,#bbb 12px,transparent 12px,transparent 26px)',
-          opacity:0.4 }}/>
-        {/* Обочина правая */}
-        <div style={{ position:'absolute',right:5,top:0,bottom:0,width:2,
-          background:'repeating-linear-gradient(to bottom,#bbb 0,#bbb 12px,transparent 12px,transparent 26px)',
-          opacity:0.4 }}/>
-        {/* Осевая */}
-        <div style={{ position:'absolute',left:'50%',top:0,bottom:0,width:3,transform:'translateX(-50%)',
-          background:'repeating-linear-gradient(to bottom,#facc15 0,#facc15 14px,transparent 14px,transparent 30px)',
-          opacity:0.5 }}/>
+        {/* Асфальт */}
+        <div style={{
+          position:'absolute', inset:0,
+          background:'linear-gradient(to right,#2a2a2a 0%,#3d3d3d 30%,#424242 50%,#3d3d3d 70%,#2a2a2a 100%)',
+        }}/>
+        {/* Текстура */}
+        <div style={{
+          position:'absolute', inset:0, opacity:0.06,
+          backgroundImage:'repeating-linear-gradient(transparent,transparent 3px,rgba(255,255,255,0.12) 3px,rgba(255,255,255,0.12) 4px)',
+        }}/>
+        {/* Левая обочина */}
+        <div style={{
+          position:'absolute', left:6, top:0, bottom:0, width:2,
+          background:'repeating-linear-gradient(to bottom,#bbb 0,#bbb 14px,transparent 14px,transparent 28px)',
+          opacity:0.35,
+        }}/>
+        {/* Правая обочина */}
+        <div style={{
+          position:'absolute', right:6, top:0, bottom:0, width:2,
+          background:'repeating-linear-gradient(to bottom,#bbb 0,#bbb 14px,transparent 14px,transparent 28px)',
+          opacity:0.35,
+        }}/>
+        {/* Осевая линия */}
+        <div style={{
+          position:'absolute', left:'50%', top:0, bottom:0, width:3,
+          transform:'translateX(-50%)',
+          background:'repeating-linear-gradient(to bottom,#facc15 0,#facc15 16px,transparent 16px,transparent 34px)',
+          opacity:0.45,
+        }}/>
 
-        {/* Станции вдоль дороги */}
-        {stationItems.map(st => {
-          const isAct = activeStation === st.id;
+        {/* ── ЗНАКИ ── */}
+        {visibleSigns.map(sign => {
+          // Y позиция знака в viewport
+          const docH = document.documentElement.scrollHeight - window.innerHeight;
+          const signScrollY = sign.pct * docH;
+          const signViewY = signScrollY - window.scrollY + vh * 0.12 + sign.pct * (vh * 0.76);
+          // Упрощённо: относительно машинки
+          const vy = vh * 0.12 + sign.pct * (vh * 0.76) + (sign.pct - scrollPct) * vh * 0.0;
+          const isAct = activeSignPcts.has(sign.pct);
+
           return (
-            <div key={st.id} style={{
-              position: 'absolute',
-              top: st.vy - 36,
-              left: 4,
-              zIndex: 55,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 2,
+            <div key={`${sign.pct}-${sign.side}`} style={{
+              position:'absolute',
+              top: vy - 30,
+              left: sign.side === 'left' ? 3 : ROAD_W - 30,
+              zIndex:60,
+              display:'flex', alignItems:'flex-end',
+              pointerEvents: sign.type === 'question' ? 'auto' : 'none',
             }}>
-              {/* Светофор */}
-              {st.type === 'traffic-light' && (
-                <TrafficLight phase={isAct ? tlPhase : 'off'} />
-              )}
-              {/* Парковка */}
-              {st.type === 'parking' && (
-                <div style={{
-                  background: isAct ? '#3b82f6' : '#1e3a8a',
-                  color: 'white', fontWeight: 'bold', fontSize: 14,
-                  width: 26, height: 26, borderRadius: 4,
-                  display:'flex', alignItems:'center', justifyContent:'center',
-                  border: '2px solid white',
-                  boxShadow: isAct ? '0 0 10px rgba(59,130,246,0.8)' : 'none',
-                  transition: 'all 0.3s',
-                  animation: isAct ? 'tl-pulse 0.6s ease-in-out infinite' : 'none',
-                }}>P</div>
-              )}
-              {/* Заправка */}
-              {st.type === 'gas-station' && (
-                <div style={{ fontSize: 20, animation: isAct ? 'tl-pulse 0.5s ease-in-out infinite' : 'none' }}>⛽</div>
-              )}
-              {/* Финиш */}
-              {st.type === 'finish' && <FinishFlag active={isAct} />}
-              {/* Знак / бугор */}
-              {(st.type === 'sign' || st.type === 'bump') && (
-                <div style={{ fontSize: 18, animation: isAct ? 'tl-pulse 0.4s ease-in-out infinite' : 'none' }}>{st.emoji}</div>
-              )}
-
-              {/* Подпись при активации */}
-              {isAct && st.label && (
-                <div style={{
-                  fontSize: 8, background: '#1e40af', color: '#fff',
-                  padding: '2px 5px', borderRadius: 4,
-                  whiteSpace: 'nowrap',
-                  fontFamily: 'Golos Text, sans-serif', fontWeight: 600,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
-                }}>
-                  {st.label}
-                </div>
-              )}
+              <SignPost
+                sign={sign}
+                active={isAct}
+                tlPhase={tlPhase}
+                onFaqClick={(idx) => onFaqOpen?.(idx)}
+              />
             </div>
           );
         })}
 
-        {/* Машинка */}
+        {/* ── МАШИНКА ── */}
         <div style={{
-          position: 'absolute',
+          position:'absolute',
           top: carViewY - CAR_H / 2,
-          left: carX,
-          transition: 'top 0.1s linear, left 0.3s cubic-bezier(0.22,1,0.36,1)',
-          zIndex: 70,
+          left: carX + driftOffset,
+          zIndex:70,
+          transition:'top 0.12s linear, left 0.32s cubic-bezier(0.22,1,0.36,1)',
+          pointerEvents:'none',
         }}>
-          {/* Анимация цены у заправки */}
           {priceActive && <PriceCounter active={priceActive} />}
 
           <Car
@@ -599,50 +824,29 @@ const DrivingCar = ({ sectionIds }: DrivingCarProps) => {
             hazard={isHazard}
             turnLeft={isTurnLeft}
             turnRight={isTurnRight}
-            bounce={bounce}
-            tilt={tilt}
+            bounceY={bounceY}
+            forwardTilt={forwardTilt}
             glow={glow}
             headlights={headlights}
+            hidden={carHidden}
           />
 
-          {/* Подсказка «Я здесь!» */}
-          {glow && activeS && (
+          {/* Тултип над машинкой */}
+          {tooltip && (
             <div style={{
-              position: 'absolute', top: -28, left: '50%',
-              transform: 'translateX(-50%)',
-              background: '#facc15', color: '#1a1a1a',
-              fontSize: 9, fontWeight: 'bold',
-              padding: '2px 6px', borderRadius: 10,
-              whiteSpace: 'nowrap',
-              fontFamily: 'Golos Text, sans-serif',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-              pointerEvents: 'none',
-            }}>
-              {activeS.emoji} {activeS.label}
-            </div>
+              position:'absolute', top:-30, left:'50%',
+              transform:'translateX(-50%)',
+              background:'#facc15', color:'#111',
+              fontSize:9, fontWeight:'bold',
+              padding:'2px 7px', borderRadius:10,
+              whiteSpace:'nowrap',
+              fontFamily:'Golos Text,sans-serif',
+              boxShadow:'0 2px 8px rgba(0,0,0,0.3)',
+              animation:'tooltip-in 1.8s ease-in-out forwards',
+              pointerEvents:'none', zIndex:80,
+            }}>{tooltip}</div>
           )}
         </div>
-
-        {/* Сообщение о препятствии */}
-        {obstacleMsg && (
-          <div style={{
-            position: 'absolute',
-            top: carViewY - CAR_H / 2 - 40,
-            left: '50%',
-            zIndex: 90,
-            background: '#ef4444',
-            color: 'white',
-            fontSize: 10,
-            fontWeight: 'bold',
-            padding: '3px 8px',
-            borderRadius: 6,
-            whiteSpace: 'nowrap',
-            fontFamily: 'Golos Text, sans-serif',
-            animation: 'obstacle-in 1.5s ease-in-out forwards',
-          }}>
-            {obstacleMsg}
-          </div>
-        )}
       </div>
     </>
   );
