@@ -1,44 +1,96 @@
+const metrics = [
+  { value: '58',       unit: 'часов',   desc: 'практики с ГСМ'        },
+  { value: '5',        unit: 'инструкторов', desc: 'сооснователей'    },
+  { value: '64 000',   unit: '₽',       desc: 'полный курс, всё включено' },
+  { value: '10',       unit: 'минут',   desc: 'до нашего автодрома'   },
+];
+
 const Hero = () => {
   const scrollToForm = () => {
     document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section id="hero" className="relative w-full h-[80vh] min-h-[500px] flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628] via-[#1a2d4a] to-[#0f1f35]">
+    <section id="hero" className="relative w-full min-h-screen flex flex-col justify-center overflow-hidden">
+
+      {/* Видеофон */}
+      <div className="absolute inset-0">
         <video
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-          autoPlay
-          muted
-          loop
-          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay muted loop playsInline
           src="https://assets.mixkit.co/videos/preview/mixkit-driving-on-a-country-road-44261-large.mp4"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
+        {/* Светлый оверлей — сохраняем лёгкость */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/80 via-[#0f2040]/70 to-[#0a1628]/90" />
+        {/* Тонкая горизонтальная линия — "аэродинамика" */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-white/10" />
       </div>
 
-      <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
-        <div className="animate-on-scroll visible">
-          <h1 className="font-heading text-4xl md:text-6xl font-bold text-white leading-tight mb-4 drop-shadow-lg">
-            Автошкола, которую создали инструкторы
-          </h1>
-          <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-2xl mx-auto">
-            Мы сами сидим за рулём и принимаем экзамены. Нам надоело, как учат в других школах — и мы сделали свою. Без скрытых доплат, без очередей, без «левых» пересдач
-          </p>
+      {/* Контент */}
+      <div className="relative z-10 px-4 max-w-5xl mx-auto w-full pt-24 pb-16">
+
+        {/* Надзаголовок */}
+        <div className="flex items-center gap-3 mb-6 animate-on-scroll visible">
+          <div className="w-8 h-px bg-blue-400" />
+          <span className="text-blue-300 font-body text-sm uppercase tracking-[0.2em] font-medium">
+            Севастополь · ООО «Время рулить»
+          </span>
+        </div>
+
+        {/* Главный заголовок */}
+        <h1 className="font-heading font-bold text-white leading-[0.95] mb-8 animate-on-scroll visible"
+          style={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)' }}>
+          АВТОШКОЛА,<br />
+          <span className="text-blue-400">КОТОРУЮ СОЗДАЛИ</span><br />
+          ИНСТРУКТОРЫ
+        </h1>
+
+        {/* Подзаголовок */}
+        <p className="text-gray-300 text-lg md:text-xl leading-relaxed max-w-xl mb-10 animate-on-scroll visible font-body">
+          Мы сами сидим за рулём. Нам надоело, как учат в других школах —
+          и мы открыли свою. Без скрытых доплат, без криков, без «левых» пересдач.
+        </p>
+
+        {/* CTA */}
+        <div className="flex flex-wrap gap-4 mb-20 animate-on-scroll visible">
           <button
             onClick={scrollToForm}
-            className="bg-brand-blue text-white px-8 py-4 rounded-xl font-heading font-bold text-xl hover:bg-blue-500 hover:scale-105 transition-all duration-200 shadow-xl hover:shadow-2xl inline-flex items-center gap-2"
+            className="bg-blue-500 hover:bg-blue-400 text-white px-8 py-4 font-heading font-bold text-lg tracking-wide transition-all duration-200 hover:scale-105 hover:shadow-[0_0_32px_rgba(59,130,246,0.5)]"
+            style={{ borderRadius: 4 }}
           >
-            Начать движение
+            НАЧАТЬ ДВИЖЕНИЕ
           </button>
-          <p className="mt-4 text-gray-400 text-sm">
-            ООО «ВРЕМЯ РУЛИТЬ» • Лицензия • Свой автодром • 5 инструкторов-сооснователей
-          </p>
+          <button
+            onClick={() => document.getElementById('instructors')?.scrollIntoView({ behavior: 'smooth' })}
+            className="border border-white/30 text-white hover:border-blue-400 hover:text-blue-300 px-8 py-4 font-heading font-bold text-lg tracking-wide transition-all duration-200"
+            style={{ borderRadius: 4 }}
+          >
+            ОБ ИНСТРУКТОРАХ
+          </button>
+        </div>
+
+        {/* Метрики — карточки с цифрами */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10 animate-on-scroll visible"
+          style={{ borderRadius: 2 }}>
+          {metrics.map((m, i) => (
+            <div key={i}
+              className="bg-[#0a1628]/60 backdrop-blur-sm px-6 py-5 hover:bg-blue-900/40 transition-colors duration-300 group">
+              <div className="flex items-baseline gap-1.5 mb-1">
+                <span className="font-heading font-bold text-white group-hover:text-blue-300 transition-colors"
+                  style={{ fontSize: 'clamp(1.6rem, 3vw, 2.4rem)' }}>
+                  {m.value}
+                </span>
+                <span className="text-blue-400 font-heading font-semibold text-lg">{m.unit}</span>
+              </div>
+              <p className="text-gray-400 text-xs font-body leading-tight">{m.desc}</p>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white opacity-60 animate-bounce">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      {/* Стрелка вниз */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/40 animate-bounce z-10">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M7 13l5 5 5-5M7 7l5 5 5-5"/>
         </svg>
       </div>

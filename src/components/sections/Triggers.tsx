@@ -2,27 +2,38 @@ const triggers = [
   {
     icon: '👩',
     title: 'Инструктор-женщина',
-    text: 'Стесняетесь ошибаться при мужчине? Учитесь у женщины. Спокойно, без криков, в вашем темпе. Просто скажите при записи, что хотите заниматься с женщиной.',
+    text: 'Стесняетесь ошибаться при мужчине? Просто скажите при записи — мы подберём инструктора. Спокойно, в вашем темпе, без критики.',
+    accent: 'По запросу',
   },
   {
     icon: '🏠',
     title: 'Свой автодром рядом',
-    text: 'Автодром на Стахановцева, 18 — это наш, не арендованный. Никаких очередей, никаких поездок через весь город. Для Балаклавы и Инкермана — 10 минут.',
+    text: 'Автодром на Стахановцева, 18 — наш, не арендованный. Никаких очередей. Для Балаклавы и Инкермана — 10 минут на машине.',
+    accent: '10 минут',
   },
   {
     icon: '🎖️',
-    title: 'Скидка 5 000 ₽ для участников СВО',
-    text: 'Спасибо за службу. Это не рекламный ход, а человеческое спасибо. Просто поставьте галочку в форме — и мы применим скидку автоматически.',
+    title: 'Скидка для участников СВО',
+    text: 'Спасибо за службу. Поставьте галочку в форме записи — скидка 5 000 ₽ применится автоматически.',
+    accent: '-5 000 ₽',
   },
 ];
 
 const Triggers = () => {
   return (
-    <section id="triggers" className="py-20 bg-white">
+    <section id="triggers" className="py-28 bg-[#F5F7FA]">
       <div className="max-w-5xl mx-auto px-4">
-        <div className="animate-on-scroll text-center mb-12">
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-brand-dark mb-3">
-            Мы подстроимся под вас
+
+        {/* Заголовок */}
+        <div className="animate-on-scroll mb-16">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-px bg-blue-500" />
+            <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Персональный подход</span>
+          </div>
+          <h2 className="font-heading font-bold text-[#1E2A3E] leading-tight"
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
+            Мы подстроимся<br />
+            <span className="text-blue-500">под вас</span>
           </h2>
         </div>
 
@@ -30,11 +41,22 @@ const Triggers = () => {
           {triggers.map((t, i) => (
             <div
               key={i}
-              className={`animate-on-scroll stagger-${i + 1} bg-brand-sky rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-md transition-all duration-200`}
+              className={`animate-on-scroll stagger-${i + 1} group relative bg-white rounded-2xl p-8
+                hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(59,130,246,0.12)]
+                transition-all duration-300 cursor-default overflow-hidden`}
             >
-              <div className="text-5xl mb-4">{t.icon}</div>
-              <h3 className="font-heading text-xl font-bold text-brand-dark mb-3">{t.title}</h3>
-              <p className="text-gray-600 leading-relaxed">{t.text}</p>
+              {/* Акцент-бейдж */}
+              <div className="absolute top-5 right-5 bg-blue-50 text-blue-500 text-xs font-heading font-bold px-3 py-1 rounded-full group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
+                {t.accent}
+              </div>
+
+              <div className="text-5xl mb-5">{t.icon}</div>
+              <h3 className="font-heading text-xl font-bold text-[#1E2A3E] mb-3 leading-snug pr-16">
+                {t.title}
+              </h3>
+              <p className="text-gray-500 text-sm leading-relaxed">{t.text}</p>
+
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500/0 via-blue-500/60 to-blue-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
           ))}
         </div>
