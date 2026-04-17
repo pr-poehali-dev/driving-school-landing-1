@@ -9,10 +9,11 @@ import Pricing from '@/components/sections/Pricing';
 import Reviews from '@/components/sections/Reviews';
 import MapSection from '@/components/sections/MapSection';
 import ContactForm from '@/components/sections/ContactForm';
+import FAQ from '@/components/sections/FAQ';
 import Footer from '@/components/sections/Footer';
 import DrivingCar from '@/components/driving-car/DrivingCar';
 
-const SECTION_IDS = ['hero', 'pain-points', 'instructors', 'triggers', 'advantages', 'pricing', 'reviews', 'map', 'contact-form'];
+const SECTION_IDS = ['hero', 'pain-points', 'instructors', 'triggers', 'advantages', 'pricing', 'reviews', 'map', 'faq', 'contact-form'];
 
 const Index = () => {
   useEffect(() => {
@@ -51,6 +52,7 @@ const Index = () => {
             <Advantages />
             <Pricing />
             <Reviews />
+            <FAQ />
             <MapSection />
             <ContactForm />
           </div>
