@@ -13,16 +13,16 @@ const Hero = () => {
   return (
     <section id="hero" className="relative w-full min-h-screen flex flex-col justify-center overflow-hidden">
 
-      {/* Видеофон */}
+      {/* Фонофон — фото машины */}
       <div className="absolute inset-0">
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          autoPlay muted loop playsInline
-          src="https://assets.mixkit.co/videos/preview/mixkit-driving-on-a-country-road-44261-large.mp4"
+        <img
+          src="https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/bucket/08ec7878-06c6-47ce-a53f-77259c26600a.jpeg"
+          alt="Время рулить — автошкола Севастополь"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        {/* Светлый оверлей — сохраняем лёгкость */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/80 via-[#0f2040]/70 to-[#0a1628]/90" />
-        {/* Тонкая горизонтальная линия — "аэродинамика" */}
+        {/* Оверлей — тёмный слева (для читаемости текста), светлее справа */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628]/90 via-[#0a1628]/60 to-[#0a1628]/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/50 via-transparent to-[#0a1628]/80" />
         <div className="absolute top-0 left-0 right-0 h-px bg-white/10" />
       </div>
 
