@@ -7,10 +7,34 @@ const checkList = [
   'Никаких «левых» пересдач и скрытых доплат',
 ];
 
-const cars = [
-  { name: 'Лада Гранта', type: 'МКПП', emoji: '🚗' },
-  { name: 'Hyundai Solaris', type: 'АКПП / МКПП', emoji: '🚙' },
-  { name: 'Renault Logan', type: 'МКПП', emoji: '🚘' },
+const carsMKPP = [
+  {
+    name: 'LADA VESTA²',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/2018_Lada_Vesta_1.6_%28facelift%2C_blue%29%2C_front_8.21.19.jpg/320px-2018_Lada_Vesta_1.6_%28facelift%2C_blue%29%2C_front_8.21.19.jpg',
+  },
+  {
+    name: 'LADA GRANTA',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Lada_Granta_2019_%28cropped%29.jpg/320px-Lada_Granta_2019_%28cropped%29.jpg',
+  },
+  {
+    name: 'Renault Logan',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Renault_Logan_II_01_China_2014-04-10.jpg/320px-Renault_Logan_II_01_China_2014-04-10.jpg',
+  },
+];
+
+const carsAKPP = [
+  {
+    name: 'KIA CEED',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/2018_Kia_Ceed_1.4_T-GDi_GT-Line_S_%28facelift%2C_blue%29%2C_front_8.4.19.jpg/320px-2018_Kia_Ceed_1.4_T-GDi_GT-Line_S_%28facelift%2C_blue%29%2C_front_8.4.19.jpg',
+  },
+  {
+    name: 'Chevrolet Aveo',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Chevrolet_Aveo_sedan_%282006-2008%29.jpg/320px-Chevrolet_Aveo_sedan_%282006-2008%29.jpg',
+  },
+  {
+    name: 'Hyundai Solaris',
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/2017_Hyundai_Solaris_%28Russia%29_01.jpg/320px-2017_Hyundai_Solaris_%28Russia%29_01.jpg',
+  },
 ];
 
 const Advantages = () => {
@@ -53,29 +77,54 @@ const Advantages = () => {
 
           {/* Автомобили */}
           <div className="lg:col-span-2 animate-on-scroll stagger-2">
-            <p className="font-heading font-bold text-[#1E2A3E] text-lg mb-4 uppercase tracking-wide">
+            <p className="font-heading font-bold text-[#1E2A3E] text-lg mb-6 uppercase tracking-wide">
               Автомобили для обучения
             </p>
-            <div className="space-y-3">
-              {cars.map((car, i) => (
-                <div key={i}
-                  className="group flex items-center gap-4 bg-[#F5F7FA] rounded-xl px-5 py-4 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(59,130,246,0.12)] transition-all duration-250 cursor-default">
-                  <span className="text-3xl">{car.emoji}</span>
-                  <div>
-                    <div className="font-heading font-bold text-[#1E2A3E] text-base">{car.name}</div>
-                    <div className="text-blue-500 text-xs font-medium mt-0.5">{car.type}</div>
+
+            {/* МКПП */}
+            <div className="mb-6">
+              <p className="font-heading font-bold text-[#1E2A3E] text-base mb-1">МКПП</p>
+              <p className="text-gray-400 text-xs mb-4">Механическая коробка передач</p>
+              <div className="flex gap-4 flex-wrap">
+                {carsMKPP.map((car, i) => (
+                  <div key={i} className="flex flex-col items-center gap-2 w-[80px]">
+                    <div className="w-20 h-20 rounded-full bg-[#E8F0FA] overflow-hidden flex items-center justify-center">
+                      <img
+                        src={car.img}
+                        alt={car.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                      />
+                    </div>
+                    <span className="text-[#1E2A3E] font-semibold text-xs text-center leading-tight">{car.name}</span>
                   </div>
-                  <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
-                    <svg viewBox="0 0 20 20" fill="none" stroke="#3b82f6" strokeWidth="1.5" width="18" height="18">
-                      <path d="M7 10h6M10 7l3 3-3 3"/>
-                    </svg>
+                ))}
+              </div>
+            </div>
+
+            {/* АКПП */}
+            <div className="mb-6">
+              <p className="font-heading font-bold text-[#1E2A3E] text-base mb-1">АКПП</p>
+              <p className="text-gray-400 text-xs mb-4">Автоматическая коробка передач</p>
+              <div className="flex gap-4 flex-wrap">
+                {carsAKPP.map((car, i) => (
+                  <div key={i} className="flex flex-col items-center gap-2 w-[80px]">
+                    <div className="w-20 h-20 rounded-full bg-[#E8F0FA] overflow-hidden flex items-center justify-center">
+                      <img
+                        src={car.img}
+                        alt={car.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                      />
+                    </div>
+                    <span className="text-[#1E2A3E] font-semibold text-xs text-center leading-tight">{car.name}</span>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
             {/* Лицензия */}
-            <div className="mt-5 bg-blue-50 border border-blue-100 rounded-xl px-5 py-4">
+            <div className="bg-blue-50 border border-blue-100 rounded-xl px-5 py-4">
               <div className="flex items-center gap-3">
                 <span className="text-2xl">🎓</span>
                 <div>
