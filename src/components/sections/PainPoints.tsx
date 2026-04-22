@@ -1,24 +1,24 @@
 const pains = [
   {
-    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/07bf5536-f106-4f0c-a0c6-a3a485012d3e.jpg',
+    img: 'https://cdn.poehali.dev/files/2254a910-cbe2-40a3-b49f-08ffa9072e54.jpg',
     num: '01',
     title: 'Инструктор орёт и нервничает',
     text: 'У нас такого нет. Наши инструкторы сами выбрали спокойный подход — не орут, а объясняют. Даже если вы впервые сели за руль.',
   },
   {
-    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/07f98e70-d37a-4ce2-999f-151703665b0e.jpg',
+    img: 'https://cdn.poehali.dev/files/98f35bf2-647d-4d1a-9a77-61708bdabfc3.jpg',
     num: '02',
     title: 'Разводят на доплаты',
     text: 'За бензин, за пересдачу, за «особое» авто. В «Время рулить» цена одна — 64 000 ₽ с ГСМ. Ни копейкой больше.',
   },
   {
-    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/da0f3298-5820-4859-879b-3dfb55f844b5.jpg',
+    img: 'https://cdn.poehali.dev/files/3d69c23d-a388-4287-be95-4afc27877e61.jpg',
     num: '03',
     title: 'Автодром на другом конце города',
     text: 'Наш автодром на Стахановцева, 18. Для жителей Балаклавы и Инкермана — 10 минут на машине.',
   },
   {
-    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/507f07ca-148b-49d5-9015-af3f9f3c17f1.jpg',
+    img: 'https://cdn.poehali.dev/files/8ff1414d-95a2-4447-977f-8bae1a1f47a3.png',
     num: '04',
     title: 'Стесняюсь инструктора-мужчины',
     text: 'У нас есть инструктор-женщина. Спокойно, без критики, в вашем темпе. Просто скажите при записи.',
@@ -44,7 +44,7 @@ const PainPoints = () => {
             </h2>
           </div>
           <img
-            src="https://cdn.poehali.dev/files/64d381d9-3aff-47f8-b787-c99612c38c64.png"
+            src="https://cdn.poehali.dev/files/4af8ab18-4ed7-491a-9440-4303da095ec7.jpg"
             alt="Время Рулить"
             className="h-16 w-auto object-contain opacity-20 flex-shrink-0 hidden md:block"
           />

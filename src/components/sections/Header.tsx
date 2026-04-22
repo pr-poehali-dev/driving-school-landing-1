@@ -35,7 +35,7 @@ const Header = () => {
         {/* Логотип */}
         <a href="/" className="flex-shrink-0">
           <img
-            src="https://cdn.poehali.dev/files/64d381d9-3aff-47f8-b787-c99612c38c64.png"
+            src="https://cdn.poehali.dev/files/4af8ab18-4ed7-491a-9440-4303da095ec7.jpg"
             alt="Автошкола Время Рулить"
             className={`h-16 w-auto object-contain transition-all duration-300`}
             style={{ maxWidth: '25vw', minWidth: 160 }}

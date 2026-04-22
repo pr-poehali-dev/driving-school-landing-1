@@ -5,9 +5,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
             <img
-              src="https://cdn.poehali.dev/files/64d381d9-3aff-47f8-b787-c99612c38c64.png"
+              src="https://cdn.poehali.dev/files/4af8ab18-4ed7-491a-9440-4303da095ec7.jpg"
               alt="Автошкола Время Рулить"
-              className="h-12 w-auto object-contain mb-3 brightness-0 invert"
+              className="h-12 w-auto object-contain mb-3"
             />
             <p className="text-gray-400 text-sm">© 2025 ООО «ВРЕМЯ РУЛИТЬ»</p>
           </div>
