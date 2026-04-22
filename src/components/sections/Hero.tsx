@@ -55,7 +55,7 @@ const Hero = () => {
         <div className="flex flex-wrap gap-4 mb-20 animate-on-scroll visible">
           <button
             onClick={scrollToForm}
-            className="bg-blue-500 hover:bg-blue-400 text-white px-8 py-4 font-heading font-bold text-lg tracking-wide transition-all duration-200 hover:scale-105 hover:shadow-[0_0_32px_rgba(59,130,246,0.5)]"
+            className="bg-blue-500 hover:bg-blue-400 text-white px-8 py-4 font-heading font-bold text-lg tracking-wide transition-all duration-200 hover:scale-105 hover:shadow-[0_0_32px_rgba(42,127,255,0.5)]"
             style={{ borderRadius: 4 }}
           >
             НАЧАТЬ ДВИЖЕНИЕ
