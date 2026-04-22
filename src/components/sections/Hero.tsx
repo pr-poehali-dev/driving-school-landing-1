@@ -16,7 +16,7 @@ const Hero = () => {
       {/* Фонофон — фото машины */}
       <div className="absolute inset-0">
         <img
-          src="https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/bucket/08ec7878-06c6-47ce-a53f-77259c26600a.jpeg"
+          src="https://cdn.poehali.dev/files/0c988d32-7078-44aa-a34e-785eef83e869.jpg"
           alt="Время рулить — автошкола Севастополь"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
