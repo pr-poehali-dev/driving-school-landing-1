@@ -1,8 +1,10 @@
+import Icon from '@/components/ui/icon';
+
 const features = [
-  { icon: '⛽', text: 'Бензин включён — ни копейки сверху' },
-  { icon: '🔄', text: 'Рассрочка без банков — первый взнос 15 000 ₽' },
-  { icon: '➕', text: 'Дополнительные часы по желанию' },
-  { icon: '🎖️', text: 'Скидка 5 000 ₽ для участников СВО' },
+  { icon: 'Fuel', text: 'Бензин включён — ни копейки сверху' },
+  { icon: 'RefreshCw', text: 'Рассрочка без банков — первый взнос 15 000 ₽' },
+  { icon: 'Plus', text: 'Дополнительные часы по желанию' },
+  { icon: 'Medal', text: 'Скидка 5 000 ₽ для участников СВО' },
 ];
 
 const Pricing = () => {
@@ -11,11 +13,11 @@ const Pricing = () => {
   };
 
   return (
-    <section id="pricing" className="py-28 bg-[#F5F7FA]">
+    <section id="pricing" className="py-16 bg-[#F5F7FA]">
       <div className="max-w-5xl mx-auto px-4">
 
         {/* Заголовок */}
-        <div className="animate-on-scroll mb-16 text-center">
+        <div className="animate-on-scroll mb-12 text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-8 h-px bg-blue-500" />
             <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Стоимость</span>
@@ -63,7 +65,9 @@ const Pricing = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                 {features.map((f, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <span className="text-xl flex-shrink-0 mt-0.5">{f.icon}</span>
+                    <span className="flex-shrink-0 mt-0.5 text-blue-500">
+                      <Icon name={f.icon} size={20} />
+                    </span>
                     <span className="text-gray-600 text-sm leading-snug">{f.text}</span>
                   </div>
                 ))}

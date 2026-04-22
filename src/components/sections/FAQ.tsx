@@ -26,7 +26,7 @@ const FAQ = ({ registerOpen }: FAQProps) => {
   }, [registerOpen]);
 
   return (
-    <section id="faq" className="py-28 bg-white">
+    <section id="faq" className="py-16 bg-white">
       <div className="max-w-3xl mx-auto px-4">
 
         {/* Заголовок */}

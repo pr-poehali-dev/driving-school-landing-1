@@ -6,12 +6,14 @@ import Instructors from '@/components/sections/Instructors';
 import Triggers from '@/components/sections/Triggers';
 import Advantages from '@/components/sections/Advantages';
 import Pricing from '@/components/sections/Pricing';
+import PriceComparison from '@/components/sections/PriceComparison';
 import Reviews from '@/components/sections/Reviews';
 import MapSection from '@/components/sections/MapSection';
 import ContactForm from '@/components/sections/ContactForm';
 import FAQ from '@/components/sections/FAQ';
 import Footer from '@/components/sections/Footer';
 import DrivingCar from '@/components/driving-car/DrivingCar';
+import ExitIntentPopup from '@/components/ExitIntentPopup';
 
 const SECTION_IDS = ['hero', 'pain-points', 'instructors', 'triggers', 'advantages', 'pricing', 'reviews', 'map', 'faq', 'contact-form'];
 
@@ -61,6 +63,7 @@ const Index = () => {
             <Triggers />
             <Advantages />
             <Pricing />
+            <PriceComparison />
             <Reviews />
             <FAQ registerOpen={(fn) => { faqOpenRef.current = fn; }} />
             <MapSection />
@@ -70,6 +73,7 @@ const Index = () => {
       </main>
 
       <Footer />
+      <ExitIntentPopup />
     </div>
   );
 };

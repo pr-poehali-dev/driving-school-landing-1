@@ -37,7 +37,8 @@ const Header = () => {
           <img
             src="https://cdn.poehali.dev/files/64d381d9-3aff-47f8-b787-c99612c38c64.png"
             alt="Автошкола Время Рулить"
-            className={`h-14 w-auto object-contain transition-all duration-300 ${scrolled ? '' : 'brightness-0 invert'}`}
+            className={`h-16 w-auto object-contain transition-all duration-300`}
+            style={{ maxWidth: '25vw', minWidth: 160 }}
           />
         </a>
 

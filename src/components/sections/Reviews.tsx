@@ -31,11 +31,11 @@ const Stars = ({ count }: { count: number }) => (
 
 const Reviews = () => {
   return (
-    <section id="reviews" className="py-28 bg-white">
+    <section id="reviews" className="py-16 bg-white">
       <div className="max-w-5xl mx-auto px-4">
 
         {/* Заголовок */}
-        <div className="animate-on-scroll mb-16">
+        <div className="animate-on-scroll mb-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-8 h-px bg-blue-500" />
             <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Отзывы</span>
