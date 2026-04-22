@@ -59,7 +59,7 @@ const ExitIntentPopup = () => {
           Уходишь?
         </h3>
         <p className="text-gray-500 leading-relaxed mb-6">
-          В других школах ты переплатишь <strong className="text-red-500">20 000 ₽</strong> за бензин и пересдачи.
+          В других школах ты <strong className="text-red-500">переплатишь</strong> за бензин и пересдачи.
           Останься — узнай реальные цены.
         </p>
 
