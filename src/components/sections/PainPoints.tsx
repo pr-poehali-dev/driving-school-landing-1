@@ -36,7 +36,7 @@ const PainPoints = () => {
             <div className="w-8 h-px bg-blue-500" />
             <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Почему мы</span>
           </div>
-          <h2 className="font-heading font-bold text-[#1E2A3E] leading-tight"
+          <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
             style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
             Почему в других школах<br />
             <span className="text-blue-500">теряют время и деньги</span>
@@ -58,7 +58,7 @@ const PainPoints = () => {
               </span>
 
               <div className="text-4xl mb-4">{pain.icon}</div>
-              <h3 className="font-heading text-xl font-bold text-[#1E2A3E] mb-3 leading-snug">
+              <h3 className="font-heading text-xl font-bold text-[#1A2A3A] mb-3 leading-snug">
                 {pain.title}
               </h3>
               <p className="text-gray-500 leading-relaxed text-[0.95rem]">{pain.text}</p>
@@ -72,7 +72,7 @@ const PainPoints = () => {
         {/* Вывод */}
         <div className="animate-on-scroll mt-12">
           <div className="border-l-4 border-blue-500 pl-6 py-2">
-            <p className="font-heading text-xl font-bold text-[#1E2A3E] leading-snug">
+            <p className="font-heading text-xl font-bold text-[#1A2A3A] leading-snug">
               Мы работали в других школах и знаем все эти проблемы изнутри.
               <span className="text-blue-500"> Поэтому в нашей школе их нет.</span>
             </p>

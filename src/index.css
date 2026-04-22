@@ -6,33 +6,33 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
+    --background: 215 33% 98%;
+    --foreground: 210 47% 17%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 210 47% 17%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 210 47% 17%;
 
-    --primary: 217 91% 60%;
+    --primary: 215 100% 58%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 213 27% 84%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 210 27% 84%;
+    --secondary-foreground: 210 47% 17%;
 
-    --muted: 214 32% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 210 20% 46%;
 
-    --accent: 214 32% 96%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 210 100% 95%;
+    --accent-foreground: 210 47% 17%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 217 91% 60%;
+    --border: 210 32% 90%;
+    --input: 210 32% 90%;
+    --ring: 215 100% 58%;
 
     --radius: 0.75rem;
   }
@@ -116,19 +116,19 @@
   }
 
   .text-brand-blue {
-    color: #3b82f6;
+    color: #2a7fff;
   }
   .text-brand-dark {
-    color: #1e2a3e;
+    color: #1a2a3a;
   }
   .bg-brand-blue {
-    background-color: #3b82f6;
+    background-color: #2a7fff;
   }
   .bg-brand-dark {
-    background-color: #1e2a3e;
+    background-color: #1a2a3a;
   }
   .bg-brand-sky {
-    background-color: #e6f0fa;
+    background-color: #e6f4ff;
   }
 }
 

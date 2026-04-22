@@ -30,7 +30,7 @@ const Triggers = () => {
             <div className="w-8 h-px bg-blue-500" />
             <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Персональный подход</span>
           </div>
-          <h2 className="font-heading font-bold text-[#1E2A3E] leading-tight"
+          <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
             style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
             Мы подстроимся<br />
             <span className="text-blue-500">под вас</span>
@@ -51,7 +51,7 @@ const Triggers = () => {
               </div>
 
               <div className="text-5xl mb-5">{t.icon}</div>
-              <h3 className="font-heading text-xl font-bold text-[#1E2A3E] mb-3 leading-snug pr-16">
+              <h3 className="font-heading text-xl font-bold text-[#1A2A3A] mb-3 leading-snug pr-16">
                 {t.title}
               </h3>
               <p className="text-gray-500 text-sm leading-relaxed">{t.text}</p>

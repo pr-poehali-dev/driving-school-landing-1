@@ -61,7 +61,7 @@ const Header = () => {
           <a
             href="tel:+79785021113"
             className={`font-heading font-bold text-base transition-colors duration-200 hover:text-blue-400 flex items-center gap-2 ${
-              scrolled ? 'text-[#1E2A3E]' : 'text-white'
+              scrolled ? 'text-[#1A2A3A]' : 'text-white'
             }`}
           >
             <Icon name="Phone" size={16} className="text-blue-500" />
@@ -78,7 +78,7 @@ const Header = () => {
 
         {/* Бургер */}
         <button
-          className={`lg:hidden p-1.5 ${scrolled ? 'text-[#1E2A3E]' : 'text-white'}`}
+          className={`lg:hidden p-1.5 ${scrolled ? 'text-[#1A2A3A]' : 'text-white'}`}
           onClick={() => setMenuOpen(!menuOpen)}
         >
           <Icon name={menuOpen ? 'X' : 'Menu'} size={22} />
@@ -98,7 +98,7 @@ const Header = () => {
             </button>
           ))}
           <hr className="border-gray-100" />
-          <a href="tel:+79785021113" className="flex items-center gap-2 font-heading font-bold text-[#1E2A3E]">
+          <a href="tel:+79785021113" className="flex items-center gap-2 font-heading font-bold text-[#1A2A3A]">
             <Icon name="Phone" size={16} className="text-blue-500" />
             +7 978 502 11 13
           </a>

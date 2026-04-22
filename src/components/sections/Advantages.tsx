@@ -48,7 +48,7 @@ const Advantages = () => {
             <div className="w-8 h-px bg-blue-500" />
             <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Что вы получаете</span>
           </div>
-          <h2 className="font-heading font-bold text-[#1E2A3E] leading-tight"
+          <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
             style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
             Всё, что нужно,<br />
             <span className="text-blue-500">уже включено в цену</span>
@@ -68,7 +68,7 @@ const Advantages = () => {
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
                     </span>
-                    <span className="text-[#1E2A3E] font-medium leading-snug">{item}</span>
+                    <span className="text-[#1A2A3A] font-medium leading-snug">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -77,18 +77,18 @@ const Advantages = () => {
 
           {/* Автомобили */}
           <div className="lg:col-span-2 animate-on-scroll stagger-2">
-            <p className="font-heading font-bold text-[#1E2A3E] text-lg mb-6 uppercase tracking-wide">
+            <p className="font-heading font-bold text-[#1A2A3A] text-lg mb-6 uppercase tracking-wide">
               Автомобили для обучения
             </p>
 
             {/* МКПП */}
             <div className="mb-6">
-              <p className="font-heading font-bold text-[#1E2A3E] text-base mb-1">МКПП</p>
+              <p className="font-heading font-bold text-[#1A2A3A] text-base mb-1">МКПП</p>
               <p className="text-gray-400 text-xs mb-4">Механическая коробка передач</p>
               <div className="flex gap-4 flex-wrap">
                 {carsMKPP.map((car, i) => (
                   <div key={i} className="flex flex-col items-center gap-2 w-[80px]">
-                    <div className="w-20 h-20 rounded-full bg-[#E8F0FA] overflow-hidden flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-full bg-[#E6F4FF] overflow-hidden flex items-center justify-center">
                       <img
                         src={car.img}
                         alt={car.name}
@@ -96,7 +96,7 @@ const Advantages = () => {
                         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                       />
                     </div>
-                    <span className="text-[#1E2A3E] font-semibold text-xs text-center leading-tight">{car.name}</span>
+                    <span className="text-[#1A2A3A] font-semibold text-xs text-center leading-tight">{car.name}</span>
                   </div>
                 ))}
               </div>
@@ -104,12 +104,12 @@ const Advantages = () => {
 
             {/* АКПП */}
             <div className="mb-6">
-              <p className="font-heading font-bold text-[#1E2A3E] text-base mb-1">АКПП</p>
+              <p className="font-heading font-bold text-[#1A2A3A] text-base mb-1">АКПП</p>
               <p className="text-gray-400 text-xs mb-4">Автоматическая коробка передач</p>
               <div className="flex gap-4 flex-wrap">
                 {carsAKPP.map((car, i) => (
                   <div key={i} className="flex flex-col items-center gap-2 w-[80px]">
-                    <div className="w-20 h-20 rounded-full bg-[#E8F0FA] overflow-hidden flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-full bg-[#E6F4FF] overflow-hidden flex items-center justify-center">
                       <img
                         src={car.img}
                         alt={car.name}
@@ -117,7 +117,7 @@ const Advantages = () => {
                         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                       />
                     </div>
-                    <span className="text-[#1E2A3E] font-semibold text-xs text-center leading-tight">{car.name}</span>
+                    <span className="text-[#1A2A3A] font-semibold text-xs text-center leading-tight">{car.name}</span>
                   </div>
                 ))}
               </div>
@@ -128,7 +128,7 @@ const Advantages = () => {
               <div className="flex items-center gap-3">
                 <span className="text-2xl">🎓</span>
                 <div>
-                  <div className="font-heading font-bold text-[#1E2A3E] text-sm">Лицензия ГИБДД</div>
+                  <div className="font-heading font-bold text-[#1A2A3A] text-sm">Лицензия ГИБДД</div>
                   <div className="text-gray-500 text-xs mt-0.5">Официальная автошкола</div>
                 </div>
               </div>

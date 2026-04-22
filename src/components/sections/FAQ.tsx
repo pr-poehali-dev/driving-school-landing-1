@@ -35,7 +35,7 @@ const FAQ = ({ registerOpen }: FAQProps) => {
             <div className="w-8 h-px bg-blue-500" />
             <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">FAQ</span>
           </div>
-          <h2 className="font-heading font-bold text-[#1E2A3E] leading-tight"
+          <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
             style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
             Часто задаваемые<br />
             <span className="text-blue-500">вопросы</span>
@@ -65,7 +65,7 @@ const FAQ = ({ registerOpen }: FAQProps) => {
                 >
                   <div className="flex items-center gap-3">
                     <span className={`font-heading font-bold text-lg flex-shrink-0 transition-colors ${isOpen ? 'text-blue-500' : 'text-gray-300'}`}>?</span>
-                    <span className={`font-heading font-bold text-base transition-colors ${isOpen ? 'text-blue-600' : 'text-[#1E2A3E] group-hover:text-blue-500'}`}>
+                    <span className={`font-heading font-bold text-base transition-colors ${isOpen ? 'text-blue-600' : 'text-[#1A2A3A] group-hover:text-blue-500'}`}>
                       {faq.q}
                     </span>
                   </div>

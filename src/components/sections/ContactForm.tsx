@@ -123,7 +123,7 @@ const ContactForm = () => {
             />
           </div>
 
-          <div className="mb-5 flex items-start gap-3 bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+          <div className="mb-5 flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-xl p-4">
             <input
               type="checkbox"
               id="svo"

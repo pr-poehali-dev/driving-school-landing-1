@@ -24,10 +24,10 @@ export default {
 		extend: {
 			colors: {
 				brand: {
-					blue: '#3B82F6',
-					'blue-light': '#5A9BFF',
-					'blue-dark': '#1E2A3E',
-					'sky': '#E6F0FA',
+					blue: '#2A7FFF',
+					'blue-light': '#4DA8FF',
+					'blue-dark': '#1A2A3A',
+					'sky': '#E6F4FF',
 				},
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',

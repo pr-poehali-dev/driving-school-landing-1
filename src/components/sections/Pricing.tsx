@@ -21,7 +21,7 @@ const Pricing = () => {
             <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Стоимость</span>
             <div className="w-8 h-px bg-blue-500" />
           </div>
-          <h2 className="font-heading font-bold text-[#1E2A3E] leading-tight"
+          <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
             style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
             Одна цена —<br />
             <span className="text-blue-500">никаких сюрпризов</span>
