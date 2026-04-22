@@ -28,16 +28,16 @@ const Header = () => {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       scrolled
         ? 'bg-white/95 backdrop-blur-md shadow-[0_1px_20px_rgba(0,0,0,0.08)] border-b border-gray-100'
-        : 'bg-transparent'
+        : 'bg-[#0a1628]/60 backdrop-blur-sm'
     }`}>
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
 
         {/* Логотип */}
         <a href="/" className="flex-shrink-0">
           <img
             src="https://cdn.poehali.dev/files/64d381d9-3aff-47f8-b787-c99612c38c64.png"
             alt="Автошкола Время Рулить"
-            className={`h-10 w-auto object-contain transition-all duration-300 ${scrolled ? '' : 'brightness-0 invert'}`}
+            className={`h-14 w-auto object-contain transition-all duration-300 ${scrolled ? '' : 'brightness-0 invert'}`}
           />
         </a>
 
@@ -47,8 +47,8 @@ const Header = () => {
             <button
               key={n.id}
               onClick={() => scrollTo(n.id)}
-              className={`font-body text-sm font-medium transition-colors duration-200 hover:text-blue-500 ${
-                scrolled ? 'text-gray-600' : 'text-white/80'
+              className={`font-body text-sm font-medium transition-colors duration-200 hover:text-blue-400 ${
+                scrolled ? 'text-gray-600' : 'text-white'
               }`}
             >
               {n.label}
@@ -61,7 +61,7 @@ const Header = () => {
           <a
             href="tel:+79785021113"
             className={`font-heading font-bold text-base transition-colors duration-200 hover:text-blue-400 flex items-center gap-2 ${
-              scrolled ? 'text-[#1A2A3A]' : 'text-white'
+              scrolled ? 'text-[#1A2A3A]' : 'text-white hidden lg:flex'
             }`}
           >
             <Icon name="Phone" size={16} className="text-blue-500" />
@@ -78,7 +78,7 @@ const Header = () => {
 
         {/* Бургер */}
         <button
-          className={`lg:hidden p-1.5 ${scrolled ? 'text-[#1A2A3A]' : 'text-white'}`}
+          className={`lg:hidden p-1.5 ${scrolled ? 'text-[#1A2A3A]' : 'text-white'} `}
           onClick={() => setMenuOpen(!menuOpen)}
         >
           <Icon name={menuOpen ? 'X' : 'Menu'} size={22} />

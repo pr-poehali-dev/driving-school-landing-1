@@ -31,16 +31,23 @@ const PainPoints = () => {
       <div className="max-w-5xl mx-auto px-4">
 
         {/* Заголовок секции */}
-        <div className="animate-on-scroll mb-16">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-px bg-blue-500" />
-            <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Почему мы</span>
+        <div className="animate-on-scroll mb-16 flex items-start justify-between gap-6">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-px bg-blue-500" />
+              <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Почему мы</span>
+            </div>
+            <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
+              style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
+              Почему в других школах<br />
+              <span className="text-blue-500">теряют время и деньги</span>
+            </h2>
           </div>
-          <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
-            Почему в других школах<br />
-            <span className="text-blue-500">теряют время и деньги</span>
-          </h2>
+          <img
+            src="https://cdn.poehali.dev/files/64d381d9-3aff-47f8-b787-c99612c38c64.png"
+            alt="Время Рулить"
+            className="h-16 w-auto object-contain opacity-20 flex-shrink-0 hidden md:block"
+          />
         </div>
 
         {/* Карточки */}

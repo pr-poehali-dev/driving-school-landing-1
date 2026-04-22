@@ -33,7 +33,7 @@ const Hero = () => {
         <div className="flex items-center gap-3 mb-6 animate-on-scroll visible">
           <div className="w-8 h-px bg-blue-400" />
           <span className="text-blue-300 font-body text-sm uppercase tracking-[0.2em] font-medium">
-            Севастополь · ООО «Время рулить»
+            Севастополь · ул. Хрусталева, 177А
           </span>
         </div>
 
@@ -42,13 +42,14 @@ const Hero = () => {
           style={{ fontSize: 'clamp(2.8rem, 7vw, 6rem)' }}>
           АВТОШКОЛА,<br />
           <span className="text-blue-400">КОТОРУЮ СОЗДАЛИ</span><br />
-          ИНСТРУКТОРЫ
+          ИНСТРУКТОРЫ,<br />
+          <span className="text-blue-300" style={{ fontSize: 'clamp(1.6rem, 4vw, 3.2rem)' }}>А НЕ МАРКЕТОЛОГИ</span>
         </h1>
 
         {/* Подзаголовок */}
         <p className="text-gray-300 text-lg md:text-xl leading-relaxed max-w-xl mb-10 animate-on-scroll visible font-body">
-          Мы сами сидим за рулём. Нам надоело, как учат в других школах —
-          и мы открыли свою. Без скрытых доплат, без криков, без «левых» пересдач.
+          Хватит покупать обещания. Мы учим только тому, что работает.
+          Выбирайте опыт, а не обещания.
         </p>
 
         {/* CTA */}
