@@ -43,6 +43,15 @@ const Header = () => {
           />
         </a>
 
+        {/* Телефон на мобильном — между логотипом и бургером */}
+        <a
+          href="tel:+79785021113"
+          className="lg:hidden font-heading font-bold text-[#1A2A3A] text-sm flex items-center gap-1.5 hover:text-blue-500 transition-colors"
+        >
+          <Icon name="Phone" size={14} className="text-blue-500" />
+          +7 978 502 11 13
+        </a>
+
         {/* Навигация */}
         <nav className="hidden lg:flex items-center gap-7">
           {NAV.map(n => (

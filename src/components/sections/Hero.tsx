@@ -15,12 +15,12 @@ const Hero = () => {
         />
         {/* Градиент: на десктопе слева, на мобильном снизу */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628]/85 via-[#0a1628]/40 to-transparent hidden md:block" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/95 via-[#0a1628]/60 to-transparent md:hidden" />
-        <div className="absolute inset-0 bg-[#0a1628]/20 md:hidden" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/80 via-[#0a1628]/30 to-transparent md:hidden" />
+        <div className="absolute inset-0 bg-[#0a1628]/15 md:hidden" />
 
-        {/* Заголовок — на десктопе поверх слева, на мобильном снизу */}
-        <div className="absolute inset-0 flex md:items-center items-end">
-          <div className="px-5 md:px-10 pb-5 md:pb-0" style={{ maxWidth: '100%' }}>
+        {/* Заголовок — на десктопе поверх слева, на мобильном сверху */}
+        <div className="absolute inset-0 flex md:items-center items-start">
+          <div className="px-5 md:px-10 pt-5 md:pt-0" style={{ maxWidth: '100%' }}>
             <h1 className="font-heading font-bold text-white leading-[1]"
               style={{ fontSize: 'clamp(1.6rem, 5vw, 5rem)' }}>
               АВТОШКОЛА,<br />
