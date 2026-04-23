@@ -1,6 +1,6 @@
 const triggers = [
   {
-    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/1e9ec107-970b-4b80-8a5c-acaa850ac195.jpg',
+    img: 'https://cdn.poehali.dev/files/7c7fed0d-f42b-46cf-8fa2-beb2d665c0ca.jpg',
     title: 'Инструктор-женщина',
     text: 'Стесняетесь ошибаться при мужчине? Просто скажите при записи — мы подберём инструктора. Спокойно, в вашем темпе, без критики.',
     accent: 'По запросу',
@@ -12,7 +12,7 @@ const triggers = [
     accent: '10 минут',
   },
   {
-    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/e8a64bd9-2d36-4836-bf73-746a3c8a3da9.jpg',
+    img: 'https://cdn.poehali.dev/files/55659d71-f0a8-4683-a52d-5154aff83245.jpg',
     title: 'Скидка для участников СВО',
     text: 'Спасибо за службу. Поставьте галочку в форме записи — скидка 5 000 ₽ применится автоматически.',
     accent: '-5 000 ₽',
