@@ -62,6 +62,25 @@ const Advantages = () => {
           />
         </div>
 
+        {/* Метрики */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-blue-100 rounded-2xl overflow-hidden mb-10 animate-on-scroll">
+          {[
+            { value: '58', unit: 'часов', desc: 'практики с ГСМ' },
+            { value: '5', unit: 'инструкторов', desc: 'сооснователей' },
+            { value: '64 000', unit: '₽', desc: 'полный курс, всё включено' },
+            { value: '10', unit: 'минут', desc: 'до нашего автодрома' },
+          ].map((m, i) => (
+            <div key={i} className="bg-white px-6 py-5 hover:bg-blue-50 transition-colors duration-200 group">
+              <div className="flex items-baseline gap-1.5 mb-1">
+                <span className="font-heading font-bold text-[#1A2A3A] group-hover:text-blue-600 transition-colors"
+                  style={{ fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)' }}>{m.value}</span>
+                <span className="text-blue-500 font-heading font-semibold text-base">{m.unit}</span>
+              </div>
+              <p className="text-gray-500 text-xs font-body leading-tight">{m.desc}</p>
+            </div>
+          ))}
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
 
           {/* Список преимуществ — 3 колонки */}
