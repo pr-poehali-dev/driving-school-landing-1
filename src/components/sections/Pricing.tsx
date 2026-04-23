@@ -1,5 +1,14 @@
 import Icon from '@/components/ui/icon';
 
+const LOGO_URL = 'https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png';
+
+const WATERMARKS = [
+  { top: '8%',  left: '5%'  }, { top: '8%',  left: '30%' }, { top: '8%',  left: '55%' }, { top: '8%',  left: '80%' },
+  { top: '35%', left: '17%' }, { top: '35%', left: '42%' }, { top: '35%', left: '67%' }, { top: '35%', left: '92%' },
+  { top: '62%', left: '5%'  }, { top: '62%', left: '30%' }, { top: '62%', left: '55%' }, { top: '62%', left: '80%' },
+  { top: '88%', left: '17%' }, { top: '88%', left: '42%' }, { top: '88%', left: '67%' }, { top: '88%', left: '92%' },
+];
+
 const features = [
   { icon: 'Fuel', text: 'Бензин включён — ни копейки сверху' },
   { icon: 'RefreshCw', text: 'Рассрочка без банков — первый взнос 15 000 ₽' },
@@ -13,8 +22,21 @@ const Pricing = () => {
   };
 
   return (
-    <section id="pricing" className="py-16 bg-[#F5F7FA]">
-      <div className="max-w-5xl mx-auto px-4">
+    <section id="pricing" className="py-16 bg-white relative overflow-hidden">
+
+      {/* Водяные знаки — логотипы */}
+      {WATERMARKS.map((pos, i) => (
+        <img
+          key={i}
+          src={LOGO_URL}
+          alt=""
+          aria-hidden="true"
+          className="absolute pointer-events-none select-none"
+          style={{ top: pos.top, left: pos.left, width: 90, opacity: 0.06, transform: 'translate(-50%, -50%)' }}
+        />
+      ))}
+
+      <div className="max-w-5xl mx-auto px-4 relative z-10">
 
         {/* Заголовок */}
         <div className="animate-on-scroll mb-12 text-center">
