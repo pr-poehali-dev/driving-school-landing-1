@@ -20,7 +20,8 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    document.documentElement.style.setProperty('--header-height', scrolled ? '80px' : '160px');
+    const isMobile = window.innerWidth < 768;
+    document.documentElement.style.setProperty('--header-height', scrolled ? (isMobile ? '64px' : '80px') : (isMobile ? '80px' : '160px'));
   }, [scrolled]);
 
   const scrollTo = (id: string) => {
@@ -30,15 +31,15 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-[0_1px_16px_rgba(0,0,0,0.10)] border-b border-gray-100 transition-all duration-300">
-      <div className={`w-full px-6 flex items-center justify-between transition-all duration-300 ${scrolled ? 'h-20' : 'h-40'}`}>
+      <div className={`w-full px-6 flex items-center justify-between transition-all duration-300 ${scrolled ? 'h-16 md:h-20' : 'h-20 md:h-40'}`}>
 
         {/* Логотип */}
         <a href="/" className="flex-shrink-0">
           <img
             src="https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png"
             alt="Автошкола Время Рулить"
-            className={`w-auto object-contain transition-all duration-300 ${scrolled ? 'h-14' : 'h-36'}`}
-            style={{ maxWidth: scrolled ? '180px' : '380px' }}
+            className={`w-auto object-contain transition-all duration-300 ${scrolled ? 'h-10 md:h-14' : 'h-14 md:h-36'}`}
+            style={{ maxWidth: scrolled ? '160px' : '220px' }}
           />
         </a>
 
