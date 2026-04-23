@@ -29,14 +29,10 @@ const Header = () => {
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled
-        ? 'bg-white/95 backdrop-blur-md shadow-[0_1px_20px_rgba(0,0,0,0.08)] border-b border-gray-100'
-        : 'bg-[#0a1628]/70 backdrop-blur-sm'
-    }`}>
-      <div className={`max-w-6xl mx-auto px-6 flex items-center justify-between transition-all duration-300 ${scrolled ? 'h-20' : 'h-28'}`}>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-[0_1px_16px_rgba(0,0,0,0.10)] border-b border-gray-100 transition-all duration-300">
+      <div className={`w-full px-6 flex items-center justify-between transition-all duration-300 ${scrolled ? 'h-20' : 'h-28'}`}>
 
-        {/* Логотип — большой */}
+        {/* Логотип */}
         <a href="/" className="flex-shrink-0">
           <img
             src="https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png"
@@ -52,9 +48,7 @@ const Header = () => {
             <button
               key={n.id}
               onClick={() => scrollTo(n.id)}
-              className={`font-body text-sm font-medium transition-colors duration-200 hover:text-blue-400 ${
-                scrolled ? 'text-gray-600' : 'text-white'
-              }`}
+              className="font-body text-sm font-medium text-gray-600 transition-colors duration-200 hover:text-blue-500"
             >
               {n.label}
             </button>
@@ -62,20 +56,15 @@ const Header = () => {
         </nav>
 
         {/* Адрес + телефон + CTA */}
-        <div className="hidden md:flex items-end gap-5">
+        <div className="hidden md:flex items-center gap-5">
           <div className="flex flex-col items-end gap-1">
-            {/* Адрес над телефоном */}
-            {!scrolled && (
-              <span className="text-blue-300 text-xs font-body flex items-center gap-1.5">
-                <Icon name="MapPin" size={12} className="text-blue-400" />
-                Севастополь · ул. Хрусталева, 177А
-              </span>
-            )}
+            <span className="text-blue-500 text-xs font-body flex items-center gap-1.5">
+              <Icon name="MapPin" size={12} className="text-blue-400" />
+              Севастополь · ул. Хрусталева, 177А
+            </span>
             <a
               href="tel:+79785021113"
-              className={`font-heading font-bold text-base transition-colors duration-200 hover:text-blue-400 flex items-center gap-2 ${
-                scrolled ? 'text-[#1A2A3A]' : 'text-white'
-              }`}
+              className="font-heading font-bold text-base text-[#1A2A3A] transition-colors duration-200 hover:text-blue-500 flex items-center gap-2"
             >
               <Icon name="Phone" size={16} className="text-blue-500" />
               +7 978 502 11 13
@@ -92,7 +81,7 @@ const Header = () => {
 
         {/* Бургер */}
         <button
-          className={`lg:hidden p-1.5 ${scrolled ? 'text-[#1A2A3A]' : 'text-white'}`}
+          className="lg:hidden p-1.5 text-[#1A2A3A]"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           <Icon name={menuOpen ? 'X' : 'Menu'} size={22} />
