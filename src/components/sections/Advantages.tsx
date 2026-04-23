@@ -10,30 +10,30 @@ const checkList = [
 const carsMKPP = [
   {
     name: 'LADA VESTA²',
-    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/2018_Lada_Vesta_1.6_%28facelift%2C_blue%29%2C_front_8.21.19.jpg/320px-2018_Lada_Vesta_1.6_%28facelift%2C_blue%29%2C_front_8.21.19.jpg',
+    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/116e8640-51ae-4802-8907-e93b4d70cba4.jpg',
   },
   {
     name: 'LADA GRANTA',
-    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Lada_Granta_2019_%28cropped%29.jpg/320px-Lada_Granta_2019_%28cropped%29.jpg',
+    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/1e0d12e5-aaf8-444c-87d7-c96f3aea4fc3.jpg',
   },
   {
     name: 'Renault Logan',
-    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Renault_Logan_II_01_China_2014-04-10.jpg/320px-Renault_Logan_II_01_China_2014-04-10.jpg',
+    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/63055ac1-7b33-40d9-9ab9-d076ac2e396f.jpg',
   },
 ];
 
 const carsAKPP = [
   {
     name: 'KIA CEED',
-    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/2018_Kia_Ceed_1.4_T-GDi_GT-Line_S_%28facelift%2C_blue%29%2C_front_8.4.19.jpg/320px-2018_Kia_Ceed_1.4_T-GDi_GT-Line_S_%28facelift%2C_blue%29%2C_front_8.4.19.jpg',
+    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/ae817658-f736-4e06-bf94-3ef1a79e03fb.jpg',
   },
   {
     name: 'Chevrolet Aveo',
-    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Chevrolet_Aveo_sedan_%282006-2008%29.jpg/320px-Chevrolet_Aveo_sedan_%282006-2008%29.jpg',
+    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/25492f91-f4d4-41e1-b1d8-f22cfd5daabc.jpg',
   },
   {
     name: 'Hyundai Solaris',
-    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/2017_Hyundai_Solaris_%28Russia%29_01.jpg/320px-2017_Hyundai_Solaris_%28Russia%29_01.jpg',
+    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/8c78e4fc-e0d5-40ed-a11e-02cba5f866f8.jpg',
   },
 ];
 
