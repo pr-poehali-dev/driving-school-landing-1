@@ -17,11 +17,11 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/40 to-transparent" />
 
         {/* Заголовок поверх баннера — левая треть, увеличен в 2 раза */}
-        <div className="absolute inset-0 flex items-center" style={{ maxWidth: '45%', minWidth: 300, padding: '0 2.5rem' }}>
+        <div className="absolute inset-0 flex items-center" style={{ maxWidth: '50%', minWidth: 320, padding: '0 2.5rem' }}>
           <h1 className="font-heading font-bold text-white leading-[0.95]"
             style={{ fontSize: 'clamp(2.4rem, 5vw, 5rem)' }}>
             АВТОШКОЛА,<br />
-            <span className="text-blue-400">КОТОРУЮ СОЗДАЛИ</span><br />
+            <span className="text-blue-400 whitespace-nowrap">КОТОРУЮ СОЗДАЛИ</span><br />
             ИНСТРУКТОРЫ,<br />
             <span className="text-blue-300" style={{ fontSize: 'clamp(1.6rem, 3.2vw, 3.2rem)' }}>А НЕ МАРКЕТОЛОГИ</span>
           </h1>
@@ -30,8 +30,9 @@ const Hero = () => {
 
       {/* Подзаголовок и кнопка — под баннером, кнопка справа */}
       <div className="px-6 md:px-12 py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <p className="text-gray-300 leading-relaxed font-body max-w-xl" style={{ fontSize: 'clamp(0.9rem, 1.2vw, 1.05rem)' }}>
-          Хватит покупать обещания. Мы учим только тому, что работает. Выбирайте опыт, а не слова.
+        <p className="text-gray-300 leading-relaxed max-w-xl" style={{ fontSize: 'clamp(0.95rem, 1.3vw, 1.1rem)', fontFamily: "'Oswald', sans-serif", fontWeight: 400, letterSpacing: '0.02em' }}>
+          Хватит покупать обещания. Мы учим только тому, что работает.<br />
+          <span className="text-blue-300">Выбирайте опыт, а не слова.</span>
         </p>
         <button
           onClick={scrollToForm}
