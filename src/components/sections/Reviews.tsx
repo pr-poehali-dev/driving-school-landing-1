@@ -35,16 +35,24 @@ const Reviews = () => {
       <div className="max-w-5xl mx-auto px-4">
 
         {/* Заголовок */}
-        <div className="animate-on-scroll mb-12">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-px bg-blue-500" />
-            <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Отзывы</span>
+        <div className="animate-on-scroll mb-12 flex items-center justify-between gap-6">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-px bg-blue-500" />
+              <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Отзывы</span>
+            </div>
+            <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
+              style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
+              Что говорят<br />
+              <span className="text-blue-500">наши ученики</span>
+            </h2>
           </div>
-          <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
-            Что говорят<br />
-            <span className="text-blue-500">наши ученики</span>
-          </h2>
+          <img
+            src="https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png"
+            alt="Время Рулить"
+            className="h-20 w-auto object-contain flex-shrink-0 hidden md:block"
+            style={{ opacity: 0.85 }}
+          />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

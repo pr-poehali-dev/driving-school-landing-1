@@ -32,7 +32,7 @@ const Pricing = () => {
           alt=""
           aria-hidden="true"
           className="absolute pointer-events-none select-none"
-          style={{ top: pos.top, left: pos.left, width: 90, opacity: 0.06, transform: 'translate(-50%, -50%)' }}
+          style={{ top: pos.top, left: pos.left, width: 90, opacity: 0.08, transform: 'translate(-50%, -50%)' }}
         />
       ))}
 

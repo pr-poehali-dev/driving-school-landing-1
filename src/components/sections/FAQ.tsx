@@ -18,12 +18,18 @@ interface FAQProps {
 const FAQ = ({ registerOpen }: FAQProps) => {
   const [open, setOpen] = useState<number | null>(null);
 
-  // Регистрируем функцию открытия — её вызывает машинка при клике на ❓
   useEffect(() => {
     registerOpen?.((idx: number) => {
       setOpen(idx);
+      setTimeout(() => {
+        document.getElementById(`faq-item-${idx}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
     });
   }, [registerOpen]);
+
+  const toggle = (i: number) => {
+    setOpen(prev => (prev === i ? null : i));
+  };
 
   return (
     <section id="faq" className="py-16 bg-white">
@@ -40,9 +46,6 @@ const FAQ = ({ registerOpen }: FAQProps) => {
             Часто задаваемые<br />
             <span className="text-blue-500">вопросы</span>
           </h2>
-          <p className="text-gray-400 text-sm mt-3 font-body">
-            Нажмите на знак ❓ на дороге справа — откроется ответ
-          </p>
         </div>
 
         {/* Аккордеон */}
@@ -53,7 +56,7 @@ const FAQ = ({ registerOpen }: FAQProps) => {
               <div
                 key={i}
                 id={`faq-item-${i}`}
-                className={`animate-on-scroll stagger-${Math.min(i + 1, 5)} rounded-2xl border overflow-hidden transition-all duration-200 ${
+                className={`animate-on-scroll stagger-${Math.min(i + 1, 5)} rounded-2xl border overflow-hidden transition-all duration-300 ${
                   isOpen
                     ? 'border-blue-300 bg-blue-50/60 shadow-[0_4px_20px_rgba(59,130,246,0.1)]'
                     : 'border-gray-100 bg-[#F5F7FA] hover:border-blue-100'
@@ -61,7 +64,7 @@ const FAQ = ({ registerOpen }: FAQProps) => {
               >
                 <button
                   className="w-full flex items-center justify-between px-6 py-5 text-left group"
-                  onClick={() => setOpen(isOpen ? null : i)}
+                  onClick={() => toggle(i)}
                 >
                   <div className="flex items-center gap-3">
                     <span className={`font-heading font-bold text-lg flex-shrink-0 transition-colors ${isOpen ? 'text-blue-500' : 'text-gray-300'}`}>?</span>
@@ -72,19 +75,21 @@ const FAQ = ({ registerOpen }: FAQProps) => {
                   <div className={`flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
                     isOpen ? 'border-blue-500 bg-blue-500 rotate-45' : 'border-gray-300 group-hover:border-blue-300'
                   }`}>
-                    <svg viewBox="0 0 16 16" width="10" height="10" fill={isOpen ? 'white' : '#9ca3af'}>
-                      <path d="M8 2v12M2 8h12" stroke={isOpen ? 'white' : '#9ca3af'} strokeWidth="2" strokeLinecap="round"/>
+                    <svg viewBox="0 0 16 16" width="10" height="10">
+                      <path d="M8 2v12M2 8h12" stroke={isOpen ? 'white' : '#9ca3af'} strokeWidth="2" strokeLinecap="round" fill="none"/>
                     </svg>
                   </div>
                 </button>
 
-                <div style={{
-                  maxHeight: isOpen ? '240px' : '0',
-                  overflow: 'hidden',
-                  transition: 'max-height 0.38s cubic-bezier(0.22,1,0.36,1)',
-                }}>
-                  <div className="px-6 pb-5 pt-1 border-t border-blue-100 ml-6">
-                    <p className="text-gray-600 leading-relaxed text-[0.95rem]">{faq.a}</p>
+                {/* Ответ — всегда в DOM, высота анимируется через grid */}
+                <div
+                  className="grid transition-all duration-300 ease-in-out"
+                  style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-6 pb-5 pt-1 border-t border-blue-100 ml-6">
+                      <p className="text-gray-600 leading-relaxed text-[0.95rem]">{faq.a}</p>
+                    </div>
                   </div>
                 </div>
               </div>
