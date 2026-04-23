@@ -54,7 +54,7 @@ const Triggers = () => {
               <span className="text-blue-500">а не маркетологи</span>
             </h2>
           </div>
-          <img src={LOGO_URL} alt="Время Рулить" className="h-20 w-auto object-contain flex-shrink-0 hidden md:block" style={{ opacity: 0.85 }} />
+          <img src={LOGO_URL} alt="Время Рулить" className="h-80 w-auto object-contain flex-shrink-0 hidden md:block" style={{ opacity: 0.85 }} />
         </div>
 
         {/* Карточки — 2 колонки, фото на всю высоту слева */}

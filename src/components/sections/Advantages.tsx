@@ -58,7 +58,7 @@ const Advantages = () => {
           <img
             src="https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png"
             alt="Время Рулить"
-            className="h-20 w-auto object-contain flex-shrink-0 hidden md:block"
+            className="h-80 w-auto object-contain flex-shrink-0 hidden md:block"
             style={{ opacity: 0.85 }}
           />
         </div>
