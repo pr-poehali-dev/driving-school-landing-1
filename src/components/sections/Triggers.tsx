@@ -42,19 +42,17 @@ const Triggers = () => {
       <div className="max-w-5xl mx-auto px-4 relative z-10">
 
         {/* Заголовок */}
-        <div className="animate-on-scroll mb-12 flex items-center justify-between gap-6">
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-px bg-blue-500" />
-              <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Персональный подход</span>
-            </div>
-            <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
-              style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
-              Школу создали инструкторы,<br />
-              <span className="text-blue-500">а не маркетологи</span>
-            </h2>
+        <div className="animate-on-scroll mb-12 relative">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-px bg-blue-500" />
+            <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Персональный подход</span>
           </div>
-          <img src={LOGO_URL} alt="Время Рулить" className="h-80 w-auto object-contain flex-shrink-0 hidden md:block" style={{ opacity: 0.85 }} />
+          <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
+            Школу создали инструкторы,<br />
+            <span className="text-blue-500">а не маркетологи</span>
+          </h2>
+          <img src={LOGO_URL} alt="Время Рулить" className="absolute right-0 top-1/2 -translate-y-1/2 w-56 object-contain hidden md:block pointer-events-none" style={{ opacity: 0.85 }} />
         </div>
 
         {/* Карточки — 2 колонки, фото на всю высоту слева */}
