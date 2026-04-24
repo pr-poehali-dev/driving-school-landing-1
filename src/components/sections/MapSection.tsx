@@ -5,8 +5,12 @@ const MapSection = () => {
     <section id="map" className="py-16 md:py-24 bg-white">
       <div className="max-w-5xl mx-auto px-4">
         <div className="animate-on-scroll text-center mb-12">
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-brand-dark mb-3">
-            Приезжайте — покажем автодром и познакомим с инструкторами
+          <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight mb-3"
+            style={{ fontSize: 'clamp(1.75rem, 4vw, 3rem)' }}>
+            Приезжайте —{' '}
+            <span className="text-blue-500">покажем автодром</span>
+            <br />
+            и познакомим с инструкторами
           </h2>
           <p className="text-gray-500 text-lg">Свой автодром — не нужно никуда ехать. Приезжайте на экскурсию, покажем всё</p>
         </div>

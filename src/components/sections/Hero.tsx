@@ -7,27 +7,24 @@ const Hero = () => {
     <section id="hero" className="relative w-full overflow-hidden bg-[#0a1628]" style={{ paddingTop: 'var(--header-height, 80px)' }}>
 
       {/* Баннер */}
-      <div className="relative w-full" style={{ aspectRatio: '16/7', minHeight: 280 }}>
+      <div className="relative w-full" style={{ aspectRatio: '16/7', minHeight: 300 }}>
         <img
           src="https://cdn.poehali.dev/files/0c988d32-7078-44aa-a34e-785eef83e869.jpg"
           alt="Время рулить — автошкола Севастополь"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         {/* Градиент */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628]/90 via-[#0a1628]/50 to-transparent hidden md:block" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/85 via-[#0a1628]/40 to-transparent md:hidden" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628]/92 via-[#0a1628]/55 to-transparent hidden md:block" />
+        <div className="absolute inset-0 bg-[#0a1628]/75 md:hidden" />
 
-        {/* Заголовок */}
-        <div className="absolute inset-0 flex md:items-center items-start">
-          <div className="px-5 md:px-12 pt-6 md:pt-0" style={{ maxWidth: '700px' }}>
-            <h1
-              className="font-heading font-bold text-white leading-[1.15]"
-              style={{ fontSize: 'clamp(2rem, 5vw, 4rem)' }}
-            >
-              АВТОШКОЛА,{' '}
-              <span className="text-blue-400">КОТОРУЮ СОЗДАЛИ</span>{' '}
-              ИНСТРУКТОРЫ,{' '}
-              <span className="text-blue-400">А НЕ МАРКЕТОЛОГИ</span>
+        {/* Заголовок — всегда по центру вертикали */}
+        <div className="absolute inset-0 flex items-center">
+          <div className="px-5 md:px-12" style={{ maxWidth: '680px' }}>
+            <h1 className="font-heading font-bold leading-[1.1]" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)' }}>
+              <span className="block text-white">АВТОШКОЛА,</span>
+              <span className="block text-blue-400">КОТОРУЮ СОЗДАЛИ</span>
+              <span className="block text-white">ИНСТРУКТОРЫ,</span>
+              <span className="block text-blue-400">А НЕ МАРКЕТОЛОГИ</span>
             </h1>
           </div>
         </div>
