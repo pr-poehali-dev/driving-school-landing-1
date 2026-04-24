@@ -118,8 +118,19 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Гео-строка SEO */}
+        <div className="border-t border-white/10 pt-6 mb-4">
+          <p className="text-gray-400 text-sm font-medium">
+            Автошкола в Севастополе, Балаклаве и Инкермане —{' '}
+            <a href="tel:+79785021113" className="text-blue-400 hover:text-blue-300 transition-colors font-bold">+7 978 502 11 13</a>
+          </p>
+          <p className="text-gray-600 text-xs mt-1">
+            Автодром на Стахановцева, 18 — 10 минут от Инкермана и Балаклавы
+          </p>
+        </div>
+
         {/* Разделитель */}
-        <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+        <div className="border-t border-white/10 pt-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
           <p className="text-gray-500 text-xs leading-relaxed">
             © 2026 ООО «ВРЕМЯ РУЛИТЬ» · ИНН 9200026796 · ОГРН 1253200001169
           </p>

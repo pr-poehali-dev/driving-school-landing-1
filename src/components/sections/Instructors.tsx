@@ -8,6 +8,7 @@ const instructors = [
     spec: 'Основатель · Городское вождение',
     quote: 'Я сам инструктор. Я знаю, как учат в других школах — и знаю, как надо. Поэтому открыл свою.',
     photo: 'https://cdn.poehali.dev/files/c97d13a4-dac4-46df-b994-94a251935c4d.jpg',
+    alt: 'Инструктор по вождению Ридван Шамсудинов — основатель автошколы Время рулить в Севастополе',
   },
   {
     name: 'Ирина Дарчич',
@@ -15,6 +16,7 @@ const instructors = [
     spec: 'Инструктор-женщина · Новички',
     quote: 'Со мной не страшно. Спокойно, без спешки, без оценок — просто учимся ехать.',
     photo: 'https://cdn.poehali.dev/files/2937ba8a-51cb-4747-bf73-be0fcc7f1c6a.jpg',
+    alt: 'Инструктор-женщина по вождению в Севастополе Ирина Дарчич — обучение для новичков',
   },
   {
     name: 'Дмитрий Дарчич',
@@ -22,6 +24,7 @@ const instructors = [
     spec: 'Сложные манёвры · МКПП',
     quote: 'Механика — не страшно, если объяснить правильно. За 12 лет я научил этому сотни людей.',
     photo: 'https://cdn.poehali.dev/files/3a58eaf4-a04b-4f47-8af1-15c4eaed2862.jpg',
+    alt: 'Инструктор по вождению на механике МКПП Дмитрий Дарчич — автошкола Севастополь',
   },
   {
     name: 'Эльдар Музафаров',
@@ -29,6 +32,7 @@ const instructors = [
     spec: 'Подготовка к экзамену',
     quote: 'Экзамен в ГИБДД — это не лотерея, если готовиться правильно. Я знаю маршруты и знаю систему.',
     photo: 'https://cdn.poehali.dev/files/50cf5106-21c3-4232-993a-1ad028250a52.jpg',
+    alt: 'Инструктор по подготовке к экзамену ГИБДД Эльдар Музафаров — автошкола Время рулить Севастополь',
   },
 ];
 
@@ -77,7 +81,7 @@ const Instructors = () => {
               <div className="relative h-56 overflow-hidden flex-shrink-0">
                 <img
                   src={inst.photo}
-                  alt={inst.name}
+                  alt={inst.alt}
                   className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1A2A3A]/70 via-transparent to-transparent" />

@@ -11,14 +11,17 @@ const carsMKPP = [
   {
     name: 'LADA VESTA²',
     img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/116e8640-51ae-4802-8907-e93b4d70cba4.jpg',
+    alt: 'Обучение вождению на LADA VESTA механика МКПП в автошколе Севастополь',
   },
   {
     name: 'LADA GRANTA',
     img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/1e0d12e5-aaf8-444c-87d7-c96f3aea4fc3.jpg',
+    alt: 'Обучение вождению на LADA GRANTA механика МКПП — автошкола Время рулить',
   },
   {
     name: 'Renault Logan',
     img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/63055ac1-7b33-40d9-9ab9-d076ac2e396f.jpg',
+    alt: 'Обучение вождению на Renault Logan механика МКПП в автошколе Севастополь',
   },
 ];
 
@@ -26,14 +29,17 @@ const carsAKPP = [
   {
     name: 'KIA CEED',
     img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/ae817658-f736-4e06-bf94-3ef1a79e03fb.jpg',
+    alt: 'Обучение на автомате KIA CEED АКПП в автошколе Севастополь Время рулить',
   },
   {
     name: 'Chevrolet Aveo',
     img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/25492f91-f4d4-41e1-b1d8-f22cfd5daabc.jpg',
+    alt: 'Обучение на автомате Chevrolet Aveo АКПП — автошкола Севастополь',
   },
   {
     name: 'Hyundai Solaris',
     img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/8c78e4fc-e0d5-40ed-a11e-02cba5f866f8.jpg',
+    alt: 'Обучение на автомате Hyundai Solaris АКПП в автошколе Время рулить Севастополь',
   },
 ];
 
@@ -116,7 +122,7 @@ const Advantages = () => {
                     <div className="w-20 h-20 rounded-full bg-[#E6F4FF] overflow-hidden flex items-center justify-center">
                       <img
                         src={car.img}
-                        alt={car.name}
+                        alt={car.alt}
                         className="w-full h-full object-cover"
                         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                       />
@@ -137,7 +143,7 @@ const Advantages = () => {
                     <div className="w-20 h-20 rounded-full bg-[#E6F4FF] overflow-hidden flex items-center justify-center">
                       <img
                         src={car.img}
-                        alt={car.name}
+                        alt={car.alt}
                         className="w-full h-full object-cover"
                         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                       />
