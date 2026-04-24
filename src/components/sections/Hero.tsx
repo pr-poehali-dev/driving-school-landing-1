@@ -13,8 +13,8 @@ const Hero = () => {
           alt="Время рулить — автошкола Севастополь"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        {/* Градиент десктоп — слева направо */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628]/92 via-[#0a1628]/55 to-transparent hidden md:block" />
+        {/* Градиент десктоп — сверху вниз, плавный */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/85 via-[#0a1628]/55 to-transparent hidden md:block" />
         {/* Градиент мобильный — сверху вниз, плавный */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/80 via-[#0a1628]/60 to-transparent md:hidden" />
 
