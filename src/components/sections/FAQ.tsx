@@ -32,18 +32,14 @@ const FAQ = ({ registerOpen }: FAQProps) => {
   };
 
   return (
-    <section id="faq" className="py-16 bg-white">
-      <div className="max-w-3xl mx-auto px-4">
+    <section id="faq" className="py-16 md:py-24 bg-white">
+      <div className="max-w-3xl mx-auto px-4 md:px-8">
 
         {/* Заголовок */}
-        <div className="animate-on-scroll mb-14">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-px bg-blue-500" />
-            <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">FAQ</span>
-          </div>
+        <div className="animate-on-scroll mb-10 md:mb-14">
           <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
-            Часто задаваемые<br />
+            style={{ fontSize: 'clamp(1.75rem, 4vw, 3rem)' }}>
+            Часто задаваемые{' '}
             <span className="text-blue-500">вопросы</span>
           </h2>
         </div>

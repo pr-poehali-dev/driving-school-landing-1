@@ -2,7 +2,7 @@ import Icon from '@/components/ui/icon';
 
 const MapSection = () => {
   return (
-    <section id="map" className="py-20 bg-white">
+    <section id="map" className="py-16 md:py-24 bg-white">
       <div className="max-w-5xl mx-auto px-4">
         <div className="animate-on-scroll text-center mb-12">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-brand-dark mb-3">

@@ -39,7 +39,7 @@ const carsAKPP = [
 
 const Advantages = () => {
   return (
-    <section id="advantages" className="py-16 bg-white">
+    <section id="advantages" className="py-16 md:py-24 bg-white">
       <div className="max-w-5xl mx-auto px-4">
 
         {/* Заголовок */}

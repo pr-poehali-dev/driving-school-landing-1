@@ -50,83 +50,67 @@ const Instructors = () => {
   };
 
   return (
-    <section id="instructors" className="py-16 bg-[#F5F7FA]">
-      <div className="max-w-5xl mx-auto px-4">
+    <section id="instructors" className="py-16 md:py-24 bg-[#F5F7FA]">
+      <div className="max-w-5xl mx-auto px-4 md:px-8">
 
         {/* Заголовок */}
-        <div className="animate-on-scroll mb-12">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-px bg-blue-500" />
-            <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Команда</span>
-          </div>
-          <div className="flex items-start justify-between gap-6">
-            <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
-              style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
-              Школу создали инструкторы,<br />
-              <span className="text-blue-500">а не маркетологи</span>
-            </h2>
-            <button
-              onClick={() => openModal('')}
-              className="flex-shrink-0 hidden md:flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-5 py-3 font-heading font-bold text-sm tracking-wide rounded-xl transition-all duration-200 hover:shadow-[0_4px_20px_rgba(42,127,255,0.4)] hover:scale-[1.03]"
-            >
-              <Icon name="UserCheck" size={16} />
-              Выбрать инструктора
-            </button>
-          </div>
+        <div className="animate-on-scroll mb-12 md:mb-16">
+          <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight mb-4"
+            style={{ fontSize: 'clamp(1.75rem, 4vw, 3.2rem)' }}>
+            Школу создали инструкторы,<br />
+            <span className="text-blue-500">а не маркетологи</span>
+          </h2>
+          <p className="text-gray-500 text-base md:text-lg leading-relaxed" style={{ maxWidth: 520 }}>
+            Каждый из нас сначала сам сел за руль как ученик. Мы знаем страхи изнутри.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
           {instructors.map((inst, i) => (
             <div
               key={i}
               className={`animate-on-scroll stagger-${i + 1} group bg-white rounded-2xl
                 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(59,130,246,0.12)]
-                transition-all duration-300 cursor-default relative overflow-hidden`}
+                transition-all duration-300 cursor-default relative overflow-hidden flex flex-col`}
             >
               {/* Фото */}
-              <div className="relative h-52 overflow-hidden">
+              <div className="relative h-56 overflow-hidden flex-shrink-0">
                 <img
                   src={inst.photo}
                   alt={inst.name}
                   className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1A2A3A]/70 via-transparent to-transparent" />
-                <div className="absolute bottom-3 left-4 right-4">
-                  <div className="flex items-baseline gap-2">
-                    <h3 className="font-heading text-xl font-bold text-white">{inst.name}</h3>
-                    <span className="text-blue-300 font-heading font-bold text-sm">{inst.years} лет</span>
-                  </div>
-                  <p className="text-gray-300 text-xs uppercase tracking-wider">{inst.spec}</p>
-                </div>
               </div>
 
-              {/* Цитата */}
-              <div className="p-5">
-                <blockquote className="text-gray-500 text-sm leading-relaxed border-l-2 border-blue-200 group-hover:border-blue-500 pl-3 italic transition-colors duration-300">
+              {/* Контент */}
+              <div className="p-5 flex flex-col flex-1">
+                {/* Имя + опыт */}
+                <div className="mb-1">
+                  <h3 className="font-heading text-lg font-bold text-[#1A2A3A] leading-snug">{inst.name}</h3>
+                  <span className="text-blue-500 font-heading font-bold text-sm">{inst.years} лет опыта</span>
+                </div>
+
+                {/* Специализация */}
+                <p className="text-gray-400 text-xs uppercase tracking-wider mb-3">{inst.spec}</p>
+
+                {/* Цитата */}
+                <blockquote className="text-gray-500 text-sm leading-relaxed italic border-l-2 border-blue-200 pl-3 mb-5 flex-1">
                   «{inst.quote}»
                 </blockquote>
+
+                {/* Одна кнопка */}
                 <button
                   onClick={() => openModal(inst.name)}
-                  className="mt-4 w-full text-blue-500 hover:text-white hover:bg-blue-500 border border-blue-200 hover:border-blue-500 py-2 font-heading font-bold text-xs tracking-wide rounded-lg transition-all duration-200"
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2.5 font-heading font-bold text-xs tracking-wide rounded-lg transition-all duration-200 hover:shadow-[0_4px_16px_rgba(59,130,246,0.35)]"
                 >
-                  Выбрать этого инструктора
+                  Выбрать инструктора
                 </button>
               </div>
 
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500/0 via-blue-500/50 to-blue-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
           ))}
-        </div>
-
-        {/* Кнопка снизу на мобиле */}
-        <div className="md:hidden mt-8 text-center">
-          <button
-            onClick={() => openModal('')}
-            className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 font-heading font-bold text-sm tracking-wide rounded-xl transition-all duration-200"
-          >
-            <Icon name="UserCheck" size={16} />
-            Выбрать инструктора
-          </button>
         </div>
       </div>
 
@@ -188,9 +172,9 @@ const Instructors = () => {
                   />
                   <button
                     type="submit"
-                    className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3.5 font-heading font-bold text-sm tracking-wide rounded-xl transition-all duration-200 hover:shadow-[0_4px_20px_rgba(42,127,255,0.4)] mt-1"
+                    className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-heading font-bold text-sm tracking-wide transition-all duration-200 mt-1"
                   >
-                    ЗАПИСАТЬСЯ
+                    Отправить заявку
                   </button>
                 </form>
               </>

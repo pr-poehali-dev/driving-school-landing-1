@@ -25,7 +25,7 @@ const WATERMARKS = [
 
 const Triggers = () => {
   return (
-    <section id="triggers" className="py-16 bg-white relative overflow-hidden">
+    <section id="triggers" className="py-16 md:py-24 bg-white relative overflow-hidden">
 
       {/* Водяные знаки — логотипы */}
       {WATERMARKS.map((pos, i) => (

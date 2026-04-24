@@ -159,6 +159,7 @@ export function launchConfetti() {
    ТРЯСКА ЭКРАНА
 ═══════════════════════════════════════════════════════════════════ */
 export function shakeScreen(intensity = 6, ms = 350) {
+  if (window.innerWidth < 1024) return;
   const el = document.documentElement;
   const kf = `@keyframes screen-shake {
     0%,100%{transform:translate(0,0)}

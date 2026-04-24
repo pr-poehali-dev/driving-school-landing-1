@@ -66,7 +66,7 @@ const ContactForm = () => {
 
   if (submitted) {
     return (
-      <section id="contact-form" className="py-20 bg-brand-sky">
+      <section id="contact-form" className="py-16 md:py-24 bg-brand-sky">
         <div className="max-w-lg mx-auto px-4 text-center">
           <div className="bg-white rounded-2xl p-10 shadow-md">
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
@@ -83,7 +83,7 @@ const ContactForm = () => {
   }
 
   return (
-    <section id="contact-form" className="py-20 bg-brand-sky">
+    <section id="contact-form" className="py-16 md:py-24 bg-brand-sky">
       <div className="max-w-lg mx-auto px-4">
         <div className="animate-on-scroll text-center mb-10">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-brand-dark mb-3">

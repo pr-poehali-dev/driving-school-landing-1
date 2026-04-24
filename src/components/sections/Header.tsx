@@ -31,28 +31,19 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-[0_1px_16px_rgba(0,0,0,0.10)] border-b border-gray-100 transition-all duration-300">
-      <div className={`w-full px-6 flex items-center justify-between transition-all duration-300 ${scrolled ? 'h-16 md:h-20' : 'h-20 md:h-40'}`}>
+      <div className={`w-full px-5 md:px-8 flex items-center justify-between transition-all duration-300 ${scrolled ? 'h-16 md:h-20' : 'h-20 md:h-40'}`}>
 
         {/* Логотип */}
         <a href="/" className="flex-shrink-0">
           <img
             src="https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png"
             alt="Автошкола Время Рулить"
-            className={`w-auto object-contain transition-all duration-300 ${scrolled ? 'h-10 md:h-14' : 'h-14 md:h-36'}`}
-            style={{ maxWidth: scrolled ? '160px' : '220px' }}
+            className={`w-auto object-contain transition-all duration-300 ${scrolled ? 'h-12 md:h-16' : 'h-16 md:h-40'}`}
+            style={{ maxWidth: scrolled ? '180px' : '260px' }}
           />
         </a>
 
-        {/* Телефон на мобильном — между логотипом и бургером */}
-        <a
-          href="tel:+79785021113"
-          className="lg:hidden font-heading font-bold text-[#1A2A3A] text-sm flex items-center gap-1.5 hover:text-blue-500 transition-colors"
-        >
-          <Icon name="Phone" size={14} className="text-blue-500" />
-          +7 978 502 11 13
-        </a>
-
-        {/* Навигация */}
+        {/* Навигация — только десктоп */}
         <nav className="hidden lg:flex items-center gap-7">
           {NAV.map(n => (
             <button
@@ -65,8 +56,8 @@ const Header = () => {
           ))}
         </nav>
 
-        {/* Адрес + телефон + CTA */}
-        <div className="hidden md:flex items-center gap-5">
+        {/* Адрес + телефон + CTA — только десктоп */}
+        <div className="hidden lg:flex items-center gap-5">
           <div className="flex flex-col items-end gap-1">
             <span className="text-blue-500 text-xs font-body flex items-center gap-1.5">
               <Icon name="MapPin" size={12} className="text-blue-400" />
@@ -89,13 +80,23 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Бургер */}
-        <button
-          className="lg:hidden p-1.5 text-[#1A2A3A]"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <Icon name={menuOpen ? 'X' : 'Menu'} size={22} />
-        </button>
+        {/* Мобильный блок: телефон + бургер */}
+        <div className="lg:hidden flex items-center gap-3">
+          <a
+            href="tel:+79785021113"
+            className="font-heading font-bold text-[#1A2A3A] text-sm flex items-center gap-1.5 hover:text-blue-500 transition-colors"
+          >
+            <Icon name="Phone" size={14} className="text-blue-500" />
+            <span className="hidden sm:inline">+7 978 502 11 13</span>
+            <span className="sm:hidden">Позвонить</span>
+          </a>
+          <button
+            className="p-1.5 text-[#1A2A3A]"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <Icon name={menuOpen ? 'X' : 'Menu'} size={22} />
+          </button>
+        </div>
       </div>
 
       {/* Мобильное меню */}
@@ -115,10 +116,6 @@ const Header = () => {
             <Icon name="MapPin" size={12} />
             Севастополь · ул. Хрусталева, 177А
           </span>
-          <a href="tel:+79785021113" className="flex items-center gap-2 font-heading font-bold text-[#1A2A3A]">
-            <Icon name="Phone" size={16} className="text-blue-500" />
-            +7 978 502 11 13
-          </a>
           <button
             onClick={() => scrollTo('contact-form')}
             className="bg-blue-500 text-white py-3 font-heading font-bold text-sm tracking-wide rounded-lg w-full"
