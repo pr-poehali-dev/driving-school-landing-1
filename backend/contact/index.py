@@ -1,6 +1,6 @@
 """
 Обработка заявок с сайта автошколы «Время рулить».
-Принимает имя и телефон, отправляет письмо на timedrive92@gmail.com.
+Принимает имя и телефон, отправляет письмо на timedrive92@mail.ru.
 """
 import json
 import os
@@ -36,7 +36,7 @@ def handler(event: dict, context) -> dict:
 
     smtp_email = os.environ.get('SMTP_EMAIL', '')
     smtp_password = os.environ.get('SMTP_PASSWORD', '')
-    to_email = 'timedrive92@gmail.com'
+    to_email = 'timedrive92@mail.ru'
 
     svo_text = '✅ ДА — применить скидку 5 000 ₽' if is_svo else 'Нет'
     utm_text = f'\n\nИсточник: {utm_source or "прямой вход"}' + (f' / {utm_medium}' if utm_medium else '') + (f' / {utm_campaign}' if utm_campaign else '')
@@ -61,7 +61,7 @@ def handler(event: dict, context) -> dict:
         msg['To'] = to_email
         msg.attach(MIMEText(html_body, 'html', 'utf-8'))
 
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+        with smtplib.SMTP_SSL('smtp.mail.ru', 465) as server:
             server.login(smtp_email, smtp_password)
             server.sendmail(smtp_email, to_email, msg.as_string())
 

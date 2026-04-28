@@ -10,7 +10,7 @@ const Requisites = () => {
     { label: 'Расчётный счёт (р/с)', value: '40702810001000074928' },
     { label: 'Корреспондентский счёт (к/с)', value: '30101810100000000715' },
     { label: 'Телефон', value: '+7 978 502 11 13' },
-    { label: 'Email', value: 'timedrive92@gmail.com' },
+    { label: 'Email', value: 'timedrive92@mail.ru' },
   ];
 
   return (

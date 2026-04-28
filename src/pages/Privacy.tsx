@@ -52,11 +52,11 @@ const Privacy = () => {
         </ul>
 
         <h2 className="font-heading text-xl font-bold mt-8 mb-3">8. Как отозвать согласие</h2>
-        <p>Вы можете в любой момент отозвать своё согласие — просто напишите нам на почту <a href="mailto:timedrive92@gmail.com" className="text-blue-500">timedrive92@gmail.com</a> или пришлите письмо по адресу: г. Севастополь, ул. Хрусталева, 177А, ТЦ «Одиз».</p>
+        <p>Вы можете в любой момент отозвать своё согласие — просто напишите нам на почту <a href="mailto:timedrive92@mail.ru" className="text-blue-500">timedrive92@mail.ru</a> или пришлите письмо по адресу: г. Севастополь, ул. Хрусталева, 177А, ТЦ «Одиз».</p>
         <p>Мы удалим все ваши данные в течение 10 рабочих дней.</p>
 
         <div className="mt-12 p-4 bg-gray-50 rounded-xl text-sm text-gray-500">
-          По вопросам, связанным с персональными данными: <a href="mailto:timedrive92@gmail.com" className="text-blue-500">timedrive92@gmail.com</a> • <a href="tel:+79785021113" className="text-blue-500">+7 978 502 11 13</a>
+          По вопросам, связанным с персональными данными: <a href="mailto:timedrive92@mail.ru" className="text-blue-500">timedrive92@mail.ru</a> • <a href="tel:+79785021113" className="text-blue-500">+7 978 502 11 13</a>
         </div>
       </div>
     </div>
