@@ -88,26 +88,8 @@ const Advantages = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
 
-          {/* Список преимуществ — 3 колонки */}
-          <div className="lg:col-span-3 animate-on-scroll">
-            <div className="bg-[#F5F7FA] rounded-2xl p-8">
-              <ul className="space-y-5">
-                {checkList.map((item, i) => (
-                  <li key={i} className={`stagger-${i + 1} flex items-start gap-4 group`}>
-                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center mt-0.5">
-                      <svg viewBox="0 0 20 20" fill="white" width="12" height="12">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </span>
-                    <span className="text-[#1A2A3A] font-medium leading-snug">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
           {/* Автомобили */}
-          <div className="lg:col-span-2 animate-on-scroll stagger-2">
+          <div className="lg:col-span-2 animate-on-scroll stagger-2 order-2 lg:order-1">
             <p className="font-heading font-bold text-[#1A2A3A] text-lg mb-6 uppercase tracking-wide">
               Автомобили для обучения
             </p>
@@ -163,6 +145,24 @@ const Advantages = () => {
                   <div className="text-gray-500 text-xs mt-0.5">Официальная автошкола</div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Список преимуществ — 3 колонки */}
+          <div className="lg:col-span-3 animate-on-scroll order-1 lg:order-2">
+            <div className="bg-[#F5F7FA] rounded-2xl p-8">
+              <ul className="space-y-5">
+                {checkList.map((item, i) => (
+                  <li key={i} className={`stagger-${i + 1} flex items-start gap-4 group`}>
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center mt-0.5">
+                      <svg viewBox="0 0 20 20" fill="white" width="12" height="12">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    </span>
+                    <span className="text-[#1A2A3A] font-medium leading-snug">{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
