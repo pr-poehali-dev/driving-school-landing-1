@@ -13,7 +13,7 @@ interface DrivingCarProps {
 const DrivingCar = ({ onFaqOpen }: DrivingCarProps) => {
   const [scrollPct, setScrollPct]   = useState(0);
   const [vh, setVh]                 = useState(window.innerHeight);
-  const [carVisible, setCarVisible] = useState(false);
+  const [carVisible, setCarVisible] = useState(true);
 
   // Машинка
   const [carX, setCarX]               = useState(28);
@@ -58,11 +58,10 @@ const DrivingCar = ({ onFaqOpen }: DrivingCarProps) => {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  // Появление машинки при первом скролле
+  // Машинка видна сразу, аварийка гасится при первом скролле
   useEffect(() => {
     const handler = () => {
       if (window.scrollY > 30) {
-        setCarVisible(true);
         setIsHazard(false);
         setCarState_driving();
         window.removeEventListener('scroll', handler);
@@ -260,8 +259,6 @@ const DrivingCar = ({ onFaqOpen }: DrivingCarProps) => {
   const visibleSigns = SIGNS.filter(s =>
     s.pct >= scrollPct - 0.28 && s.pct <= scrollPct + 0.28
   );
-
-  if (!carVisible) return null;
 
   return (
     <>

@@ -52,7 +52,7 @@ const FAQ = ({ registerOpen }: FAQProps) => {
               <div
                 key={i}
                 id={`faq-item-${i}`}
-                className={`animate-on-scroll stagger-${Math.min(i + 1, 5)} rounded-2xl border transition-all duration-300 ${
+                className={`rounded-2xl border transition-all duration-300 ${
                   isOpen
                     ? 'border-blue-300 bg-blue-50/60 shadow-[0_4px_20px_rgba(59,130,246,0.1)]'
                     : 'border-gray-100 bg-[#F5F7FA] hover:border-blue-100'
