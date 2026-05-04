@@ -1,7 +1,7 @@
 """
 Обработка заявок с сайта автошколы «Время рулить».
 Принимает имя и телефон, отправляет письмо на timedrive92@mail.ru.
-Версия 3.
+Версия 4.
 """
 import json
 import os
@@ -36,7 +36,7 @@ def handler(event: dict, context) -> dict:
         return {'statusCode': 400, 'headers': cors_headers, 'body': json.dumps({'error': 'Phone required'})}
 
     smtp_email = os.environ.get('SMTP_EMAIL', '')
-    smtp_password = os.environ.get('SMTP_PASSWORD', '')
+    smtp_password = os.environ.get('SMTP_PASSWORD', 'ILoPXuShvrqq6NKsPaWA')
     to_email = 'timedrive92@mail.ru'
 
     svo_text = '✅ ДА — применить скидку 5 000 ₽' if is_svo else 'Нет'
