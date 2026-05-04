@@ -36,7 +36,7 @@ def handler(event: dict, context) -> dict:
         return {'statusCode': 400, 'headers': cors_headers, 'body': json.dumps({'error': 'Phone required'})}
 
     smtp_email = os.environ.get('SMTP_EMAIL', '')
-    smtp_password = os.environ.get('SMTP_PASSWORD', 'ILoPXuShvrqq6NKsPaWA')
+    smtp_password = os.environ.get('SMTP_PASSWORD', '8zXd5FGonaMvosLviSbd')
     to_email = 'timedrive92@mail.ru'
 
     svo_text = '✅ ДА — применить скидку 5 000 ₽' if is_svo else 'Нет'
