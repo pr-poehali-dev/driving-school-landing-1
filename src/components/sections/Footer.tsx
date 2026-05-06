@@ -76,7 +76,7 @@ const Footer = () => {
                 </p>
                 <p className="text-gray-300 leading-relaxed">
                   ул. Хрусталева, 177А<br />
-                  ТЦ «Одиз», г. Севастополь
+                  ТЦ «Адиз», г. Севастополь
                 </p>
               </li>
               <li className="text-sm">
@@ -86,7 +86,7 @@ const Footer = () => {
                 </p>
                 <p className="text-gray-300 leading-relaxed">
                   ул. Стахановцев, 18<br />
-                  Свой, не арендованный
+                  Арендованный автодром
                 </p>
               </li>
             </ul>
@@ -125,7 +125,7 @@ const Footer = () => {
             <a href="tel:+79785021113" className="text-blue-400 hover:text-blue-300 transition-colors font-bold">+7 978 502 11 13</a>
           </p>
           <p className="text-gray-600 text-xs mt-1">
-            Автодром на Стахановцева, 18 — 10 минут от Инкермана и Балаклавы
+            Автодром на Стахановцева, 18
           </p>
         </div>
 
@@ -135,7 +135,7 @@ const Footer = () => {
             © 2026 ООО «ВРЕМЯ РУЛИТЬ» · ИНН 9200026796 · ОГРН 1253200001169
           </p>
           <p className="text-gray-600 text-xs">
-            г. Севастополь, ул. Хрусталева, 177А, ТЦ «Одиз»
+            г. Севастополь, ул. Хрусталева, 177А, ТЦ «Адиз»
           </p>
         </div>
       </div>

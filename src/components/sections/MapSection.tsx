@@ -12,7 +12,7 @@ const MapSection = () => {
             <br />
             и познакомим с инструкторами
           </h2>
-          <p className="text-gray-500 text-lg">Свой автодром — не нужно никуда ехать. Приезжайте на экскурсию, покажем всё</p>
+          <p className="text-gray-500 text-lg">Арендованный автодром — приезжайте на экскурсию, покажем всё</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -23,7 +23,7 @@ const MapSection = () => {
               </div>
               <div>
                 <h3 className="font-heading text-lg font-bold text-brand-dark">Теория и офис</h3>
-                <p className="text-gray-600">Севастополь, ул. Хрусталева, 177А, ТЦ «Одиз»</p>
+                <p className="text-gray-600">Севастополь, ул. Хрусталева, 177А, ТЦ «Адиз»</p>
               </div>
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-500 mt-2">
@@ -40,7 +40,7 @@ const MapSection = () => {
               <div>
                 <h3 className="font-heading text-lg font-bold text-brand-dark">Автодром (практика)</h3>
                 <p className="text-gray-600">Севастополь, ул. Стахановцев, 18</p>
-                <p className="text-green-600 text-sm font-medium mt-1">Свой, не арендованный</p>
+                <p className="text-gray-500 text-sm mt-1">Инструктор встречает на остановке Хрюкина на Острякова и отвозит на автодром — идти пешком не нужно</p>
               </div>
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-500 mt-2">
