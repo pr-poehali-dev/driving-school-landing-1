@@ -39,7 +39,8 @@ const instructors = [
     years: '9',
     spec: 'Высшее · Техник-механик · с 2016 г.',
     quote: 'Мне нравится видеть эмоции людей, когда у них получается управлять автомобилем. И особенно — когда они получают права.',
-    photo: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/bucket/ba1be61e-6763-46f9-b846-53110c0f70dc.jpg',
+    photo: 'https://cdn.poehali.dev/files/763fb878-ad01-4aed-b0de-312d528df7a0.jpg',
+    photoPosition: '75% top',
     alt: 'Инструктор по вождению Ферат Аблялимов — автошкола Время рулить Севастополь',
     advantage: 'Создаёт доверительную приятную обстановку, поддерживает как друга',
   },
@@ -91,7 +92,8 @@ const Instructors = () => {
                 <img
                   src={inst.photo}
                   alt={inst.alt}
-                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  style={{ objectPosition: ('photoPosition' in inst ? inst.photoPosition : 'center top') as string }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1A2A3A]/70 via-transparent to-transparent" />
               </div>
