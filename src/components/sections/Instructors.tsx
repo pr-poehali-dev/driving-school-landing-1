@@ -34,6 +34,15 @@ const instructors = [
     photo: 'https://cdn.poehali.dev/files/50cf5106-21c3-4232-993a-1ad028250a52.jpg',
     alt: 'Инструктор по подготовке к экзамену ГИБДД Эльдар Музафаров — автошкола Время рулить Севастополь',
   },
+  {
+    name: 'Ферат Аблялимов',
+    years: '9',
+    spec: 'Высшее · Техник-механик · с 2016 г.',
+    quote: 'Мне нравится видеть эмоции людей, когда у них получается управлять автомобилем. И особенно — когда они получают права.',
+    photo: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/bucket/ba1be61e-6763-46f9-b846-53110c0f70dc.jpg',
+    alt: 'Инструктор по вождению Ферат Аблялимов — автошкола Время рулить Севастополь',
+    advantage: 'Создаёт доверительную приятную обстановку, поддерживает как друга',
+  },
 ];
 
 const Instructors = () => {
@@ -99,9 +108,16 @@ const Instructors = () => {
                 <p className="text-gray-400 text-xs uppercase tracking-wider mb-3">{inst.spec}</p>
 
                 {/* Цитата */}
-                <blockquote className="text-gray-500 text-sm leading-relaxed italic border-l-2 border-blue-200 pl-3 mb-5 flex-1">
+                <blockquote className="text-gray-500 text-sm leading-relaxed italic border-l-2 border-blue-200 pl-3 mb-3 flex-1">
                   «{inst.quote}»
                 </blockquote>
+
+                {/* Преимущество */}
+                {'advantage' in inst && inst.advantage && (
+                  <p className="text-blue-600 text-xs font-medium bg-blue-50 rounded-lg px-3 py-2 mb-3 leading-snug">
+                    {inst.advantage as string}
+                  </p>
+                )}
 
                 {/* Одна кнопка */}
                 <button
