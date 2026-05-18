@@ -182,6 +182,16 @@ DEFAULT_CONTENT = {
         'liability_user': 'Пользователь отвечает за достоверность предоставленных данных. Администрация вправе ограничить доступ при нарушении Соглашения.',
         'dispute_text': 'Претензии направляются на email администрации. Срок рассмотрения — 30 дней. При недостижении согласия — споры решаются по месту нахождения Администрации по законам РФ.',
     },
+    'documents': {
+        'title': 'Документы',
+        'subtitle': 'Нажмите на документ, чтобы открыть его',
+        'items': [
+            {'id': 1, 'title': 'Документ 1', 'preview': 'https://времярулить.рф/images/pdf/04.jpg', 'url': 'https://времярулить.рф/images/pdf/04.jpg'},
+            {'id': 2, 'title': 'Документ 2', 'preview': 'https://времярулить.рф/images/pdf/01.jpg', 'url': 'https://времярулить.рф/images/pdf/01.jpg'},
+            {'id': 3, 'title': 'Документ 3', 'preview': 'https://времярулить.рф/images/pdf/02.jpg', 'url': 'https://времярулить.рф/images/pdf/02.jpg'},
+            {'id': 4, 'title': 'Документ 4', 'preview': 'https://времярулить.рф/images/pdf/03.jpg', 'url': 'https://времярулить.рф/images/pdf/03.jpg'},
+        ],
+    },
 }
 
 VALID_SECTIONS = list(DEFAULT_CONTENT.keys())

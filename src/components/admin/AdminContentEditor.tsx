@@ -19,6 +19,7 @@ const SECTIONS = [
   { id: 'price_comparison', label: 'Сравнение цен' },
   { id: 'cookies_page', label: 'Политика Cookie' },
   { id: 'terms_page', label: 'Польз. соглашение' },
+  { id: 'documents', label: 'Документы' },
 ];
 
 const Field = ({ label, value, onChange, multiline = false, type = 'text' }: {

@@ -1,6 +1,33 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 
+const DOCS = [
+  {
+    id: 1,
+    title: 'Документ 1',
+    preview: 'https://времярулить.рф/images/pdf/04.jpg',
+    url: 'https://времярулить.рф/images/pdf/04.jpg',
+  },
+  {
+    id: 2,
+    title: 'Документ 2',
+    preview: 'https://времярулить.рф/images/pdf/01.jpg',
+    url: 'https://времярулить.рф/images/pdf/01.jpg',
+  },
+  {
+    id: 3,
+    title: 'Документ 3',
+    preview: 'https://времярулить.рф/images/pdf/02.jpg',
+    url: 'https://времярулить.рф/images/pdf/02.jpg',
+  },
+  {
+    id: 4,
+    title: 'Документ 4',
+    preview: 'https://времярулить.рф/images/pdf/03.jpg',
+    url: 'https://времярулить.рф/images/pdf/03.jpg',
+  },
+];
+
 interface FormData {
   name: string;
   phone: string;
@@ -169,6 +196,45 @@ const ContactForm = () => {
             Никакого спама. Только один звонок, чтобы ответить на вопросы и подобрать удобное время
           </p>
         </form>
+      </div>
+
+      {/* Документы */}
+      <div className="max-w-4xl mx-auto px-4 mt-14">
+        <div className="animate-on-scroll text-center mb-8">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-dark mb-2">
+            Документы
+          </h2>
+          <p className="text-gray-500 text-sm">Нажмите на документ, чтобы открыть его</p>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {DOCS.map((doc) => (
+            <a
+              key={doc.id}
+              href={doc.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="animate-on-scroll group block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            >
+              <div className="aspect-[3/4] overflow-hidden bg-gray-100 relative">
+                <img
+                  src={doc.preview}
+                  alt={doc.title}
+                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                  <div className="bg-white/90 rounded-full p-2.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg">
+                    <Icon name="ZoomIn" size={18} className="text-brand-blue" />
+                  </div>
+                </div>
+              </div>
+              <div className="p-3 flex items-center gap-2">
+                <Icon name="FileText" size={14} className="text-brand-blue flex-shrink-0" />
+                <span className="text-xs text-gray-600 font-medium truncate">{doc.title}</span>
+              </div>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   );
