@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter, Routes, Route } from "react-router-dom";
+import { ContentProvider } from "@/hooks/useContent";
 import Index from "./pages/Index";
 import Privacy from "./pages/Privacy";
 import Agreement from "./pages/Agreement";
@@ -19,6 +20,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <ContentProvider>
       <HashRouter>
         <Routes>
           <Route path="/" element={<Index />} />
@@ -32,6 +34,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </HashRouter>
+      </ContentProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

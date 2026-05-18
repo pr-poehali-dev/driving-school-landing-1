@@ -1,13 +1,25 @@
-const rows = [
-  { label: 'Базовая цена', competitor: '39 900 ₽', ours: '64 000 ₽', oursGood: false },
-  { label: 'Бензин и амортизация', competitor: '+ 8 000 ₽', ours: '0 ₽', oursGood: true },
-  { label: 'Пересдача теории (1 раз)', competitor: '+ 1 500 ₽', ours: '0 ₽', oursGood: true },
-  { label: 'Пересдача вождения (3 раза)', competitor: '+ 9 000 ₽', ours: '0 ₽', oursGood: true },
-  { label: 'Индивидуальный график', competitor: '+ 5 000 ₽', ours: '0 ₽', oursGood: true },
-  { label: 'Подготовка документов в ГИБДД', competitor: '+ 2 000 ₽', ours: '0 ₽', oursGood: true },
+import { useSection } from '@/hooks/useContent';
+
+type ComparisonItem = { feature: string; competitor: string; ours: string };
+
+const DEFAULT_ITEMS: ComparisonItem[] = [
+  { feature: 'Базовая цена курса', competitor: '39 900 ₽', ours: '64 000 ₽' },
+  { feature: 'Топливо / износ авто', competitor: '+8 000 ₽', ours: '0 ₽' },
+  { feature: 'Пересдача теории', competitor: '+1 500 ₽', ours: '0 ₽' },
+  { feature: 'Вождение (3 пересдачи)', competitor: '+9 000 ₽', ours: '0 ₽' },
+  { feature: 'Своё расписание', competitor: '+5 000 ₽', ours: '0 ₽' },
+  { feature: 'Подготовка документов', competitor: '+2 000 ₽', ours: '0 ₽' },
 ];
 
 const PriceComparison = () => {
+  const data = useSection('price_comparison', { items: DEFAULT_ITEMS });
+  const rows = (data.items as ComparisonItem[]).map((it, i) => ({
+    label: it.feature,
+    competitor: it.competitor,
+    ours: it.ours,
+    oursGood: i !== 0 && it.ours.trim() === '0 ₽',
+  }));
+
   const scrollToForm = () => {
     document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
   };

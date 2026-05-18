@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
+import { useSection } from '@/hooks/useContent';
 
 const NAV = [
   { label: 'О нас',        id: 'instructors' },
@@ -12,6 +13,13 @@ const NAV = [
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const data = useSection('header', {
+    phone: '+7 978 502 11 13',
+    address: 'Севастополь · ул. Хрусталева, 177А',
+    logo_url: 'https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png',
+  });
+  const phone = data.phone as string;
+  const phoneHref = `tel:${phone.replace(/[^+\d]/g, '')}`;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -36,7 +44,7 @@ const Header = () => {
         {/* Логотип */}
         <a href="/" className="flex-shrink-0">
           <img
-            src="https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png"
+            src={data.logo_url as string}
             alt="Автошкола Время Рулить"
             className={`w-auto object-contain transition-all duration-300 ${scrolled ? 'h-12 md:h-16' : 'h-16 md:h-40'}`}
             style={{ maxWidth: scrolled ? '180px' : '260px' }}
@@ -61,14 +69,14 @@ const Header = () => {
           <div className="flex flex-col items-end gap-1">
             <span className="text-blue-500 text-xs font-body flex items-center gap-1.5">
               <Icon name="MapPin" size={12} className="text-blue-400" />
-              Севастополь · ул. Хрусталева, 177А
+              {data.address as string}
             </span>
             <a
-              href="tel:+79785021113"
+              href={phoneHref}
               className="font-heading font-bold text-base text-[#1A2A3A] transition-colors duration-200 hover:text-blue-500 flex items-center gap-2"
             >
               <Icon name="Phone" size={16} className="text-blue-500" />
-              +7 978 502 11 13
+              {phone}
             </a>
           </div>
           <button
@@ -83,11 +91,11 @@ const Header = () => {
         {/* Мобильный блок: телефон + бургер */}
         <div className="lg:hidden flex items-center gap-3">
           <a
-            href="tel:+79785021113"
+            href={phoneHref}
             className="font-heading font-bold text-[#1A2A3A] text-sm flex items-center gap-1.5 hover:text-blue-500 transition-colors"
           >
             <Icon name="Phone" size={14} className="text-blue-500" />
-            <span className="hidden sm:inline">+7 978 502 11 13</span>
+            <span className="hidden sm:inline">{phone}</span>
             <span className="sm:hidden">Позвонить</span>
           </a>
           <button
@@ -114,7 +122,7 @@ const Header = () => {
           <hr className="border-gray-100" />
           <span className="text-blue-500 text-xs font-body flex items-center gap-1.5">
             <Icon name="MapPin" size={12} />
-            Севастополь · ул. Хрусталева, 177А
+            {data.address as string}
           </span>
           <button
             onClick={() => scrollTo('contact-form')}

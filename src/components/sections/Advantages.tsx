@@ -1,11 +1,4 @@
-const checkList = [
-  '58 часов практики — бензин уже включён',
-  'Обучение на МКПП или АКПП — на выбор',
-  'Свой автодром — никаких очередей',
-  'Рассрочка без банков — первый взнос 15 000 ₽',
-  'Инструктор-женщина по запросу',
-  'Никаких «левых» пересдач и скрытых доплат',
-];
+import { useSection } from '@/hooks/useContent';
 
 const carsMKPP = [
   {
@@ -44,6 +37,27 @@ const carsAKPP = [
 ];
 
 const Advantages = () => {
+  const data = useSection('advantages', {
+    checklist: [
+      '58 часов практики с топливом в стоимости',
+      'МКПП или АКПП — выбираете сами',
+      'Собственный автодром без очередей',
+      'Рассрочка без банков — первый взнос 15 000 ₽',
+      'Инструктор-женщина — по запросу',
+      'Никаких скрытых платежей и липовых пересдач',
+    ] as string[],
+    cars_manual: 'LADA VESTA, LADA GRANTA, Renault Logan',
+    cars_auto: 'KIA CEED, Chevrolet Aveo, Hyundai Solaris',
+    stats: [
+      { value: '58', label: 'часов практики с топливом' },
+      { value: '5', label: 'инструкторов-основателей' },
+      { value: '64 000', label: '₽ полный курс, всё включено' },
+      { value: '10', label: 'минут до автодрома' },
+    ] as Array<{ value: string; label: string }>,
+  });
+  const checkList = data.checklist as string[];
+  const stats = data.stats as Array<{ value: string; label: string }>;
+
   return (
     <section id="advantages" className="py-16 md:py-24 bg-white">
       <div className="max-w-5xl mx-auto px-4">
@@ -69,21 +83,21 @@ const Advantages = () => {
 
         {/* Метрики */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-blue-100 rounded-2xl overflow-hidden mb-10 animate-on-scroll">
-          {[
-            { value: '58', unit: 'часов', desc: 'практики с ГСМ' },
-            { value: '5', unit: 'инструкторов', desc: 'сооснователей' },
-            { value: '64 000', unit: '₽', desc: 'полный курс, всё включено' },
-            { value: '10', unit: 'минут', desc: 'до нашего автодрома' },
-          ].map((m, i) => (
-            <div key={i} className="bg-white px-6 py-5 hover:bg-blue-50 transition-colors duration-200 group">
-              <div className="flex items-baseline gap-1.5 mb-1">
-                <span className="font-heading font-bold text-[#1A2A3A] group-hover:text-blue-600 transition-colors"
-                  style={{ fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)' }}>{m.value}</span>
-                <span className="text-blue-500 font-heading font-semibold text-base">{m.unit}</span>
+          {stats.map((m, i) => {
+            const labelParts = m.label.split(' ');
+            const unit = labelParts[0] || '';
+            const desc = labelParts.slice(1).join(' ');
+            return (
+              <div key={i} className="bg-white px-6 py-5 hover:bg-blue-50 transition-colors duration-200 group">
+                <div className="flex items-baseline gap-1.5 mb-1">
+                  <span className="font-heading font-bold text-[#1A2A3A] group-hover:text-blue-600 transition-colors"
+                    style={{ fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)' }}>{m.value}</span>
+                  <span className="text-blue-500 font-heading font-semibold text-base">{unit}</span>
+                </div>
+                <p className="text-gray-500 text-xs font-body leading-tight">{desc}</p>
               </div>
-              <p className="text-gray-500 text-xs font-body leading-tight">{m.desc}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">

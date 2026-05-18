@@ -1,4 +1,5 @@
 import Icon from '@/components/ui/icon';
+import { useSection } from '@/hooks/useContent';
 
 const LOGO_URL = 'https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png';
 
@@ -9,14 +10,23 @@ const WATERMARKS = [
   { top: '88%', left: '17%' }, { top: '88%', left: '42%' }, { top: '88%', left: '67%' }, { top: '88%', left: '92%' },
 ];
 
-const features = [
-  { icon: 'Fuel', text: 'Бензин включён — ни копейки сверху' },
-  { icon: 'RefreshCw', text: 'Рассрочка без банков — первый взнос 15 000 ₽' },
-  { icon: 'Plus', text: 'Дополнительные часы по желанию' },
-  { icon: 'Medal', text: 'Скидка 5 000 ₽ для участников СВО' },
-];
-
 const Pricing = () => {
+  const data = useSection('pricing', {
+    price: '64 000',
+    old_price: '75 000',
+    discount: '-11 000',
+    includes: 'Теория + практика + топливо + подача в ГИБДД',
+    svo_discount: '5 000',
+    installment_first: '15 000',
+    features: [
+      { icon: 'Fuel', text: 'Топливо включено — никаких доплат' },
+      { icon: 'CreditCard', text: 'Рассрочка без банков — первый взнос 15 000 ₽' },
+      { icon: 'Clock', text: 'Дополнительные часы по необходимости' },
+      { icon: 'Shield', text: 'Скидка 5 000 ₽ для участников СВО' },
+    ] as Array<{ icon: string; text: string }>,
+  });
+  const features = data.features as Array<{ icon: string; text: string }>;
+
   const scrollToForm = () => {
     document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -65,20 +75,20 @@ const Pricing = () => {
                   <p className="text-blue-300 text-sm font-body mb-1 uppercase tracking-widest">Полный курс</p>
                   <div className="flex items-baseline gap-2">
                     <span className="font-heading font-bold text-white" style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', lineHeight: 1 }}>
-                      64 000
+                      {data.price as string}
                     </span>
                     <span className="font-heading font-bold text-blue-300 text-3xl">₽</span>
                   </div>
                 </div>
                 <div className="ml-auto text-right">
-                  <div className="text-white/60 text-xs font-body line-through mb-1">от 75 000 ₽</div>
+                  <div className="text-white/60 text-xs font-body line-through mb-1">от {data.old_price as string} ₽</div>
                   <div className="bg-blue-500 text-white text-xs font-heading font-bold px-3 py-1 rounded-full">
-                    -11 000 ₽
+                    {data.discount as string} ₽
                   </div>
                 </div>
               </div>
               <p className="relative text-blue-200/70 text-sm font-body mt-3">
-                Теория + практика + бензин + сдача экзамена
+                {data.includes as string}
               </p>
             </div>
 

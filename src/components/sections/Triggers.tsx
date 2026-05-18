@@ -1,19 +1,6 @@
-const LOGO_URL = 'https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png';
+import { useSection } from '@/hooks/useContent';
 
-const triggers = [
-  {
-    img: 'https://cdn.poehali.dev/files/7c7fed0d-f42b-46cf-8fa2-beb2d665c0ca.jpg',
-    title: 'Инструктор-женщина',
-    text: 'Стесняетесь ошибаться при мужчине? Просто скажите при записи — мы подберём инструктора. Спокойно, в вашем темпе, без критики.',
-    accent: 'По запросу',
-  },
-  {
-    img: 'https://cdn.poehali.dev/files/55659d71-f0a8-4683-a52d-5154aff83245.jpg',
-    title: 'Скидка для участников СВО',
-    text: 'Спасибо за службу. Поставьте галочку в форме записи — скидка 5 000 ₽ применится автоматически.',
-    accent: '-5 000 ₽',
-  },
-];
+const LOGO_URL = 'https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png';
 
 /* Позиции логотипов-водяных знаков — симметричная сетка */
 const WATERMARKS = [
@@ -24,6 +11,24 @@ const WATERMARKS = [
 ];
 
 const Triggers = () => {
+  const data = useSection('triggers', {
+    items: [
+      {
+        badge: 'По запросу',
+        title: 'Инструктор-женщина',
+        description: 'Ирина Дарчич — 8 лет опыта. Спокойно, без спешки, без оценок.',
+        image: 'https://cdn.poehali.dev/files/2937ba8a-51cb-4747-bf73-be0fcc7f1c6a.jpg',
+      },
+      {
+        badge: 'Скидка −5 000 ₽',
+        title: 'Участникам СВО',
+        description: 'Подтверждается документом. Скидка применяется автоматически.',
+        image: '',
+      },
+    ] as Array<{ badge: string; title: string; description: string; image: string }>,
+  });
+  const triggers = data.items as Array<{ badge: string; title: string; description: string; image: string }>;
+
   return (
     <section id="triggers" className="py-16 md:py-24 bg-white relative overflow-hidden">
 
@@ -67,14 +72,18 @@ const Triggers = () => {
             >
               {/* Фото — слева, занимает ~45% ширины, полная высота */}
               <div className="relative md:w-5/12 h-56 md:h-auto flex-shrink-0 overflow-hidden">
-                <img
-                  src={t.img}
-                  alt={t.title}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
+                {t.image ? (
+                  <img
+                    src={t.image}
+                    alt={t.title}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-200" />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/10" />
                 <div className="absolute top-3 left-3 bg-blue-500 text-white text-xs font-heading font-bold px-3 py-1 rounded-full">
-                  {t.accent}
+                  {t.badge}
                 </div>
               </div>
 
@@ -83,7 +92,7 @@ const Triggers = () => {
                 <h3 className="font-heading text-2xl font-bold text-[#1A2A3A] mb-3 leading-snug">
                   {t.title}
                 </h3>
-                <p className="text-gray-500 text-base leading-relaxed">{t.text}</p>
+                <p className="text-gray-500 text-base leading-relaxed">{t.description}</p>
               </div>
 
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500/0 via-blue-500/60 to-blue-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

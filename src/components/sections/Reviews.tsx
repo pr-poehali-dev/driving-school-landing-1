@@ -1,23 +1,27 @@
-const reviews = [
-  {
-    text: 'Я боялась даже садиться за руль. Инструктор-женщина — это спасение. Никто не кричал, объясняли спокойно. Сдала с первого раза.',
-    author: 'Анна',
-    age: '34 года',
-    stars: 5,
-  },
-  {
-    text: 'До этого учился в «Профессионале» — бросил после третьего занятия. Там конвейер. Здесь инструкторы реально переживают, чтобы ты понял.',
-    author: 'Дмитрий',
-    age: '22 года',
-    stars: 5,
-  },
-  {
-    text: 'Свой автодром — это космос. Не надо мотаться на другой конец города. А рассрочка без банков важная деталь в наше время, внесла 15 тысяч — и сразу за руль.',
-    author: 'Екатерина',
-    age: '29 лет',
-    stars: 5,
-  },
+import { useSection } from '@/hooks/useContent';
+
+type ReviewItem = {
+  id: number;
+  author_name: string;
+  author_age: number;
+  rating: number;
+  text: string;
+};
+
+const DEFAULT_REVIEWS: ReviewItem[] = [
+  { id: 1, author_name: 'Анна', author_age: 34, rating: 5, text: 'Очень боялась учиться вождению. Выбрала инструктора-женщину — и не пожалела. Ирина объясняла всё спокойно, без спешки. Сдала с первого раза!' },
+  { id: 2, author_name: 'Дмитрий', author_age: 22, rating: 5, text: 'Учился в другой школе — бросил. Здесь совсем другой подход: не просто катаешься по маршруту, а реально разбираешь каждую ситуацию. Чувствуется, что инструктору не всё равно.' },
+  { id: 3, author_name: 'Екатерина', author_age: 29, rating: 5, text: 'Понравился свой автодром — не нужно ждать в очереди. Рассрочка без банков очень выручила. Рекомендую всем знакомым.' },
 ];
+
+const formatAge = (age: number) => {
+  const n = age % 100;
+  const n1 = age % 10;
+  if (n > 10 && n < 20) return `${age} лет`;
+  if (n1 === 1) return `${age} год`;
+  if (n1 >= 2 && n1 <= 4) return `${age} года`;
+  return `${age} лет`;
+};
 
 const Stars = ({ count }: { count: number }) => (
   <div className="flex gap-0.5">
@@ -30,6 +34,9 @@ const Stars = ({ count }: { count: number }) => (
 );
 
 const Reviews = () => {
+  const data = useSection('reviews', { items: DEFAULT_REVIEWS });
+  const reviews = data.items as ReviewItem[];
+
   return (
     <section id="reviews" className="py-16 md:py-24 bg-white">
       <div className="max-w-5xl mx-auto px-4">
@@ -56,7 +63,7 @@ const Reviews = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {reviews.map((r, i) => (
             <div
-              key={i}
+              key={r.id ?? i}
               className={`animate-on-scroll stagger-${i + 1} group relative bg-[#F5F7FA] rounded-2xl p-7
                 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(59,130,246,0.1)]
                 transition-all duration-300 cursor-default overflow-hidden`}
@@ -67,19 +74,19 @@ const Reviews = () => {
               </div>
 
               <div className="relative pt-6">
-                <Stars count={r.stars} />
+                <Stars count={r.rating} />
                 <p className="text-gray-600 text-sm leading-relaxed mt-4 mb-6">
                   {r.text}
                 </p>
                 <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
                   <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
                     <span className="text-blue-500 font-heading font-bold text-sm">
-                      {r.author[0]}
+                      {r.author_name[0]}
                     </span>
                   </div>
                   <div>
-                    <p className="font-heading font-bold text-[#1A2A3A] text-sm">{r.author}</p>
-                    <p className="text-gray-400 text-xs">{r.age}</p>
+                    <p className="font-heading font-bold text-[#1A2A3A] text-sm">{r.author_name}</p>
+                    <p className="text-gray-400 text-xs">{formatAge(r.author_age)}</p>
                   </div>
                 </div>
               </div>

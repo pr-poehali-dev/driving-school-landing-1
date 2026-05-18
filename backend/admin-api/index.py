@@ -12,16 +12,13 @@ POST /content/section/{name}/reset — сброс к дефолту
 import json
 import os
 import time
-import hmac
 import hashlib
-import base64
-import boto3
 
-CORS_HEADERS = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Authorization',
-}
+from _shared import (
+    CORS_HEADERS, get_s3, json_response,
+    s3_get_json, s3_put_json,
+    verify_jwt, verify_token,
+)
 
 DEFAULT_CONTENT = {
     'hero': {
@@ -197,70 +194,21 @@ DEFAULT_CONTENT = {
 VALID_SECTIONS = list(DEFAULT_CONTENT.keys())
 
 
-def get_s3():
-    return boto3.client('s3', endpoint_url='https://bucket.poehali.dev',
-                        aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
-                        aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY'])
-
-
 def hash_password(password: str) -> str:
     salt = os.environ.get('ADMIN_JWT_SECRET', 'salt')[:16]
     return hashlib.sha256(f"{salt}{password}".encode()).hexdigest()
 
 
 def make_jwt(payload: dict) -> str:
+    import hmac as _hmac
+    import base64 as _b64
     secret = os.environ.get('ADMIN_JWT_SECRET', 'fallback-secret-change-me')
-    header = base64.urlsafe_b64encode(json.dumps({'alg': 'HS256', 'typ': 'JWT'}).encode()).decode().rstrip('=')
-    payload_b64 = base64.urlsafe_b64encode(json.dumps(payload).encode()).decode().rstrip('=')
+    header = _b64.urlsafe_b64encode(json.dumps({'alg': 'HS256', 'typ': 'JWT'}).encode()).decode().rstrip('=')
+    payload_b64 = _b64.urlsafe_b64encode(json.dumps(payload).encode()).decode().rstrip('=')
     sig_input = f"{header}.{payload_b64}"
-    sig = hmac.new(secret.encode(), sig_input.encode(), hashlib.sha256).digest()
-    sig_b64 = base64.urlsafe_b64encode(sig).decode().rstrip('=')
+    sig = _hmac.new(secret.encode(), sig_input.encode(), hashlib.sha256).digest()
+    sig_b64 = _b64.urlsafe_b64encode(sig).decode().rstrip('=')
     return f"{sig_input}.{sig_b64}"
-
-
-def verify_jwt(token: str):
-    try:
-        secret = os.environ.get('ADMIN_JWT_SECRET', 'fallback-secret-change-me')
-        parts = token.split('.')
-        if len(parts) != 3:
-            return None
-        sig_input = f"{parts[0]}.{parts[1]}"
-        expected_sig = hmac.new(secret.encode(), sig_input.encode(), hashlib.sha256).digest()
-        expected_b64 = base64.urlsafe_b64encode(expected_sig).decode().rstrip('=')
-        if not hmac.compare_digest(parts[2], expected_b64):
-            return None
-        padding = 4 - len(parts[1]) % 4
-        payload = json.loads(base64.urlsafe_b64decode(parts[1] + '=' * padding))
-        if payload.get('exp', 0) < time.time():
-            return None
-        return payload
-    except Exception:
-        return None
-
-
-def verify_token(event: dict) -> bool:
-    auth = event.get('headers', {}).get('X-Authorization', '') or event.get('headers', {}).get('Authorization', '')
-    token = auth.replace('Bearer ', '').strip()
-    return bool(verify_jwt(token)) if token else False
-
-
-def s3_get_json(s3, key: str, default):
-    try:
-        obj = s3.get_object(Bucket='files', Key=key)
-        return json.loads(obj['Body'].read())
-    except Exception:
-        return default
-
-
-def s3_put_json(s3, key: str, data):
-    s3.put_object(Bucket='files', Key=key,
-                  Body=json.dumps(data, ensure_ascii=False, indent=2),
-                  ContentType='application/json')
-
-
-def json_response(data, status=200):
-    return {'statusCode': status, 'headers': {**CORS_HEADERS, 'Content-Type': 'application/json'},
-            'body': json.dumps(data, ensure_ascii=False)}
 
 
 def handler(event: dict, context) -> dict:
@@ -310,8 +258,12 @@ def handler(event: dict, context) -> dict:
 
     # ========== CONTENT ==========
 
-    if '/content/sections' in path and method == 'GET':
-        return json_response({'sections': VALID_SECTIONS})
+    if '/content/all' in path and method == 'GET':
+        # Один запрос — все секции (для публичной загрузки фронтом)
+        result = {}
+        for section in VALID_SECTIONS:
+            result[section] = s3_get_json(s3, f'admin/content/{section}.json', DEFAULT_CONTENT[section])
+        return json_response({'sections': result})
 
     if '/content/section/' in path:
         parts = path.split('/content/section/')

@@ -1,6 +1,22 @@
 import Icon from '@/components/ui/icon';
+import { useSection } from '@/hooks/useContent';
 
 const Footer = () => {
+  const data = useSection('footer', {
+    phone: '+7 978 502 11 13',
+    email: 'timedrive92@mail.ru',
+    address_office: 'ул. Хрусталева, 177А, ТЦ «Одиз»',
+    address_autodrome: 'ул. Стахановцев, 18',
+    hours: 'Пн–Пт 10:00–18:00',
+    vk_url: 'https://vk.com/vremyarulit',
+    telegram_url: 'https://t.me/vremyarulit',
+    company_name: 'ООО «ВРЕМЯ РУЛИТЬ»',
+    inn: '9200026796',
+    ogrn: '1253200001169',
+  });
+  const phone = data.phone as string;
+  const phoneHref = `tel:${phone.replace(/[^+\d]/g, '')}`;
+
   return (
     <footer className="bg-[#0f1e30] text-white pt-14 pb-8">
       <div className="max-w-5xl mx-auto px-5 md:px-8">
@@ -26,21 +42,21 @@ const Footer = () => {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="tel:+79785021113"
+                  href={phoneHref}
                   className="font-heading font-bold text-lg text-white hover:text-blue-400 transition-colors flex items-center gap-2"
                 >
                   <Icon name="Phone" size={16} className="text-blue-400 flex-shrink-0" />
-                  +7 978 502 11 13
+                  {phone}
                 </a>
               </li>
               <li className="text-gray-400 text-sm flex items-start gap-2">
                 <Icon name="Clock" size={14} className="text-blue-400 flex-shrink-0 mt-0.5" />
-                <span>Пн–Пт: 10:00–18:00<br />Сб–Вс: по записи</span>
+                <span>{data.hours as string}<br />Сб–Вс: по записи</span>
               </li>
               {/* Соцсети */}
               <li className="pt-2 flex items-center gap-3">
                 <a
-                  href="https://vk.com/timedrivesev"
+                  href={data.vk_url as string}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-sm"
@@ -65,8 +81,7 @@ const Footer = () => {
                   Теория и офис
                 </p>
                 <p className="text-gray-300 leading-relaxed">
-                  ул. Хрусталева, 177А<br />
-                  ТЦ «Адиз», г. Севастополь
+                  {data.address_office as string}
                 </p>
               </li>
               <li className="text-sm">
@@ -75,7 +90,7 @@ const Footer = () => {
                   Автодром (практика)
                 </p>
                 <p className="text-gray-300 leading-relaxed">
-                  ул. Стахановцев, 18<br />
+                  {data.address_autodrome as string}<br />
                   Арендованный автодром
                 </p>
               </li>
@@ -123,10 +138,10 @@ const Footer = () => {
         {/* Разделитель */}
         <div className="border-t border-white/10 pt-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
           <p className="text-gray-500 text-xs leading-relaxed">
-            © 2026 ООО «ВРЕМЯ РУЛИТЬ» · ИНН 9200026796 · ОГРН 1253200001169
+            © 2026 {data.company_name as string} · ИНН {data.inn as string} · ОГРН {data.ogrn as string}
           </p>
           <p className="text-gray-600 text-xs">
-            г. Севастополь, ул. Хрусталева, 177А, ТЦ «Адиз»
+            г. Севастополь, {data.address_office as string}
           </p>
         </div>
       </div>

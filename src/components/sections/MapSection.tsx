@@ -1,6 +1,17 @@
 import Icon from '@/components/ui/icon';
+import { useSection } from '@/hooks/useContent';
 
 const MapSection = () => {
+  const data = useSection('map', {
+    address_office: 'Севастополь, ул. Хрусталева, 177А, ТЦ «Адиз»',
+    address_autodrome: 'Севастополь, ул. Стахановцев, 18',
+    hours_weekdays: 'Пн–Пт 10:00–18:00 (обед 13:00–14:00)',
+    hours_weekend: 'Сб–Вс по записи',
+    phone: '+7 978 502 11 13',
+  });
+  const phone = data.phone as string;
+  const phoneHref = `tel:${phone.replace(/[^+\d]/g, '')}`;
+
   return (
     <section id="map" className="py-16 md:py-24 bg-white">
       <div className="max-w-5xl mx-auto px-4">
@@ -23,12 +34,12 @@ const MapSection = () => {
               </div>
               <div>
                 <h3 className="font-heading text-lg font-bold text-brand-dark">Теория и офис</h3>
-                <p className="text-gray-600">Севастополь, ул. Хрусталева, 177А, ТЦ «Адиз»</p>
+                <p className="text-gray-600">{data.address_office as string}</p>
               </div>
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-500 mt-2">
               <Icon name="Clock" size={14} />
-              <span>Пн–Пт: 10:00–18:00 (обед 13–14), Сб–Вс: по записи</span>
+              <span>{data.hours_weekdays as string}, {data.hours_weekend as string}</span>
             </div>
           </div>
 
@@ -39,13 +50,13 @@ const MapSection = () => {
               </div>
               <div>
                 <h3 className="font-heading text-lg font-bold text-brand-dark">Автодром (практика)</h3>
-                <p className="text-gray-600">Севастополь, ул. Стахановцев, 18</p>
+                <p className="text-gray-600">{data.address_autodrome as string}</p>
                 <p className="text-gray-500 text-sm mt-1">Инструктор встречает на остановке Хрюкина на Острякова и отвозит на автодром — идти пешком не нужно</p>
               </div>
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-500 mt-2">
               <Icon name="Phone" size={14} />
-              <a href="tel:+79785021113" className="text-brand-blue hover:underline font-semibold">+7 978 502 11 13</a>
+              <a href={phoneHref} className="text-brand-blue hover:underline font-semibold">{phone}</a>
             </div>
           </div>
         </div>

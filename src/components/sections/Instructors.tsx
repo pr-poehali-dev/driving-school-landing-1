@@ -1,52 +1,29 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
+import { useSection } from '@/hooks/useContent';
 
-const instructors = [
-  {
-    name: 'Ридван Шамсудинов',
-    years: '15',
-    spec: 'Основатель · Городское вождение',
-    quote: 'Я сам инструктор. Я знаю, как учат в других школах — и знаю, как надо. Поэтому открыл свою.',
-    photo: 'https://cdn.poehali.dev/files/c97d13a4-dac4-46df-b994-94a251935c4d.jpg',
-    alt: 'Инструктор по вождению Ридван Шамсудинов — основатель автошколы Время рулить в Севастополе',
-  },
-  {
-    name: 'Ирина Дарчич',
-    years: '8',
-    spec: 'Инструктор-женщина · Новички',
-    quote: 'Со мной не страшно. Спокойно, без спешки, без оценок — просто учимся ехать.',
-    photo: 'https://cdn.poehali.dev/files/2937ba8a-51cb-4747-bf73-be0fcc7f1c6a.jpg',
-    alt: 'Инструктор-женщина по вождению в Севастополе Ирина Дарчич — обучение для новичков',
-  },
-  {
-    name: 'Дмитрий Дарчич',
-    years: '18',
-    spec: 'Сложные манёвры · МКПП',
-    quote: 'Механика — не страшно, если объяснить правильно. За 18 лет я научил этому сотни людей.',
-    photo: 'https://cdn.poehali.dev/files/3a58eaf4-a04b-4f47-8af1-15c4eaed2862.jpg',
-    alt: 'Инструктор по вождению на механике МКПП Дмитрий Дарчич — автошкола Севастополь',
-  },
-  {
-    name: 'Эльдар Музафаров',
-    years: '10',
-    spec: 'Подготовка к экзамену',
-    quote: 'Экзамен в ГИБДД — это не лотерея, если готовиться правильно. Я знаю маршруты и знаю систему.',
-    photo: 'https://cdn.poehali.dev/files/50cf5106-21c3-4232-993a-1ad028250a52.jpg',
-    alt: 'Инструктор по подготовке к экзамену ГИБДД Эльдар Музафаров — автошкола Время рулить Севастополь',
-  },
-  {
-    name: 'Ферат Аблялимов',
-    years: '9',
-    spec: 'Высшее · Техник-механик · с 2016 г.',
-    quote: 'Мне нравится видеть эмоции людей, когда у них получается управлять автомобилем. И особенно — когда они получают права.',
-    photo: 'https://cdn.poehali.dev/files/763fb878-ad01-4aed-b0de-312d528df7a0.jpg',
-    photoPosition: '75% top',
-    alt: 'Инструктор по вождению Ферат Аблялимов — автошкола Время рулить Севастополь',
-    advantage: 'Создаёт доверительную приятную обстановку, поддерживает как друга',
-  },
+type InstructorItem = {
+  id: number;
+  name: string;
+  years: string;
+  spec: string;
+  quote: string;
+  photo: string;
+  photo_position: string;
+  advantage: string;
+};
+
+const DEFAULT_INSTRUCTORS: InstructorItem[] = [
+  { id: 1, name: 'Ридван Шамсудинов', years: '15', spec: 'Основатель · Городское вождение', quote: 'Я сам инструктор. Я знаю, как учат в других школах — и знаю, как надо. Поэтому открыл свою.', photo: 'https://cdn.poehali.dev/files/c97d13a4-dac4-46df-b994-94a251935c4d.jpg', photo_position: 'center top', advantage: '' },
+  { id: 2, name: 'Ирина Дарчич', years: '8', spec: 'Инструктор-женщина · Новички', quote: 'Со мной не страшно. Спокойно, без спешки, без оценок — просто учимся ехать.', photo: 'https://cdn.poehali.dev/files/2937ba8a-51cb-4747-bf73-be0fcc7f1c6a.jpg', photo_position: 'center top', advantage: '' },
+  { id: 3, name: 'Дмитрий Дарчич', years: '18', spec: 'Сложные манёвры · МКПП', quote: 'Механика — не страшно, если объяснить правильно. За 18 лет я научил этому сотни людей.', photo: 'https://cdn.poehali.dev/files/3a58eaf4-a04b-4f47-8af1-15c4eaed2862.jpg', photo_position: 'center top', advantage: '' },
+  { id: 4, name: 'Эльдар Музафаров', years: '10', spec: 'Подготовка к экзамену', quote: 'Экзамен в ГИБДД — это не лотерея, если готовиться правильно. Я знаю маршруты и знаю систему.', photo: 'https://cdn.poehali.dev/files/50cf5106-21c3-4232-993a-1ad028250a52.jpg', photo_position: 'center top', advantage: '' },
+  { id: 5, name: 'Ферат Аблялимов', years: '9', spec: 'Высшее · Техник-механик · с 2016 г.', quote: 'Мне нравится видеть эмоции людей, когда у них получается управлять автомобилем. И особенно — когда они получают права.', photo: 'https://cdn.poehali.dev/files/763fb878-ad01-4aed-b0de-312d528df7a0.jpg', photo_position: '75% top', advantage: 'Создаёт доверительную приятную обстановку, поддерживает как друга' },
 ];
 
 const Instructors = () => {
+  const data = useSection('instructors', { items: DEFAULT_INSTRUCTORS });
+  const instructors = data.items as InstructorItem[];
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedInstructor, setSelectedInstructor] = useState('');
   const [form, setForm] = useState({ name: '', phone: '' });
@@ -82,7 +59,7 @@ const Instructors = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
           {instructors.map((inst, i) => (
             <div
-              key={i}
+              key={inst.id ?? i}
               className={`animate-on-scroll stagger-${i + 1} group bg-white rounded-2xl
                 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(59,130,246,0.12)]
                 transition-all duration-300 cursor-default relative overflow-hidden flex flex-col`}
@@ -91,9 +68,9 @@ const Instructors = () => {
               <div className="relative h-56 overflow-hidden flex-shrink-0">
                 <img
                   src={inst.photo}
-                  alt={inst.alt}
+                  alt={`Инструктор по вождению ${inst.name} — автошкола Время рулить Севастополь`}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  style={{ objectPosition: ('photoPosition' in inst ? inst.photoPosition : 'center top') as string }}
+                  style={{ objectPosition: (inst.photo_position || 'center top') as string }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1A2A3A]/70 via-transparent to-transparent" />
               </div>
@@ -115,9 +92,9 @@ const Instructors = () => {
                 </blockquote>
 
                 {/* Преимущество */}
-                {'advantage' in inst && inst.advantage && (
+                {inst.advantage && (
                   <p className="text-blue-600 text-xs font-medium bg-blue-50 rounded-lg px-3 py-2 mb-3 leading-snug">
-                    {inst.advantage as string}
+                    {inst.advantage}
                   </p>
                 )}
 
