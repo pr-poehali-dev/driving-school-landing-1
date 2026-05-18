@@ -50,17 +50,7 @@ const Footer = () => {
                   </svg>
                   ВКонтакте
                 </a>
-                <a
-                  href="https://t.me/timedrivesev"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-sm"
-                >
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8l-1.68 7.92c-.12.56-.48.7-.96.44l-2.68-1.98-1.28 1.24c-.14.14-.28.2-.56.2l.2-2.76 4.96-4.48c.22-.2-.04-.3-.32-.1L7.4 14.08 4.76 13.2c-.56-.18-.58-.56.12-.82l8.96-3.46c.46-.18.88.12.8.88z"/>
-                  </svg>
-                  Telegram
-                </a>
+
               </li>
             </ul>
           </div>
@@ -128,17 +118,6 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-        </div>
-
-        {/* Гео-строка SEO */}
-        <div className="border-t border-white/10 pt-6 mb-4">
-          <p className="text-gray-400 text-sm font-medium">
-            Автошкола в Севастополе, Балаклаве и Инкермане —{' '}
-            <a href="tel:+79785021113" className="text-blue-400 hover:text-blue-300 transition-colors font-bold">+7 978 502 11 13</a>
-          </p>
-          <p className="text-gray-600 text-xs mt-1">
-            Автодром на Стахановцева, 18
-          </p>
         </div>
 
         {/* Разделитель */}
