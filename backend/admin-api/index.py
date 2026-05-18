@@ -151,6 +151,19 @@ DEFAULT_CONTENT = {
         'competitor_total': '~65 400 ₽',
         'our_total': '64 000 ₽',
     },
+    'cookies_page': {
+        'site_domain': 'твоё.времярулить.рф',
+        'operator_name': 'ООО «ВРЕМЯ РУЛИТЬ»',
+        'inn': '9200026796',
+        'phone': '+7 978 502 11 13',
+        'email': 'timedrive92@mail.ru',
+        'site_url': 'времярулить.рф',
+        'privacy_policy_url': '/privacy',
+        'intro_text': 'Cookie (куки) — небольшие текстовые файлы, которые наш сайт сохраняет на вашем устройстве. Они помогают сайту работать лучше. Cookie, которые могут идентифицировать вас, считаются Персональными данными согласно 152-ФЗ.',
+        'analytics_services': 'Яндекс.Метрика, Google Analytics',
+        'storage_session': 'Удаляются при закрытии браузера',
+        'storage_persistent': 'Не более 12 месяцев с последнего визита',
+    },
 }
 
 VALID_SECTIONS = list(DEFAULT_CONTENT.keys())
