@@ -120,6 +120,12 @@ const Footer = () => {
                   Политика Cookie
                 </a>
               </li>
+              <li>
+                <a href="/terms" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2">
+                  <Icon name="ScrollText" size={13} className="text-blue-400 flex-shrink-0" />
+                  Пользовательское соглашение
+                </a>
+              </li>
             </ul>
           </div>
         </div>

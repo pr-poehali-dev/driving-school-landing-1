@@ -90,6 +90,7 @@ const AdminSettings = ({ token }: Props) => {
             { label: 'Согласие на обработку ПД', href: '/agreement' },
             { label: 'Реквизиты', href: '/requisites' },
             { label: 'Политика Cookie', href: '/cookies' },
+            { label: 'Пользовательское соглашение', href: '/terms' },
           ].map(({ label, href }) => (
             <a key={href} href={href} target="_blank" rel="noopener noreferrer"
               className="flex items-center justify-between text-gray-400 hover:text-white text-sm py-1.5 border-b border-gray-800 last:border-0 transition-colors">

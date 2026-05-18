@@ -18,6 +18,7 @@ const SECTIONS = [
   { id: 'map', label: 'Контакты и карта' },
   { id: 'price_comparison', label: 'Сравнение цен' },
   { id: 'cookies_page', label: 'Политика Cookie' },
+  { id: 'terms_page', label: 'Польз. соглашение' },
 ];
 
 const Field = ({ label, value, onChange, multiline = false, type = 'text' }: {
