@@ -4,22 +4,22 @@ import Icon from '@/components/ui/icon';
 
 interface Props { token: string; }
 
-const SECTIONS = [
-  { id: 'hero', label: 'Главный экран' },
-  { id: 'header', label: 'Шапка' },
-  { id: 'footer', label: 'Подвал' },
-  { id: 'pricing', label: 'Цены' },
-  { id: 'advantages', label: 'Преимущества' },
-  { id: 'pain_points', label: 'Боли клиентов' },
-  { id: 'triggers', label: 'Триггеры' },
-  { id: 'instructors', label: 'Инструкторы' },
-  { id: 'reviews', label: 'Отзывы' },
-  { id: 'faq', label: 'FAQ' },
-  { id: 'map', label: 'Контакты и карта' },
-  { id: 'price_comparison', label: 'Сравнение цен' },
-  { id: 'cookies_page', label: 'Политика Cookie' },
-  { id: 'terms_page', label: 'Польз. соглашение' },
-  { id: 'documents', label: 'Документы' },
+const SECTIONS: { id: string; label: string; icon: string; description: string }[] = [
+  { id: 'hero', label: 'Главный экран', icon: 'Sparkles', description: 'Заголовок, подзаголовок, баннер и CTA-кнопка' },
+  { id: 'header', label: 'Шапка', icon: 'PanelTop', description: 'Логотип, телефон, адрес в шапке' },
+  { id: 'footer', label: 'Подвал', icon: 'PanelBottom', description: 'Контакты, реквизиты, ссылки на соцсети' },
+  { id: 'pricing', label: 'Цены', icon: 'BadgePercent', description: 'Цена курса, скидки, рассрочка' },
+  { id: 'advantages', label: 'Преимущества', icon: 'Award', description: 'Чек-лист преимуществ, автопарк, статистика' },
+  { id: 'pain_points', label: 'Боли клиентов', icon: 'HeartCrack', description: 'Возражения и ответы на них' },
+  { id: 'triggers', label: 'Триггеры', icon: 'Zap', description: 'Спецпредложения и УТП-блоки' },
+  { id: 'instructors', label: 'Инструкторы', icon: 'Users', description: 'Карточки преподавателей' },
+  { id: 'reviews', label: 'Отзывы', icon: 'MessageSquareQuote', description: 'Отзывы учеников' },
+  { id: 'faq', label: 'FAQ', icon: 'HelpCircle', description: 'Частые вопросы и ответы' },
+  { id: 'map', label: 'Контакты и карта', icon: 'MapPin', description: 'Адреса офиса и автодрома, режим работы' },
+  { id: 'price_comparison', label: 'Сравнение цен', icon: 'BarChart3', description: 'Таблица сравнения с конкурентами' },
+  { id: 'cookies_page', label: 'Политика Cookie', icon: 'Cookie', description: 'Текст страницы /cookies' },
+  { id: 'terms_page', label: 'Польз. соглашение', icon: 'FileText', description: 'Текст страницы /terms' },
+  { id: 'documents', label: 'Документы', icon: 'Files', description: 'Список файлов в разделе документов' },
 ];
 
 const Field = ({ label, value, onChange, multiline = false, type = 'text' }: {
@@ -46,7 +46,7 @@ const Field = ({ label, value, onChange, multiline = false, type = 'text' }: {
 );
 
 const AdminContentEditor = ({ token }: Props) => {
-  const [activeSection, setActiveSection] = useState('hero');
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const [data, setData] = useState<Record<string, unknown>>({});
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -62,9 +62,12 @@ const AdminContentEditor = ({ token }: Props) => {
     finally { setLoading(false); }
   };
 
-  useEffect(() => { loadSection(activeSection); }, [activeSection]);
+  useEffect(() => {
+    if (activeSection) loadSection(activeSection);
+  }, [activeSection]);
 
   const save = async () => {
+    if (!activeSection) return;
     setSaving(true);
     try {
       await fetch(`${ADMIN_API}/content/section/${activeSection}`, {
@@ -79,6 +82,7 @@ const AdminContentEditor = ({ token }: Props) => {
   };
 
   const reset = async () => {
+    if (!activeSection) return;
     if (!confirm('Сбросить к исходным данным?')) return;
     setSaving(true);
     try {
@@ -204,10 +208,50 @@ const AdminContentEditor = ({ token }: Props) => {
     });
   };
 
+  // Обзорный экран — сетка карточек секций
+  if (!activeSection) {
+    return (
+      <div>
+        <div className="mb-5">
+          <h2 className="text-white font-medium text-lg mb-1">Обзор контента</h2>
+          <p className="text-gray-500 text-sm">Выберите раздел сайта, чтобы отредактировать его содержимое</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {SECTIONS.map(s => (
+            <button
+              key={s.id}
+              onClick={() => setActiveSection(s.id)}
+              className="group text-left bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-blue-600/50 rounded-2xl p-4 transition-all"
+            >
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 rounded-lg bg-gray-800 group-hover:bg-blue-600/20 flex items-center justify-center shrink-0 transition-colors">
+                  <Icon name={s.icon as 'Sparkles'} size={18} className="text-gray-400 group-hover:text-blue-400" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-white text-sm font-medium mb-1">{s.label}</div>
+                  <div className="text-gray-500 text-xs leading-snug">{s.description}</div>
+                </div>
+                <Icon name="ChevronRight" size={16} className="text-gray-600 group-hover:text-blue-400 transition-colors mt-1" />
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  const currentSection = SECTIONS.find(s => s.id === activeSection);
+
   return (
     <div className="flex gap-6">
       {/* Section list */}
       <div className="w-48 shrink-0 space-y-1">
+        <button
+          onClick={() => setActiveSection(null)}
+          className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-gray-800 transition-colors flex items-center gap-1.5 mb-2"
+        >
+          <Icon name="ArrowLeft" size={14} /> К обзору
+        </button>
         {SECTIONS.map(s => (
           <button
             key={s.id}
@@ -224,9 +268,7 @@ const AdminContentEditor = ({ token }: Props) => {
       {/* Editor */}
       <div className="flex-1 max-w-2xl">
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-white font-medium">
-            {SECTIONS.find(s => s.id === activeSection)?.label}
-          </h2>
+          <h2 className="text-white font-medium">{currentSection?.label}</h2>
           <div className="flex gap-2">
             <button onClick={reset} className="text-xs text-gray-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-gray-800 transition-colors">
               Сбросить

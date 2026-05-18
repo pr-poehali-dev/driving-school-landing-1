@@ -6,7 +6,8 @@ interface Props { token: string; }
 
 interface MediaFile {
   id: number; key: string; filename: string; folder: string;
-  mime_type: string; size_bytes: number; cdn_url: string; alt: string; created_at: number;
+  mime_type: string; size_bytes: number; cdn_url: string; alt: string;
+  tags?: string[]; created_at: number;
 }
 
 const formatSize = (bytes: number) => {
@@ -25,6 +26,10 @@ const AdminMediaLibrary = ({ token }: Props) => {
   const [uploadProgress, setUploadProgress] = useState('');
   const [selected, setSelected] = useState<MediaFile | null>(null);
   const [copied, setCopied] = useState(false);
+  const [editAlt, setEditAlt] = useState('');
+  const [editTags, setEditTags] = useState('');
+  const [savingMeta, setSavingMeta] = useState(false);
+  const [savedMeta, setSavedMeta] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
 
   const load = async (p = 1, q = search) => {
@@ -42,32 +47,50 @@ const AdminMediaLibrary = ({ token }: Props) => {
 
   useEffect(() => { load(1, search); }, [search]);
 
+  useEffect(() => {
+    if (selected) {
+      setEditAlt(selected.alt || '');
+      setEditTags((selected.tags || []).join(', '));
+    }
+  }, [selected?.id]);
+
+  const readFileBase64 = (f: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result as string);
+      r.onerror = () => reject(new Error('read error'));
+      r.readAsDataURL(f);
+    });
+
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const f = e.target.files?.[0];
-    if (!f) return;
+    const list = e.target.files;
+    if (!list || list.length === 0) return;
+    const arr = Array.from(list);
     setUploading(true);
-    setUploadProgress('Чтение файла...');
-    try {
-      const reader = new FileReader();
-      reader.onload = async () => {
-        setUploadProgress('Загрузка...');
-        const base64 = reader.result as string;
+    let ok = 0, fail = 0;
+    for (let i = 0; i < arr.length; i++) {
+      const f = arr[i];
+      setUploadProgress(`Загрузка ${i + 1} из ${arr.length}: ${f.name}`);
+      try {
+        const base64 = await readFileBase64(f);
         const res = await fetch(`${FILES_API}/media/upload`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify({ file: base64, mime_type: f.type, filename: f.name, folder: 'uploads' }),
         });
         const d = await res.json();
-        if (d.success) { setUploadProgress('Готово!'); load(1); setTimeout(() => setUploadProgress(''), 2000); }
-        else setUploadProgress(`Ошибка: ${d.error}`);
-      };
-      reader.readAsDataURL(f);
-    } catch { setUploadProgress('Ошибка загрузки'); }
-    finally { setUploading(false); if (fileInput.current) fileInput.current.value = ''; }
+        if (d.success) ok++; else fail++;
+      } catch { fail++; }
+    }
+    setUploadProgress(`Готово: ${ok} загружено${fail ? `, ${fail} с ошибкой` : ''}`);
+    setUploading(false);
+    if (fileInput.current) fileInput.current.value = '';
+    load(1);
+    setTimeout(() => setUploadProgress(''), 3500);
   };
 
   const deleteFile = async (file: MediaFile) => {
-    if (!confirm(`Удалить "${file.filename}"?`)) return;
+    if (!confirm(`Удалить "${file.filename}"? Файл удалится из S3.`)) return;
     await fetch(`${FILES_API}/media/file`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -75,6 +98,27 @@ const AdminMediaLibrary = ({ token }: Props) => {
     });
     if (selected?.key === file.key) setSelected(null);
     load(page);
+  };
+
+  const saveMeta = async () => {
+    if (!selected) return;
+    setSavingMeta(true);
+    try {
+      const tags = editTags.split(',').map(t => t.trim()).filter(Boolean);
+      const res = await fetch(`${FILES_API}/media/file`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ key: selected.key, alt: editAlt, tags }),
+      });
+      const d = await res.json();
+      if (d.success) {
+        setSelected({ ...selected, alt: editAlt, tags });
+        setFiles(prev => prev.map(f => f.key === selected.key ? { ...f, alt: editAlt, tags } : f));
+        setSavedMeta(true);
+        setTimeout(() => setSavedMeta(false), 2000);
+      }
+    } catch { /* ignore */ }
+    finally { setSavingMeta(false); }
   };
 
   const copyUrl = (url: string) => {
@@ -88,14 +132,14 @@ const AdminMediaLibrary = ({ token }: Props) => {
   return (
     <div>
       {/* Toolbar */}
-      <div className="flex items-center gap-3 mb-5">
+      <div className="flex items-center gap-3 mb-5 flex-wrap">
         <div className="relative flex-1 max-w-sm">
           <Icon name="Search" size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
           <input value={search} onChange={e => setSearch(e.target.value)}
-            placeholder="Поиск..."
+            placeholder="Поиск по имени, alt, тегам..."
             className="w-full bg-gray-900 text-white rounded-lg pl-9 pr-3 py-2 text-sm border border-gray-800 focus:border-blue-500 focus:outline-none" />
         </div>
-        <input type="file" ref={fileInput} onChange={handleFileSelect} className="hidden"
+        <input type="file" ref={fileInput} onChange={handleFileSelect} className="hidden" multiple
           accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml,image/avif,application/pdf" />
         <button
           onClick={() => fileInput.current?.click()}
@@ -103,13 +147,15 @@ const AdminMediaLibrary = ({ token }: Props) => {
           className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors"
         >
           <Icon name="Upload" size={14} />
-          {uploading ? uploadProgress || 'Загрузка...' : 'Загрузить'}
+          {uploading ? 'Загрузка...' : 'Загрузить файлы'}
         </button>
         <span className="text-gray-500 text-sm">{total} файлов</span>
       </div>
 
-      {uploadProgress && !uploading && (
-        <div className="mb-4 bg-green-900/20 text-green-400 text-sm px-4 py-2 rounded-lg">{uploadProgress}</div>
+      {uploadProgress && (
+        <div className={`mb-4 text-sm px-4 py-2 rounded-lg ${
+          uploading ? 'bg-blue-900/20 text-blue-300' : 'bg-green-900/20 text-green-400'
+        }`}>{uploadProgress}</div>
       )}
 
       <div className="flex gap-5">
@@ -139,8 +185,16 @@ const AdminMediaLibrary = ({ token }: Props) => {
                   <div className="text-gray-600 text-xs">{formatSize(file.size_bytes)}</div>
                 </div>
                 <button
+                  onClick={e => { e.stopPropagation(); copyUrl(file.cdn_url); }}
+                  className="absolute top-1.5 left-1.5 bg-gray-900/80 text-white rounded-md p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  title="Копировать ссылку"
+                >
+                  <Icon name="Copy" size={10} />
+                </button>
+                <button
                   onClick={e => { e.stopPropagation(); deleteFile(file); }}
                   className="absolute top-1.5 right-1.5 bg-red-600 text-white rounded-md p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  title="Удалить"
                 >
                   <Icon name="X" size={10} />
                 </button>
@@ -174,7 +228,7 @@ const AdminMediaLibrary = ({ token }: Props) => {
 
         {/* Detail panel */}
         {selected && (
-          <div className="w-60 shrink-0 bg-gray-900 rounded-2xl border border-gray-800 p-4 space-y-4 self-start sticky top-0">
+          <div className="w-72 shrink-0 bg-gray-900 rounded-2xl border border-gray-800 p-4 space-y-4 self-start sticky top-0">
             <div className="aspect-square bg-gray-800 rounded-xl overflow-hidden">
               {isImage(selected.mime_type) ? (
                 <img src={selected.cdn_url} alt={selected.alt} className="w-full h-full object-contain" />
@@ -200,6 +254,24 @@ const AdminMediaLibrary = ({ token }: Props) => {
                 </button>
               </div>
             </div>
+            <div>
+              <label className="text-gray-500 text-xs mb-1 block">Alt-текст</label>
+              <input value={editAlt} onChange={e => setEditAlt(e.target.value)}
+                placeholder="Что изображено..."
+                className="w-full bg-gray-800 text-gray-200 rounded-lg px-2 py-1.5 text-xs border border-gray-700 focus:border-blue-500 focus:outline-none" />
+            </div>
+            <div>
+              <label className="text-gray-500 text-xs mb-1 block">Теги (через запятую)</label>
+              <input value={editTags} onChange={e => setEditTags(e.target.value)}
+                placeholder="инструктор, авто, ..."
+                className="w-full bg-gray-800 text-gray-200 rounded-lg px-2 py-1.5 text-xs border border-gray-700 focus:border-blue-500 focus:outline-none" />
+            </div>
+            <button onClick={saveMeta} disabled={savingMeta}
+              className={`w-full rounded-lg py-1.5 text-xs font-medium transition-colors flex items-center justify-center gap-1.5 ${
+                savedMeta ? 'bg-green-600 text-white' : 'bg-blue-600 hover:bg-blue-500 text-white disabled:opacity-50'
+              }`}>
+              {savedMeta ? <><Icon name="Check" size={12} /> Сохранено</> : savingMeta ? 'Сохранение...' : 'Сохранить данные'}
+            </button>
             <button onClick={() => deleteFile(selected)}
               className="w-full text-red-400 hover:text-red-300 border border-red-900/50 hover:border-red-700 rounded-lg py-1.5 text-xs transition-colors flex items-center justify-center gap-1.5">
               <Icon name="Trash2" size={12} /> Удалить файл

@@ -1,4 +1,7 @@
+import { useSeo } from '@/hooks/useSeo';
+
 const Requisites = () => {
+  useSeo('/requisites');
   const reqs = [
     { label: 'Полное наименование', value: 'Общество с ограниченной ответственностью «ВРЕМЯ РУЛИТЬ»' },
     { label: 'Краткое наименование', value: 'ООО «ВРЕМЯ РУЛИТЬ»' },

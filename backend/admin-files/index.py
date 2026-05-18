@@ -2,6 +2,7 @@
 Admin Files: SEO управление + медиатека.
 GET  /seo/meta?page=/          — SEO настройки страницы
 PUT  /seo/meta?page=/          — сохранить SEO
+GET  /seo/public?page=/        — публичные SEO-настройки страницы (для фронта)
 GET  /seo/redirects            — список редиректов
 POST /seo/redirects            — добавить редирект
 DELETE /seo/redirects?id=123   — удалить редирект
@@ -13,6 +14,7 @@ GET  /seo/audit                — SEO аудит всех страниц
 
 POST /media/upload             — загрузить файл (base64)
 GET  /media/list               — список файлов
+PUT  /media/file               — обновить alt/tags
 DELETE /media/file             — удалить файл
 """
 import json
@@ -38,13 +40,16 @@ DEFAULT_PAGES_SEO = {
         'og_description': 'Учим вождению честно. Цена 64 000 ₽ с топливом. Свой автодром. Инструктор-женщина.',
         'og_image': 'https://cdn.poehali.dev/files/0c988d32-7078-44aa-a34e-785eef83e869.jpg',
         'canonical': 'https://vremya-rulit.ru/',
+        'favicon': '/favicon.ico',
         'robots': 'index, follow',
         'h1': 'АВТОШКОЛА, КОТОРУЮ СОЗДАЛИ ИНСТРУКТОРЫ, А НЕ МАРКЕТОЛОГИ',
         'json_ld': '{"@context":"https://schema.org","@type":"DrivingSchool","name":"Автошкола Время Рулить","url":"https://vremya-rulit.ru","telephone":"+79785021113"}',
     },
-    '/privacy': {'title': 'Политика конфиденциальности — Время Рулить', 'robots': 'noindex, follow'},
-    '/agreement': {'title': 'Согласие на обработку ПД — Время Рулить', 'robots': 'noindex, follow'},
-    '/requisites': {'title': 'Реквизиты — ООО Время Рулить', 'robots': 'noindex, follow'},
+    '/privacy': {'title': 'Политика конфиденциальности — Время Рулить', 'robots': 'noindex, follow', 'favicon': '/favicon.ico'},
+    '/agreement': {'title': 'Согласие на обработку ПД — Время Рулить', 'robots': 'noindex, follow', 'favicon': '/favicon.ico'},
+    '/requisites': {'title': 'Реквизиты — ООО Время Рулить', 'robots': 'noindex, follow', 'favicon': '/favicon.ico'},
+    '/cookies': {'title': 'Политика cookie — Время Рулить', 'robots': 'noindex, follow', 'favicon': '/favicon.ico'},
+    '/terms': {'title': 'Пользовательское соглашение — Время Рулить', 'robots': 'noindex, follow', 'favicon': '/favicon.ico'},
 }
 
 DEFAULT_ROBOTS = "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /admin/*\n\nSitemap: https://vremya-rulit.ru/sitemap.xml\n"
@@ -144,6 +149,16 @@ def handler(event: dict, context) -> dict:
             pass
 
     # ========== SEO ==========
+
+    if '/seo/public' in path and method == 'GET':
+        page = params.get('page', '/')
+        all_seo = s3_get_json(s3, 'admin/seo/pages.json', DEFAULT_PAGES_SEO)
+        page_seo = all_seo.get(page, DEFAULT_PAGES_SEO.get(page, {}))
+        # Возвращаем только публичные поля (без _updated_at и пр.)
+        public_fields = ['title', 'description', 'keywords', 'og_title', 'og_description',
+                         'og_image', 'canonical', 'robots', 'h1', 'json_ld', 'favicon']
+        clean = {k: page_seo.get(k, '') for k in public_fields if page_seo.get(k)}
+        return json_response({'page': page, 'seo': clean})
 
     if '/seo/meta' in path:
         page = params.get('page', '/')
@@ -258,7 +273,7 @@ def handler(event: dict, context) -> dict:
         idx = s3_get_json(s3, 'admin/media/index.json', {'files': []})
         file_info = {'id': ts, 'key': key, 'filename': original_name, 'folder': folder,
                      'mime_type': mime_type, 'size_bytes': len(file_bytes),
-                     'cdn_url': cdn_url, 'alt': alt_text, 'created_at': ts}
+                     'cdn_url': cdn_url, 'alt': alt_text, 'tags': [], 'created_at': ts}
         idx['files'].insert(0, file_info)
         idx['files'] = idx['files'][:500]
         s3_put_json(s3, 'admin/media/index.json', idx)
@@ -278,12 +293,37 @@ def handler(event: dict, context) -> dict:
         if folder:
             files = [f for f in files if f.get('folder') == folder]
         if search:
-            files = [f for f in files if search in f.get('filename', '').lower() or search in f.get('alt', '').lower()]
+            files = [f for f in files if search in f.get('filename', '').lower()
+                     or search in f.get('alt', '').lower()
+                     or any(search in str(t).lower() for t in f.get('tags', []))]
 
         total = len(files)
         start = (page - 1) * per_page
         return json_response({'files': files[start:start + per_page], 'total': total,
                                'page': page, 'pages': (total + per_page - 1) // per_page})
+
+    if '/media/file' in path and method == 'PUT':
+        if not verify_token(event):
+            return json_response({'error': 'Не авторизован'}, 401)
+        key = body.get('key', '')
+        if not key or not key.startswith('admin/media/'):
+            return json_response({'error': 'Неверный ключ'}, 400)
+        new_alt = body.get('alt', None)
+        new_tags = body.get('tags', None)
+        idx = s3_get_json(s3, 'admin/media/index.json', {'files': []})
+        updated = None
+        for f in idx['files']:
+            if f.get('key') == key:
+                if new_alt is not None:
+                    f['alt'] = new_alt
+                if new_tags is not None:
+                    f['tags'] = new_tags if isinstance(new_tags, list) else []
+                updated = f
+                break
+        if not updated:
+            return json_response({'error': 'Файл не найден в индексе'}, 404)
+        s3_put_json(s3, 'admin/media/index.json', idx)
+        return json_response({'success': True, 'file': updated})
 
     if '/media/file' in path and method == 'DELETE':
         if not verify_token(event):

@@ -4,12 +4,13 @@ import Icon from '@/components/ui/icon';
 
 interface Props { token: string; }
 
-const PAGES = ['/', '/privacy', '/agreement', '/requisites'];
+const PAGES = ['/', '/privacy', '/agreement', '/requisites', '/cookies', '/terms'];
 
 interface SeoData {
   title?: string; description?: string; keywords?: string;
   og_title?: string; og_description?: string; og_image?: string;
   canonical?: string; robots?: string; h1?: string; json_ld?: string;
+  favicon?: string;
 }
 
 interface AuditItem { type: string; field: string; message: string; }
@@ -217,6 +218,7 @@ const AdminSeoEditor = ({ token }: Props) => {
                   ['og_description', 'OG Description'],
                   ['og_image', 'OG Image URL'],
                   ['canonical', 'Canonical URL'],
+                  ['favicon', 'Favicon URL (например /favicon.ico)'],
                   ['robots', 'Robots'],
                   ['h1', 'H1 заголовок'],
                 ] as [keyof SeoData, string][]).map(([key, label]) => (

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react';
+import { useSeo } from '@/hooks/useSeo';
 import Header from '@/components/sections/Header';
 import Hero from '@/components/sections/Hero';
 import PainPoints from '@/components/sections/PainPoints';
@@ -18,6 +19,7 @@ import ExitIntentPopup from '@/components/ExitIntentPopup';
 const SECTION_IDS = ['hero', 'pain-points', 'instructors', 'triggers', 'advantages', 'pricing', 'reviews', 'map', 'faq', 'contact-form'];
 
 const Index = () => {
+  useSeo('/');
   const faqOpenRef = useRef<((idx: number) => void) | null>(null);
 
   // Пробрасываем функцию открытия FAQ-вопроса из машинки
