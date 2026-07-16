@@ -20,7 +20,7 @@ const Pricing = () => {
     svo_discount: '5 000',
     installment_first: '15 000',
     features: [
-      { icon: 'Fuel', text: 'Топливо включено — никаких доплат' },
+      { icon: 'Fuel', text: 'Топливо включено' },
       { icon: 'CreditCard', text: 'Рассрочка без банков — первый взнос 15 000 ₽' },
       { icon: 'Clock', text: 'Дополнительные часы по необходимости' },
       { icon: 'Shield', text: 'Скидка 5 000 ₽ для участников СВО' },
