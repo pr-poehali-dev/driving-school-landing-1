@@ -15,7 +15,8 @@ const Pricing = () => {
     price: '64 000',
     old_price: '75 000',
     discount: '-11 000',
-    includes: 'Теория + практика + топливо + подача в ГИБДД',
+    includes: '+10 000 ТОПЛИВНЫЙ СБОР',
+    fuel_note: 'В связи с ростом цен на топливо, с 13.07.2026 ко всем программам обучения добавляется временный топливный сбор в размере 10 000 ₽. Мера действует до стабилизации цен. Средства направлены на бесперебойное проведение практических занятий.',
     svo_discount: '5 000',
     installment_first: '15 000',
     features: [
@@ -87,8 +88,11 @@ const Pricing = () => {
                   </div>
                 </div>
               </div>
-              <p className="relative text-blue-200/70 text-sm font-body mt-3">
+              <p className="relative text-white font-heading font-bold text-base sm:text-lg mt-3 tracking-wide">
                 {data.includes as string}
+              </p>
+              <p className="relative text-blue-200/60 text-xs font-body mt-2 leading-relaxed">
+                {data.fuel_note as string}
               </p>
             </div>
 
