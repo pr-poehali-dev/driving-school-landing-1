@@ -5,8 +5,8 @@ type ComparisonItem = { feature: string; competitor: string; ours: string };
 const DEFAULT_ITEMS: ComparisonItem[] = [
   { feature: 'Базовая цена курса', competitor: '39 900 ₽', ours: '64 000 ₽' },
   { feature: 'Топливо / износ авто', competitor: '+12 000 ₽', ours: '0 ₽' },
-  { feature: 'Пересдача теории', competitor: '+3 000 ₽', ours: '0 ₽' },
-  { feature: 'Вождение (3 пересдачи)', competitor: '+15 000 ₽', ours: '0 ₽' },
+  { feature: 'Пересдача теории', competitor: '+3 000 ₽', ours: '3 000 ₽' },
+  { feature: 'Вождение (3 пересдачи)', competitor: '+15 000 ₽', ours: '3 000 ₽' },
   { feature: 'Своё расписание', competitor: '+6 000 ₽', ours: '0 ₽' },
   { feature: 'Подготовка документов', competitor: '+4 500 ₽', ours: '0 ₽' },
 ];
