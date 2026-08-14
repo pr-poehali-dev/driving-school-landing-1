@@ -57,10 +57,7 @@ export const SIGNS: RoadSign[] = [
   { pct: 0.45, side: 'left',  type: 'hill',           emoji: '🏞️', label: '' },
   // 4 — Триггеры: 3 знака
   { pct: 0.51, side: 'left',  type: 'trigger',        emoji: '👩', label: 'Инструктор-женщина' },
-  { pct: 0.54, side: 'left',  type: 'trigger',        emoji: '🎖️', label: 'Скидка для СВО' },
   { pct: 0.57, side: 'left',  type: 'trigger',        emoji: '🚗', label: 'Свой автодром' },
-  // 4.1 — Вопрос со скидкой
-  { pct: 0.59, side: 'left',  type: 'question',       emoji: '❓', label: 'Скидка 5000 ₽', faqIdx: 5 },
   // 5 — Цена: заправка
   { pct: 0.64, side: 'right', type: 'gas',            emoji: '⛽', label: 'Заправка' },
   // 5.1 — Крутой спуск

@@ -19,12 +19,6 @@ const Triggers = () => {
         description: 'Ирина Дарчич — 8 лет опыта. Спокойно, без спешки, без оценок.',
         image: 'https://cdn.poehali.dev/files/2937ba8a-51cb-4747-bf73-be0fcc7f1c6a.jpg',
       },
-      {
-        badge: 'Скидка −5 000 ₽',
-        title: 'Участникам СВО',
-        description: 'Подтверждается документом. Скидка применяется автоматически.',
-        image: '',
-      },
     ] as Array<{ badge: string; title: string; description: string; image: string }>,
   });
   const triggers = data.items as Array<{ badge: string; title: string; description: string; image: string }>;

@@ -31,12 +31,11 @@ const DOCS = [
 interface FormData {
   name: string;
   phone: string;
-  isSVO: boolean;
   consent: boolean;
 }
 
 const ContactForm = () => {
-  const [form, setForm] = useState<FormData>({ name: '', phone: '', isSVO: false, consent: false });
+  const [form, setForm] = useState<FormData>({ name: '', phone: '', consent: false });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -148,20 +147,6 @@ const ContactForm = () => {
               required
               className="w-full border border-gray-200 rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-all"
             />
-          </div>
-
-          <div className="mb-5 flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-xl p-4">
-            <input
-              type="checkbox"
-              id="svo"
-              checked={form.isSVO}
-              onChange={(e) => setForm({ ...form, isSVO: e.target.checked })}
-              className="mt-1 w-4 h-4 accent-brand-blue flex-shrink-0"
-            />
-            <label htmlFor="svo" className="text-sm text-gray-700 cursor-pointer">
-              <span className="font-semibold">Я участник СВО</span>
-              <span className="text-yellow-700 ml-1">— применим скидку 5 000 ₽</span>
-            </label>
           </div>
 
           <div className="mb-6 flex items-start gap-3">

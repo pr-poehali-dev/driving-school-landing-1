@@ -27,7 +27,6 @@ def handler(event: dict, context) -> dict:
     body = json.loads(event.get('body') or '{}')
     name = body.get('name', '').strip()
     phone = body.get('phone', '').strip()
-    is_svo = body.get('isSVO', False)
     utm_source = body.get('utm_source', '')
     utm_medium = body.get('utm_medium', '')
     utm_campaign = body.get('utm_campaign', '')
@@ -39,7 +38,6 @@ def handler(event: dict, context) -> dict:
     smtp_password = os.environ.get('SMTP_PASSWORD', '8zXd5FGonaMvosLviSbd')
     to_email = 'timedrive92@mail.ru'
 
-    svo_text = '✅ ДА — применить скидку 5 000 ₽' if is_svo else 'Нет'
     utm_text = f'\n\nИсточник: {utm_source or "прямой вход"}' + (f' / {utm_medium}' if utm_medium else '') + (f' / {utm_campaign}' if utm_campaign else '')
     now = datetime.now().strftime('%d.%m.%Y %H:%M')
 
@@ -49,8 +47,7 @@ def handler(event: dict, context) -> dict:
       <tr><td style="padding:6px 12px;color:#666;">Дата и время:</td><td style="padding:6px 12px;font-weight:bold;">{now}</td></tr>
       <tr style="background:#f5f7fa;"><td style="padding:6px 12px;color:#666;">Имя:</td><td style="padding:6px 12px;font-weight:bold;">{name or '(не указано)'}</td></tr>
       <tr><td style="padding:6px 12px;color:#666;">Телефон:</td><td style="padding:6px 12px;font-weight:bold;color:#3B82F6;">{phone}</td></tr>
-      <tr style="background:#f5f7fa;"><td style="padding:6px 12px;color:#666;">Участник СВО:</td><td style="padding:6px 12px;">{svo_text}</td></tr>
-      <tr><td style="padding:6px 12px;color:#666;">Источник:</td><td style="padding:6px 12px;">{utm_source or 'прямой вход'}{(' / ' + utm_medium) if utm_medium else ''}{(' / ' + utm_campaign) if utm_campaign else ''}</td></tr>
+      <tr style="background:#f5f7fa;"><td style="padding:6px 12px;color:#666;">Источник:</td><td style="padding:6px 12px;">{utm_source or 'прямой вход'}{(' / ' + utm_medium) if utm_medium else ''}{(' / ' + utm_campaign) if utm_campaign else ''}</td></tr>
     </table>
     <p style="margin-top:16px;color:#666;font-family:Arial,sans-serif;font-size:13px;">Перезвоните клиенту в течение 20 минут!</p>
     """

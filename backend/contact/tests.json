@@ -10,7 +10,7 @@
       "name": "POST заявка с именем и телефоном",
       "method": "POST",
       "path": "/",
-      "body": { "name": "Тест", "phone": "+7 978 000 00 00", "isSVO": false, "consent": true },
+      "body": { "name": "Тест", "phone": "+7 978 000 00 00", "consent": true },
       "expectedStatus": 200
     },
     {
