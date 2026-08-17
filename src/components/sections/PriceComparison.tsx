@@ -4,11 +4,10 @@ type ComparisonItem = { feature: string; competitor: string; ours: string };
 
 const DEFAULT_ITEMS: ComparisonItem[] = [
   { feature: 'Базовая цена курса', competitor: '39 900 ₽', ours: '64 000 ₽' },
-  { feature: 'Топливо / износ авто', competitor: '+12 000 ₽', ours: '0 ₽' },
-  { feature: 'Пересдача теории', competitor: '+3 000 ₽', ours: '3 000 ₽' },
-  { feature: 'Вождение (3 пересдачи)', competitor: '+15 000 ₽', ours: '3 000 ₽' },
+  { feature: 'Практические занятия', competitor: '+12 000 ₽', ours: '0 ₽' },
   { feature: 'Своё расписание', competitor: '+6 000 ₽', ours: '0 ₽' },
-  { feature: 'Подготовка документов', competitor: '+4 500 ₽', ours: '0 ₽' },
+  { feature: 'Выбор инструктора', competitor: '+4 500 ₽', ours: '0 ₽' },
+  { feature: 'Дополнительные часы вождения', competitor: '+9 600 ₽', ours: '0 ₽' },
 ];
 
 const PriceComparison = () => {
@@ -73,7 +72,7 @@ const PriceComparison = () => {
           {/* Итог */}
           <div className="grid grid-cols-3 px-6 py-5 bg-[#0a1628]">
             <div className="font-heading font-bold text-white text-base">Итоговая цена</div>
-            <div className="text-center font-heading font-bold text-red-400 text-base">≈ 80 400 ₽</div>
+            <div className="text-center font-heading font-bold text-red-400 text-base">≈ 72 000 ₽</div>
             <div className="text-center font-heading font-bold text-blue-300 text-base">64 000 ₽</div>
           </div>
         </div>
@@ -81,7 +80,7 @@ const PriceComparison = () => {
         {/* Вывод */}
         <div className="animate-on-scroll mt-8 bg-blue-50 border border-blue-100 rounded-2xl p-6">
           <p className="text-[#1A2A3A] leading-relaxed text-base">
-            Вас заманивают ценой 39 900 ₽, а по факту вылетаете на <strong className="text-red-500">80 000 ₽</strong>?
+            Вас заманивают ценой 39 900 ₽, а по факту вылетаете на <strong className="text-red-500">72 000 ₽</strong>?
             В договорах других школ часто «забывают» упомянуть дополнительные поборы. Мы так не работаем.{' '}
             <strong className="text-blue-600">У нас цена фиксированная, а пересдача — 3 000 ₽.</strong>{' '}
             Никаких «бесплатных» бонусов, которых нет в реале, — только голые факты и честный договор.

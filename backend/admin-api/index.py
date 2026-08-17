@@ -132,13 +132,12 @@ DEFAULT_CONTENT = {
     'price_comparison': {
         'items': [
             {'feature': 'Базовая цена курса', 'competitor': '39 900 ₽', 'ours': '64 000 ₽'},
-            {'feature': 'Топливо / износ авто', 'competitor': '+12 000 ₽', 'ours': '0 ₽'},
-            {'feature': 'Пересдача теории', 'competitor': '+3 000 ₽', 'ours': '3 000 ₽'},
-            {'feature': 'Вождение (3 пересдачи)', 'competitor': '+15 000 ₽', 'ours': '3 000 ₽'},
+            {'feature': 'Практические занятия', 'competitor': '+12 000 ₽', 'ours': '0 ₽'},
             {'feature': 'Своё расписание', 'competitor': '+6 000 ₽', 'ours': '0 ₽'},
-            {'feature': 'Подготовка документов', 'competitor': '+4 500 ₽', 'ours': '0 ₽'},
+            {'feature': 'Выбор инструктора', 'competitor': '+4 500 ₽', 'ours': '0 ₽'},
+            {'feature': 'Дополнительные часы вождения', 'competitor': '+9 600 ₽', 'ours': '0 ₽'},
         ],
-        'competitor_total': '~80 400 ₽',
+        'competitor_total': '~72 000 ₽',
         'our_total': '64 000 ₽',
     },
     'cookies_page': {
