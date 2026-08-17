@@ -34,7 +34,7 @@ const Agreement = () => {
         <p>Я согласен(на), что Оператор имеет право не чаще десяти раз в течение суток направлять маркетинговые, транзакционные, информационные и иные сообщения.</p>
 
         <h2 className="font-heading text-xl font-bold mt-8 mb-3">Отзыв согласия</h2>
-        <p>Отзыв согласия осуществляется путём направления письменного заявления по адресу: г. Севастополь, ул. Хрусталева, 177А, ТЦ «Одиз», или на электронную почту <a href="mailto:timedrive92@mail.ru" className="text-blue-500">timedrive92@mail.ru</a>.</p>
+        <p>Отзыв согласия осуществляется путём направления письменного заявления по адресу: г. Севастополь, ул. Хрусталева, 177А, ТЦ «Адиз», или на электронную почту <a href="mailto:timedrive92@mail.ru" className="text-blue-500">timedrive92@mail.ru</a>.</p>
 
         <div className="mt-12 p-4 bg-gray-50 rounded-xl text-sm text-gray-500">
           По всем вопросам: <a href="mailto:timedrive92@mail.ru" className="text-blue-500">timedrive92@mail.ru</a> • <a href="tel:+79785021113" className="text-blue-500">+7 978 502 11 13</a>

@@ -23,7 +23,7 @@ const MapSection = () => {
             <br />
             и познакомим с инструкторами
           </h2>
-          <p className="text-gray-500 text-lg">Арендованный автодром — приезжайте на экскурсию, покажем всё</p>
+          <p className="text-gray-500 text-lg">Автодром — приезжайте на экскурсию, покажем всё</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">

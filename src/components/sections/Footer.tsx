@@ -5,7 +5,7 @@ const Footer = () => {
   const data = useSection('footer', {
     phone: '+7 978 502 11 13',
     email: 'timedrive92@mail.ru',
-    address_office: 'ул. Хрусталева, 177А, ТЦ «Одиз»',
+    address_office: 'ул. Хрусталева, 177А, ТЦ «Адиз»',
     address_autodrome: 'ул. Стахановцев, 18',
     hours: 'Пн–Пт 10:00–18:00',
     vk_url: 'https://vk.com/vremyarulit',
@@ -91,7 +91,7 @@ const Footer = () => {
                 </p>
                 <p className="text-gray-300 leading-relaxed">
                   {data.address_autodrome as string}<br />
-                  Арендованный автодром
+                  Автодром
                 </p>
               </li>
             </ul>
