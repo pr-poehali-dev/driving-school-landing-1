@@ -8,7 +8,8 @@ const Requisites = () => {
     { label: 'ИНН', value: '9200026796' },
     { label: 'КПП', value: '920001001' },
     { label: 'ОГРН', value: '1253200001169' },
-    { label: 'Юридический адрес', value: 'г. Севастополь, ул. Хрусталева, 177А, ТЦ «Адиз»' },
+    { label: 'Юридический адрес', value: '299040, г. Севастополь, пр-кт Генерала Острякова, зд. 121Г, ком./офис 37' },
+    { label: 'Генеральный директор', value: 'Лебедев Иван Романович' },
     { label: 'Банк', value: 'Южный филиал ПАО «Банк ПСБ»' },
     { label: 'БИК', value: '041806715' },
     { label: 'Расчётный счёт (р/с)', value: '40702810001000074928' },
@@ -20,7 +21,7 @@ const Requisites = () => {
   return (
     <div className="min-h-screen bg-white py-16 px-4">
       <div className="max-w-2xl mx-auto">
-        <a href="/" className="text-blue-500 hover:underline text-sm mb-8 inline-block">← На главную</a>
+        <a href="#/" className="text-blue-500 hover:underline text-sm mb-8 inline-block">← На главную</a>
         <h1 className="font-heading text-3xl font-bold text-gray-900 mb-3">Реквизиты</h1>
         <p className="text-gray-500 mb-8">Для заполнения договора и оплаты</p>
 

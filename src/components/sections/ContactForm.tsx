@@ -154,9 +154,9 @@ const ContactForm = () => {
             />
             <label htmlFor="consent" className="text-xs text-gray-500 cursor-pointer leading-relaxed">
               Я согласен на обработку персональных данных в соответствии с{' '}
-              <a href="/privacy" target="_blank" className="text-brand-blue underline">Политикой конфиденциальности</a>
+              <a href="#/privacy" target="_blank" className="text-brand-blue underline">Политикой конфиденциальности</a>
               {' '}и{' '}
-              <a href="/agreement" target="_blank" className="text-brand-blue underline">Согласием на обработку ПД</a>
+              <a href="#/agreement" target="_blank" className="text-brand-blue underline">Согласием на обработку ПД</a>
             </label>
           </div>
 

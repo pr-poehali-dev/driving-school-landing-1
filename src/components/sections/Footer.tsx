@@ -102,31 +102,31 @@ const Footer = () => {
             <h4 className="font-heading text-sm font-bold uppercase tracking-[0.15em] text-gray-400 mb-5">Документы</h4>
             <ul className="space-y-3">
               <li>
-                <a href="/privacy" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2">
+                <a href="#/privacy" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2">
                   <Icon name="FileText" size={13} className="text-blue-400 flex-shrink-0" />
                   Политика конфиденциальности
                 </a>
               </li>
               <li>
-                <a href="/agreement" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2">
+                <a href="#/agreement" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2">
                   <Icon name="FileCheck" size={13} className="text-blue-400 flex-shrink-0" />
                   Согласие на обработку ПД
                 </a>
               </li>
               <li>
-                <a href="/requisites" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2">
+                <a href="#/requisites" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2">
                   <Icon name="Building2" size={13} className="text-blue-400 flex-shrink-0" />
                   Реквизиты организации
                 </a>
               </li>
               <li>
-                <a href="/cookies" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2">
+                <a href="#/cookies" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2">
                   <Icon name="Cookie" size={13} className="text-blue-400 flex-shrink-0" />
                   Политика Cookie
                 </a>
               </li>
               <li>
-                <a href="/terms" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2">
+                <a href="#/terms" className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2">
                   <Icon name="ScrollText" size={13} className="text-blue-400 flex-shrink-0" />
                   Пользовательское соглашение
                 </a>

@@ -5,7 +5,7 @@ const Terms = () => {
   return (
     <div className="min-h-screen bg-white py-16 px-4">
       <div className="max-w-3xl mx-auto prose prose-gray">
-        <a href="/" className="text-blue-500 hover:underline text-sm mb-8 inline-block">← На главную</a>
+        <a href="#/" className="text-blue-500 hover:underline text-sm mb-8 inline-block">← На главную</a>
         <h1 className="font-heading text-3xl font-bold text-gray-900 mb-2">Пользовательское соглашение</h1>
         <p className="text-gray-500 text-sm mb-8">Сайт: твоё.времярулить.рф</p>
 
@@ -27,9 +27,9 @@ const Terms = () => {
         <h3 className="font-heading text-lg font-semibold mt-6 mb-2">1.2. Связанные документы</h3>
         <p>Неотъемлемой частью являются:</p>
         <ul className="list-disc pl-5 space-y-1 text-gray-700">
-          <li><a href="/privacy" className="text-blue-500 hover:underline">Политика конфиденциальности</a>;</li>
-          <li><a href="/cookies" className="text-blue-500 hover:underline">Политика использования Cookie</a>;</li>
-          <li><a href="/agreement" className="text-blue-500 hover:underline">Согласие пользователя на обработку ПДн</a>.</li>
+          <li><a href="#/privacy" className="text-blue-500 hover:underline">Политика конфиденциальности</a>;</li>
+          <li><a href="#/cookies" className="text-blue-500 hover:underline">Политика использования Cookie</a>;</li>
+          <li><a href="#/agreement" className="text-blue-500 hover:underline">Согласие пользователя на обработку ПДн</a>.</li>
         </ul>
 
         <h3 className="font-heading text-lg font-semibold mt-6 mb-2">1.3. Пользователь</h3>
@@ -82,14 +82,14 @@ const Terms = () => {
         <h2 className="font-heading text-xl font-bold mt-10 mb-3">5. Персональные данные</h2>
         <p>
           Обработка ПДн осуществляется в соответствии с{' '}
-          <a href="/privacy" className="text-blue-500 hover:underline">Политикой конфиденциальности</a>.
+          <a href="#/privacy" className="text-blue-500 hover:underline">Политикой конфиденциальности</a>.
           Используя Сайт, пользователь соглашается с ней.
         </p>
 
         <h2 className="font-heading text-xl font-bold mt-10 mb-3">6. Изменения Соглашения</h2>
         <p>
           Администрация вправе изменять Соглашение. Новая редакция публикуется по адресу{' '}
-          <a href="/terms" className="text-blue-500 hover:underline">/terms</a> и вступает в силу с момента публикации.
+          <a href="#/terms" className="text-blue-500 hover:underline">/terms</a> и вступает в силу с момента публикации.
         </p>
 
         <h2 className="font-heading text-xl font-bold mt-10 mb-3">7. Разрешение споров</h2>
