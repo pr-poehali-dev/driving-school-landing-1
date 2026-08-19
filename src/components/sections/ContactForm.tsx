@@ -181,6 +181,21 @@ const ContactForm = () => {
             Никакого спама. Только один звонок, чтобы ответить на вопросы и подобрать удобное время
           </p>
         </form>
+
+        <div className="animate-on-scroll mt-6 text-center">
+          <a
+            href="https://vk.ru/timedrivesev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 w-full bg-[#0077FF] text-white py-4 rounded-xl font-heading font-bold text-lg hover:bg-[#0066DD] hover:scale-[1.02] transition-all duration-200 shadow-md"
+          >
+            <Icon name="MessageCircle" size={22} />
+            Хочу бесплатное занятие
+          </a>
+          <p className="mt-3 text-gray-500 text-sm">
+            Первое занятие по теории — бесплатно
+          </p>
+        </div>
       </div>
 
       {/* Документы */}

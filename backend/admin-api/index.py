@@ -38,7 +38,7 @@ DEFAULT_CONTENT = {
         'address_office': 'ул. Хрусталева, 177А, ТЦ «Адиз»',
         'address_autodrome': 'ул. Стахановцев, 18',
         'hours': 'Пн–Пт 10:00–18:00',
-        'vk_url': 'https://vk.com/vremyarulit',
+        'vk_url': 'https://vk.ru/timedrivesev',
         'telegram_url': 'https://t.me/vremyarulit',
         'company_name': 'ООО «ВРЕМЯ РУЛИТЬ»',
         'inn': '9200026796',
