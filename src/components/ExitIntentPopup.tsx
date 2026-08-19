@@ -6,15 +6,23 @@ const ExitIntentPopup = () => {
   const shown = useRef(false);
 
   useEffect(() => {
-    const handleMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 5 && !shown.current) {
-        shown.current = true;
-        setVisible(true);
-      }
+    const show = () => {
+      if (shown.current) return;
+      shown.current = true;
+      setVisible(true);
     };
 
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 5) show();
+    };
+
+    const timer = setTimeout(show, 60000);
     document.addEventListener('mouseleave', handleMouseLeave);
-    return () => document.removeEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+    };
   }, []);
 
   if (!visible) return null;
