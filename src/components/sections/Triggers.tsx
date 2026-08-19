@@ -15,13 +15,18 @@ const Triggers = () => {
     items: [
       {
         badge: 'По запросу',
-        title: 'Инструктор-женщина',
-        description: 'Ирина Дарчич — 8 лет опыта. Спокойно, без спешки, без оценок.',
+        title: 'Инструктор-женщина. 8 лет опыта.',
+        description: 'Почему некоторым важно, чтобы за рулём рядом была женщина?\n\nПотому что с ней проще. Нет давления, нет резких замечаний, нет ощущения, что тебя оценивают. Только спокойное объяснение, только ваш темп, только поддержка.\n\nИрина Дарчич — инструктор с 8-летним стажем. Она знает, как объяснить сложное простыми словами. Как помочь поверить в себя. Как научить так, чтобы вы перестали бояться дороги.\n\nПервое занятие к Ирине — бесплатно.\n\nПопробуйте. Вам понравится.',
+        cta: 'Записаться к Ирине',
         image: 'https://cdn.poehali.dev/files/2937ba8a-51cb-4747-bf73-be0fcc7f1c6a.jpg',
       },
-    ] as Array<{ badge: string; title: string; description: string; image: string }>,
+    ] as Array<{ badge: string; title: string; description: string; cta?: string; image: string }>,
   });
-  const triggers = data.items as Array<{ badge: string; title: string; description: string; image: string }>;
+  const triggers = data.items as Array<{ badge: string; title: string; description: string; cta?: string; image: string }>;
+
+  const scrollToForm = () => {
+    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <section id="triggers" className="py-16 md:py-24 bg-white relative overflow-hidden">
@@ -86,7 +91,19 @@ const Triggers = () => {
                 <h3 className="font-heading text-2xl font-bold text-[#1A2A3A] mb-3 leading-snug">
                   {t.title}
                 </h3>
-                <p className="text-gray-500 text-base leading-relaxed">{t.description}</p>
+                <div className="space-y-3">
+                  {t.description.split('\n').filter((p) => p.trim()).map((p, pi) => (
+                    <p key={pi} className="text-gray-500 text-base leading-relaxed">{p}</p>
+                  ))}
+                </div>
+                {t.cta && (
+                  <button
+                    onClick={scrollToForm}
+                    className="mt-6 self-start bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 font-heading font-bold text-sm tracking-wide rounded-xl transition-all duration-200 hover:shadow-[0_4px_20px_rgba(42,127,255,0.4)]"
+                  >
+                    {t.cta}
+                  </button>
+                )}
               </div>
 
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500/0 via-blue-500/60 to-blue-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
