@@ -4,27 +4,21 @@ import Icon from '@/components/ui/icon';
 const DOCS = [
   {
     id: 1,
-    title: 'Документ 1',
-    preview: 'https://времярулить.рф/images/pdf/04.jpg',
-    url: 'https://времярулить.рф/images/pdf/04.jpg',
+    title: 'Программа подготовки водителей категории «В»',
+    preview: '/docs/programma-kategoriya-b.jpg',
+    url: '/docs/programma-kategoriya-b.pdf',
   },
   {
     id: 2,
-    title: 'Документ 2',
-    preview: 'https://времярулить.рф/images/pdf/01.jpg',
-    url: 'https://времярулить.рф/images/pdf/01.jpg',
+    title: 'Программа повышения квалификации — АКПП',
+    preview: '/docs/programma-akpp.jpg',
+    url: '/docs/programma-akpp.pdf',
   },
   {
     id: 3,
-    title: 'Документ 3',
-    preview: 'https://времярулить.рф/images/pdf/02.jpg',
-    url: 'https://времярулить.рф/images/pdf/02.jpg',
-  },
-  {
-    id: 4,
-    title: 'Документ 4',
-    preview: 'https://времярулить.рф/images/pdf/03.jpg',
-    url: 'https://времярулить.рф/images/pdf/03.jpg',
+    title: 'Программа переподготовки с «А» на «В»',
+    preview: '/docs/programma-a-na-b.jpg',
+    url: '/docs/programma-a-na-b.pdf',
   },
 ];
 
@@ -206,7 +200,7 @@ const ContactForm = () => {
           </h2>
           <p className="text-gray-500 text-sm">Нажмите на документ, чтобы открыть его</p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {DOCS.map((doc) => (
             <a
               key={doc.id}
@@ -228,9 +222,9 @@ const ContactForm = () => {
                   </div>
                 </div>
               </div>
-              <div className="p-3 flex items-center gap-2">
-                <Icon name="FileText" size={14} className="text-brand-blue flex-shrink-0" />
-                <span className="text-xs text-gray-600 font-medium truncate">{doc.title}</span>
+              <div className="p-3 flex items-start gap-2">
+                <Icon name="FileText" size={14} className="text-brand-blue flex-shrink-0 mt-0.5" />
+                <span className="text-xs text-gray-600 font-medium leading-snug">{doc.title}</span>
               </div>
             </a>
           ))}
