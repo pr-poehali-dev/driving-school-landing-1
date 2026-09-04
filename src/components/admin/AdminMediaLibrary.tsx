@@ -35,7 +35,7 @@ const AdminMediaLibrary = ({ token }: Props) => {
   const load = async (p = 1, q = search) => {
     const params = new URLSearchParams({ page: String(p), per_page: '20', ...(q ? { search: q } : {}) });
     try {
-      const res = await fetch(`${FILES_API}/media/list?${params}`, {
+      const res = await fetch(`${FILES_API}?route=/media/list&${params}`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       const d = await res.json();
@@ -73,7 +73,7 @@ const AdminMediaLibrary = ({ token }: Props) => {
       setUploadProgress(`Загрузка ${i + 1} из ${arr.length}: ${f.name}`);
       try {
         const base64 = await readFileBase64(f);
-        const res = await fetch(`${FILES_API}/media/upload`, {
+        const res = await fetch(`${FILES_API}?route=/media/upload`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify({ file: base64, mime_type: f.type, filename: f.name, folder: 'uploads' }),
@@ -91,7 +91,7 @@ const AdminMediaLibrary = ({ token }: Props) => {
 
   const deleteFile = async (file: MediaFile) => {
     if (!confirm(`Удалить "${file.filename}"? Файл удалится из S3.`)) return;
-    await fetch(`${FILES_API}/media/file`, {
+    await fetch(`${FILES_API}?route=/media/file`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify({ key: file.key }),
@@ -105,7 +105,7 @@ const AdminMediaLibrary = ({ token }: Props) => {
     setSavingMeta(true);
     try {
       const tags = editTags.split(',').map(t => t.trim()).filter(Boolean);
-      const res = await fetch(`${FILES_API}/media/file`, {
+      const res = await fetch(`${FILES_API}?route=/media/file`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ key: selected.key, alt: editAlt, tags }),

@@ -76,7 +76,7 @@ export const applySeo = (seo: SeoData) => {
 export const useSeo = (page: string) => {
   useEffect(() => {
     let cancelled = false;
-    fetch(`${FILES_API}/seo/public?page=${encodeURIComponent(page)}`)
+    fetch(`${FILES_API}?route=/seo/public&page=${encodeURIComponent(page)}`)
       .then((r) => r.json())
       .then((d) => {
         if (cancelled) return;

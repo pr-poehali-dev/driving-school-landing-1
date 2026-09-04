@@ -56,7 +56,7 @@ const ContactForm = () => {
     setError('');
     setLoading(true);
     try {
-      const res = await fetch('https://functions.poehali.dev/32e10a88-c877-41ab-b1b9-6dd5613ba30b', {
+      const res = await fetch('https://functions.poehali.dev/f1ccaad1-6209-4d21-8db3-d6403dc105f8', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, ...getUTM() }),

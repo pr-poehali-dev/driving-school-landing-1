@@ -85,9 +85,9 @@ def handler(event: dict, context) -> dict:
     if event.get('httpMethod') == 'OPTIONS':
         return {'statusCode': 200, 'headers': CORS_HEADERS, 'body': ''}
 
-    path = event.get('path', '/')
-    method = event.get('httpMethod', 'GET')
     params = event.get('queryStringParameters') or {}
+    path = params.get('route') or event.get('path', '/')
+    method = event.get('httpMethod', 'GET')
     s3 = get_s3()
 
     body = {}

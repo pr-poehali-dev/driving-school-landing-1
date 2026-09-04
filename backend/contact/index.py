@@ -34,8 +34,8 @@ def handler(event: dict, context) -> dict:
     if not phone:
         return {'statusCode': 400, 'headers': cors_headers, 'body': json.dumps({'error': 'Phone required'})}
 
-    smtp_email = os.environ.get('SMTP_EMAIL', 'timedrive92@mail.ru')
-    smtp_password = os.environ.get('SMTP_PASSWORD', '8zXd5FGonaMvosLviSbd')
+    smtp_email = os.environ.get('SMTP_EMAIL', '')
+    smtp_password = os.environ.get('SMTP_PASSWORD', '')
     to_email = 'timedrive92@mail.ru'
 
     utm_text = f'\n\nИсточник: {utm_source or "прямой вход"}' + (f' / {utm_medium}' if utm_medium else '') + (f' / {utm_campaign}' if utm_campaign else '')

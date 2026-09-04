@@ -55,7 +55,7 @@ const AdminContentEditor = ({ token }: Props) => {
   const loadSection = async (section: string) => {
     setLoading(true);
     try {
-      const res = await fetch(`${ADMIN_API}/content/section/${section}`);
+      const res = await fetch(`${ADMIN_API}?route=/content/section/${section}`);
       const d = await res.json();
       setData(d.data || {});
     } catch { /* ignore */ }
@@ -70,7 +70,7 @@ const AdminContentEditor = ({ token }: Props) => {
     if (!activeSection) return;
     setSaving(true);
     try {
-      await fetch(`${ADMIN_API}/content/section/${activeSection}`, {
+      await fetch(`${ADMIN_API}?route=/content/section/${activeSection}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(data),
@@ -86,7 +86,7 @@ const AdminContentEditor = ({ token }: Props) => {
     if (!confirm('Сбросить к исходным данным?')) return;
     setSaving(true);
     try {
-      const res = await fetch(`${ADMIN_API}/content/section/${activeSection}/reset`, {
+      const res = await fetch(`${ADMIN_API}?route=/content/section/${activeSection}/reset`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
       });

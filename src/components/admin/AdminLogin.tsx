@@ -14,7 +14,7 @@ const AdminLogin = ({ onLogin }: Props) => {
     setError('');
     setLoading(true);
     try {
-      const res = await fetch(`${ADMIN_API}/auth/login`, {
+      const res = await fetch(`${ADMIN_API}?route=/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

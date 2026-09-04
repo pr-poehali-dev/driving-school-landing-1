@@ -18,7 +18,7 @@ const AdminSettings = ({ token }: Props) => {
     if (password.newPass.length < 6) { setPwError('Минимум 6 символов'); return; }
     setLoading(true);
     try {
-      const res = await fetch(`${ADMIN_API}/auth/change-password`, {
+      const res = await fetch(`${ADMIN_API}?route=/auth/change-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ new_password: password.newPass }),
@@ -67,7 +67,7 @@ const AdminSettings = ({ token }: Props) => {
         <div className="space-y-3 text-sm">
           {[
             { label: 'Content API', url: ADMIN_API },
-            { label: 'Files/SEO API', url: 'https://functions.poehali.dev/213e2751-f040-4b8d-bbba-79b396aaa2a0' },
+            { label: 'Files/SEO API', url: 'https://functions.poehali.dev/9aa0ff79-0b02-4ee0-9f22-e108f1844285' },
           ].map(({ label, url }) => (
             <div key={label}>
               <div className="text-gray-500 text-xs mb-1">{label}</div>

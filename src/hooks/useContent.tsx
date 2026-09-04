@@ -15,7 +15,7 @@ export const ContentProvider = ({ children }: { children: ReactNode }) => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    fetch(`${ADMIN_API}/content/all`)
+    fetch(`${ADMIN_API}?route=/content/all`)
       .then((r) => r.json())
       .then((d) => {
         if (d?.sections) setSections(d.sections);

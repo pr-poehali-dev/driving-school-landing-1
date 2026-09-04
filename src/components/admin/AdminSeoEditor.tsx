@@ -44,7 +44,7 @@ const AdminSeoEditor = ({ token }: Props) => {
   const loadMeta = async (page: string) => {
     setLoading(true);
     try {
-      const res = await fetch(`${FILES_API}/seo/meta?page=${encodeURIComponent(page)}`);
+      const res = await fetch(`${FILES_API}?route=/seo/meta&page=${encodeURIComponent(page)}`);
       const d = await res.json();
       setSeo(d.seo || {});
       setAudit(d.audit || []);
@@ -56,7 +56,7 @@ const AdminSeoEditor = ({ token }: Props) => {
   const saveMeta = async () => {
     setSaving(true);
     try {
-      await fetch(`${FILES_API}/seo/meta?page=${encodeURIComponent(activePage)}`, {
+      await fetch(`${FILES_API}?route=/seo/meta&page=${encodeURIComponent(activePage)}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(seo),
@@ -69,14 +69,14 @@ const AdminSeoEditor = ({ token }: Props) => {
   };
 
   const loadRedirects = async () => {
-    const res = await fetch(`${FILES_API}/seo/redirects`);
+    const res = await fetch(`${FILES_API}?route=/seo/redirects`);
     const d = await res.json();
     setRedirects(d.items || []);
   };
 
   const addRedirect = async () => {
     if (!newRedirect.from || !newRedirect.to) return;
-    await fetch(`${FILES_API}/seo/redirects`, {
+    await fetch(`${FILES_API}?route=/seo/redirects`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(newRedirect),
@@ -86,7 +86,7 @@ const AdminSeoEditor = ({ token }: Props) => {
   };
 
   const deleteRedirect = async (id: number) => {
-    await fetch(`${FILES_API}/seo/redirects?id=${id}`, {
+    await fetch(`${FILES_API}?route=/seo/redirects&id=${id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` },
     });
@@ -94,14 +94,14 @@ const AdminSeoEditor = ({ token }: Props) => {
   };
 
   const loadRobots = async () => {
-    const res = await fetch(`${FILES_API}/seo/robots`);
+    const res = await fetch(`${FILES_API}?route=/seo/robots`);
     const d = await res.json();
     setRobotsContent(d.content || '');
   };
 
   const saveRobots = async () => {
     setSaving(true);
-    await fetch(`${FILES_API}/seo/robots`, {
+    await fetch(`${FILES_API}?route=/seo/robots`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify({ content: robotsContent }),
@@ -111,14 +111,14 @@ const AdminSeoEditor = ({ token }: Props) => {
   };
 
   const loadSitemap = async () => {
-    const res = await fetch(`${FILES_API}/seo/sitemap`);
+    const res = await fetch(`${FILES_API}?route=/seo/sitemap`);
     const d = await res.json();
     setSitemapPages(d.pages || []);
   };
 
   const saveSitemap = async () => {
     setSaving(true);
-    await fetch(`${FILES_API}/seo/sitemap`, {
+    await fetch(`${FILES_API}?route=/seo/sitemap`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify({ pages: sitemapPages }),
@@ -128,7 +128,7 @@ const AdminSeoEditor = ({ token }: Props) => {
   };
 
   const loadAudit = async () => {
-    const res = await fetch(`${FILES_API}/seo/audit`);
+    const res = await fetch(`${FILES_API}?route=/seo/audit`);
     const d = await res.json();
     setAllAudit(d.pages || []);
   };

@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import AdminLogin from '@/components/admin/AdminLogin';
 import AdminDashboard from '@/components/admin/AdminDashboard';
 
-const ADMIN_API = 'https://functions.poehali.dev/4afa9529-daeb-4b4c-a5f9-57c20cd2480d';
-const FILES_API = 'https://functions.poehali.dev/213e2751-f040-4b8d-bbba-79b396aaa2a0';
+const ADMIN_API = 'https://functions.poehali.dev/4ce3e62f-d5d2-4663-9144-86e2ed125bed';
+const FILES_API = 'https://functions.poehali.dev/9aa0ff79-0b02-4ee0-9f22-e108f1844285';
 
 export { ADMIN_API, FILES_API };
 
@@ -14,7 +14,7 @@ const Admin = () => {
   useEffect(() => {
     const saved = localStorage.getItem('admin_token');
     if (saved) {
-      fetch(`${ADMIN_API}/auth/verify`, {
+      fetch(`${ADMIN_API}?route=/auth/verify`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${saved}` },
       })
