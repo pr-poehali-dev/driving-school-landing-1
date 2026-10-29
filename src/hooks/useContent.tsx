@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { ADMIN_API } from '@/pages/Admin';
 
-type SectionsMap = Record<string, Record<string, unknown>>;
+export type SectionsMap = Record<string, Record<string, unknown>>;
 
 interface ContentCtx {
   sections: SectionsMap;
@@ -10,21 +10,44 @@ interface ContentCtx {
 
 const Ctx = createContext<ContentCtx>({ sections: {}, loaded: false });
 
-export const ContentProvider = ({ children }: { children: ReactNode }) => {
-  const [sections, setSections] = useState<SectionsMap>({});
-  const [loaded, setLoaded] = useState(false);
+export async function fetchContent(): Promise<SectionsMap | null> {
+  try {
+    const r = await fetch(`${ADMIN_API}?route=/content/all`, { signal: AbortSignal.timeout(5000) });
+    const d = await r.json();
+    return d?.sections && typeof d.sections === 'object' ? (d.sections as SectionsMap) : null;
+  } catch {
+    return null;
+  }
+}
+
+export const ContentProvider = ({
+  children,
+  initial,
+}: {
+  children: ReactNode;
+  initial?: SectionsMap | null;
+}) => {
+  const [sections, setSections] = useState<SectionsMap>(initial ?? {});
+  const [loaded, setLoaded] = useState(!!initial);
 
   useEffect(() => {
-    fetch(`${ADMIN_API}?route=/content/all`)
-      .then((r) => r.json())
-      .then((d) => {
-        if (d?.sections) setSections(d.sections);
+    if (initial) {
+      setSections(initial);
+      setLoaded(true);
+      return;
+    }
+    let cancelled = false;
+    fetchContent()
+      .then((s) => {
+        if (s && !cancelled) setSections(s);
       })
-      .catch(() => {
-        /* остаются дефолты */
-      })
-      .finally(() => setLoaded(true));
-  }, []);
+      .finally(() => {
+        if (!cancelled) setLoaded(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [initial]);
 
   return <Ctx.Provider value={{ sections, loaded }}>{children}</Ctx.Provider>;
 };

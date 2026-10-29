@@ -1,4 +1,3 @@
-import { useSeo } from '@/hooks/useSeo';
 import LegalRequisites from '@/components/LegalRequisites';
 
 const SITE = 'https://твоё.времярулить.рф/';
@@ -12,11 +11,10 @@ const P = ({ children }: { children: React.ReactNode }) => (
 );
 
 const Cookies = () => {
-  useSeo('/cookies');
   return (
     <div className="min-h-screen bg-white py-16 px-4">
       <div className="max-w-3xl mx-auto">
-        <a href="#/" className="text-blue-500 hover:underline text-sm mb-8 inline-block">← На главную</a>
+        <a href="/" className="text-blue-500 hover:underline text-sm mb-8 inline-block">← На главную</a>
         <h1 className="font-heading text-3xl font-bold text-gray-900 mb-8">
           Согласие на обработку cookie-файлов
         </h1>

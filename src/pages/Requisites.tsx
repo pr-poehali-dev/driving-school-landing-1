@@ -1,7 +1,5 @@
-import { useSeo } from '@/hooks/useSeo';
 
 const Requisites = () => {
-  useSeo('/requisites');
   const reqs = [
     { label: 'Полное наименование', value: 'Общество с ограниченной ответственностью «ВРЕМЯ РУЛИТЬ»' },
     { label: 'Краткое наименование', value: 'ООО «ВРЕМЯ РУЛИТЬ»' },
@@ -21,7 +19,7 @@ const Requisites = () => {
   return (
     <div className="min-h-screen bg-white py-16 px-4">
       <div className="max-w-2xl mx-auto">
-        <a href="#/" className="text-blue-500 hover:underline text-sm mb-8 inline-block">← На главную</a>
+        <a href="/" className="text-blue-500 hover:underline text-sm mb-8 inline-block">← На главную</a>
         <h1 className="font-heading text-3xl font-bold text-gray-900 mb-3">Реквизиты</h1>
         <p className="text-gray-500 mb-8">Для заполнения договора и оплаты</p>
 

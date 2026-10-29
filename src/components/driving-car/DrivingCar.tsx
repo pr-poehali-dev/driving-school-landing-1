@@ -12,7 +12,7 @@ interface DrivingCarProps {
 
 const DrivingCar = ({ onFaqOpen }: DrivingCarProps) => {
   const [scrollPct, setScrollPct]   = useState(0);
-  const [vh, setVh]                 = useState(window.innerHeight);
+  const [vh, setVh]                 = useState(0);
   const [carVisible, setCarVisible] = useState(true);
 
   // Машинка
@@ -54,6 +54,7 @@ const DrivingCar = ({ onFaqOpen }: DrivingCarProps) => {
 
   useEffect(() => {
     const onResize = () => setVh(window.innerHeight);
+    onResize();
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
