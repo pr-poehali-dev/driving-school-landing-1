@@ -9,12 +9,12 @@ const CHECK_ICONS = ['Gauge', 'Cog', 'Route', 'Wallet', 'UserRound', 'ShieldChec
 const carsMKPP = [
   {
     name: 'LADA VESTA²',
-    img: '/cars/lada-vesta.webp',
+    img: '/cars/lada-vesta.webp?v=2',
     alt: 'Обучение вождению на LADA VESTA механика МКПП в автошколе Севастополь',
   },
   {
     name: 'LADA GRANTA',
-    img: '/cars/lada-granta.webp',
+    img: '/cars/lada-granta.webp?v=2',
     alt: 'Обучение вождению на LADA GRANTA механика МКПП — автошкола Время рулить',
   },
   {
