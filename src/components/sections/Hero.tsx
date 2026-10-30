@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSection } from '@/hooks/useContent';
 import { useParallax } from '@/hooks/useMotion';
 import Icon from '@/components/ui/icon';
@@ -10,14 +10,38 @@ const LINES: Array<{ text: string; accent?: boolean }> = [
   { text: 'А НЕ МАРКЕТОЛОГИ', accent: true },
 ];
 
+const DEFAULT_BANNER = 'https://cdn.poehali.dev/files/0c988d32-7078-44aa-a34e-785eef83e869.jpg';
+
 const Hero = () => {
   const data = useSection('hero', {
     subheading: 'Хватит покупать обещания. Мы учим только тому, что работает. Выбирайте опыт, а не слова.',
     banner_image: 'https://cdn.poehali.dev/files/0c988d32-7078-44aa-a34e-785eef83e869.jpg',
     cta_button: 'НАЧАТЬ ДВИЖЕНИЕ',
   });
-  const bannerRef = useParallax<HTMLImageElement>(0.06, 48);
+  const bannerRef = useParallax<HTMLDivElement>(0.06, 48);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const useVideo = (data.banner_image as string) === DEFAULT_BANNER;
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v || !useVideo) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    v.muted = true;
+    const onPlaying = () => setPlaying(true);
+    v.addEventListener('playing', onPlaying);
+    v.play().catch(() => {});
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) v.play().catch(() => {});
+      else v.pause();
+    });
+    io.observe(v);
+    return () => {
+      v.removeEventListener('playing', onPlaying);
+      io.disconnect();
+    };
+  }, [useVideo]);
 
   useEffect(() => {
     const t = requestAnimationFrame(() => setReady(true));
@@ -41,13 +65,30 @@ const Hero = () => {
       className="relative isolate w-full overflow-hidden bg-night pt-[76px] text-white md:pt-28"
     >
       <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
-        <img
-          ref={bannerRef}
-          src={data.banner_image as string}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover object-center will-change-transform"
-          style={{ transform: 'scale(1.06)' }}
-        />
+        <div ref={bannerRef} className="absolute inset-0 will-change-transform" style={{ transform: 'scale(1.06)' }}>
+          <img
+            src={data.banner_image as string}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover object-center"
+          />
+          {useVideo && (
+            <video
+              ref={videoRef}
+              className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-700 ease-quint ${
+                playing ? 'opacity-100' : 'opacity-0'
+              }`}
+              poster="/video/hero-drive-poster.webp"
+              muted
+              loop
+              playsInline
+              preload="auto"
+              disablePictureInPicture
+            >
+              <source src="/video/hero-drive.webm" type="video/webm" />
+              <source src="/video/hero-drive.mp4" type="video/mp4" />
+            </video>
+          )}
+        </div>
         <div className="absolute inset-0 bg-[linear-gradient(100deg,#0A1628_0%,rgba(10,22,40,0.92)_38%,rgba(10,22,40,0.55)_68%,rgba(10,22,40,0.35)_100%)]" />
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-night via-night/70 to-transparent" />
         <div className="grid-lines absolute inset-0" />
