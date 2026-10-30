@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSection } from '@/hooks/useContent';
 import { useParallax } from '@/hooks/useMotion';
 import Icon from '@/components/ui/icon';
+import { useLeadModal } from '@/components/lead/LeadModal';
 
 const LINES: Array<{ text: string; accent?: boolean }> = [
   { text: 'АВТОШКОЛА,' },
@@ -48,9 +49,8 @@ const Hero = () => {
     return () => cancelAnimationFrame(t);
   }, []);
 
-  const scrollToForm = () => {
-    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const openLead = useLeadModal();
+  const scrollToForm = () => openLead({ source: 'баннер: начать движение' });
 
   const show = (i: number) => ({
     className: `transition-[opacity,transform] duration-700 ease-quint motion-reduce:transform-none ${

@@ -2,6 +2,7 @@ import { useSection } from '@/hooks/useContent';
 import Reveal from '@/components/motion/Reveal';
 import CountUp from '@/components/motion/CountUp';
 import Icon from '@/components/ui/icon';
+import { useLeadModal } from '@/components/lead/LeadModal';
 
 type ComparisonItem = { feature: string; competitor: string; ours: string };
 
@@ -22,9 +23,8 @@ const PriceComparison = () => {
     oursGood: i !== 0 && it.ours.trim() === '0 ₽',
   }));
 
-  const scrollToForm = () => {
-    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const openLead = useLeadModal();
+  const scrollToForm = () => openLead({ source: 'сравнение: фиксированная цена', subtitle: 'Цена фиксируется в договоре — без доплат и сюрпризов.' });
 
   return (
     <section id="price-comparison" className="section bg-[linear-gradient(180deg,#16263B_0px,#EFEDE7_120px,#F6F5F1_300px)] !pt-40 md:!pt-48">

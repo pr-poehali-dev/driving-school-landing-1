@@ -15,6 +15,7 @@ import Footer from '@/components/sections/Footer';
 import DrivingCar from '@/components/driving-car/DrivingCar';
 import ExitIntentPopup from '@/components/ExitIntentPopup';
 import StickyMobileCTA from '@/components/StickyMobileCTA';
+import { LeadModalProvider } from '@/components/lead/LeadModal';
 
 const SECTION_IDS = ['hero', 'pain-points', 'instructors', 'triggers', 'advantages', 'pricing', 'reviews', 'map', 'faq', 'contact-form'];
 
@@ -48,6 +49,7 @@ const Index = () => {
   }, []);
 
   return (
+    <LeadModalProvider>
     <div className="relative min-h-screen bg-paper overflow-x-hidden">
       <Header />
 
@@ -77,6 +79,7 @@ const Index = () => {
       <ExitIntentPopup />
       <StickyMobileCTA />
     </div>
+    </LeadModalProvider>
   );
 };
 

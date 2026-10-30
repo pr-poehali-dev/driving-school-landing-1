@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import { useSection } from '@/hooks/useContent';
+import { useLeadModal } from '@/components/lead/LeadModal';
 
 const NAV = [
   { label: 'О нас',        id: 'instructors' },
@@ -35,6 +36,12 @@ const Header = () => {
       scrolled ? (isMobile ? '64px' : '76px') : (isMobile ? '76px' : '112px')
     );
   }, [scrolled]);
+
+  const openLead = useLeadModal();
+  const openForm = () => {
+    setMenuOpen(false);
+    openLead({ source: 'шапка: записаться' });
+  };
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -89,7 +96,7 @@ const Header = () => {
               {phone}
             </a>
           </div>
-          <button onClick={() => scrollTo('contact-form')} className="btn-primary !px-6 !py-3 text-sm">
+          <button onClick={openForm} className="btn-primary !px-6 !py-3 text-sm">
             <span>Записаться</span>
           </button>
         </div>
@@ -134,7 +141,7 @@ const Header = () => {
               <Icon name="MapPin" size={14} strokeWidth={1.5} className="text-brand-blue" />
               {data.address as string}
             </span>
-            <button onClick={() => scrollTo('contact-form')} className="btn-primary mt-5 w-full">
+            <button onClick={openForm} className="btn-primary mt-5 w-full">
               <span>Записаться</span>
             </button>
           </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Icon from '@/components/ui/icon';
+import { useLeadModal } from '@/components/lead/LeadModal';
 
 const StickyMobileCTA = () => {
   const [visible, setVisible] = useState(false);
@@ -34,9 +35,8 @@ const StickyMobileCTA = () => {
     };
   }, []);
 
-  const scrollToForm = () => {
-    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const openLead = useLeadModal();
+  const scrollToForm = () => openLead({ source: 'мобильная кнопка' });
 
   return (
     <div

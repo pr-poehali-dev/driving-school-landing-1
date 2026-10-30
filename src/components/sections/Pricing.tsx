@@ -2,6 +2,7 @@ import Icon from '@/components/ui/icon';
 import { useSection } from '@/hooks/useContent';
 import Reveal from '@/components/motion/Reveal';
 import CountUp from '@/components/motion/CountUp';
+import { useLeadModal } from '@/components/lead/LeadModal';
 
 
 const Pricing = () => {
@@ -20,9 +21,8 @@ const Pricing = () => {
   });
   const features = data.features as Array<{ icon: string; text: string }>;
 
-  const scrollToForm = () => {
-    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const openLead = useLeadModal();
+  const scrollToForm = () => openLead({ source: 'цена: консультация', subtitle: 'Расскажем, что входит в 64 000 ₽, и подберём удобное время первого занятия.' });
 
   return (
     <section

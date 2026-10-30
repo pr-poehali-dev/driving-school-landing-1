@@ -1,6 +1,7 @@
 import { useSection } from '@/hooks/useContent';
 import Reveal from '@/components/motion/Reveal';
 import Icon from '@/components/ui/icon';
+import { useLeadModal } from '@/components/lead/LeadModal';
 
 const LOGO_URL = 'https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png';
 
@@ -19,9 +20,8 @@ const Triggers = () => {
   });
   const triggers = data.items as Array<{ badge: string; title: string; description: string; cta?: string; image: string }>;
 
-  const scrollToForm = () => {
-    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const openLead = useLeadModal();
+  const scrollToForm = () => openLead({ source: 'запись к Ирине', title: 'Записаться к Ирине', subtitle: 'Первое занятие к Ирине — бесплатно. Оставьте телефон, и мы подберём удобное время.' });
 
   return (
     <section id="triggers" className="section relative overflow-hidden bg-paper">
