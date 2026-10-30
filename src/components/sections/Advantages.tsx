@@ -9,12 +9,12 @@ const CHECK_ICONS = ['Gauge', 'Cog', 'Route', 'Wallet', 'UserRound', 'ShieldChec
 const carsMKPP = [
   {
     name: 'LADA VESTA²',
-    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/116e8640-51ae-4802-8907-e93b4d70cba4.jpg',
+    img: '/cars/lada-vesta.webp',
     alt: 'Обучение вождению на LADA VESTA механика МКПП в автошколе Севастополь',
   },
   {
     name: 'LADA GRANTA',
-    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/1e0d12e5-aaf8-444c-87d7-c96f3aea4fc3.jpg',
+    img: '/cars/lada-granta.webp',
     alt: 'Обучение вождению на LADA GRANTA механика МКПП — автошкола Время рулить',
   },
   {
