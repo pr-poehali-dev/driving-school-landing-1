@@ -242,16 +242,6 @@
     transition-delay: 0.5s;
   }
 
-  .road-line {
-    background: repeating-linear-gradient(
-      to bottom,
-      #fff 0px,
-      #fff 20px,
-      transparent 20px,
-      transparent 40px
-    );
-  }
-
   .text-brand-blue {
     color: #2a7fff;
   }
@@ -267,49 +257,6 @@
   .bg-brand-sky {
     background-color: #e6f4ff;
   }
-}
-
-/* Индикатор поворотника */
-@keyframes blink-turn {
-  0%,
-  100% {
-    opacity: 1;
-    background-color: #f59e0b;
-  }
-  50% {
-    opacity: 0.1;
-    background-color: #f59e0b;
-  }
-}
-@keyframes blink-brake {
-  0%,
-  100% {
-    opacity: 1;
-    background-color: #ef4444;
-  }
-  50% {
-    opacity: 0.3;
-    background-color: #ef4444;
-  }
-}
-@keyframes hazard-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.2;
-  }
-}
-
-.car-turn-right {
-  animation: blink-turn 0.5s ease-in-out 3;
-}
-.car-braking {
-  animation: blink-brake 0.4s ease-in-out 3;
-}
-.car-hazard {
-  animation: hazard-blink 0.4s ease-in-out 4;
 }
 
 @media (prefers-reduced-motion: reduce) {
