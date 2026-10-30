@@ -18,8 +18,9 @@ export default {
 			}
 		},
 		fontFamily: {
-			heading: ['Oswald', 'sans-serif'],
+			heading: ['"Inter Tight"', 'Golos Text', 'sans-serif'],
 			body: ['Golos Text', 'sans-serif'],
+			oswald: ['Oswald', 'sans-serif'],
 		},
 		extend: {
 			colors: {
@@ -28,6 +29,26 @@ export default {
 					'blue-light': '#4DA8FF',
 					'blue-dark': '#1A2A3A',
 					'sky': '#E6F4FF',
+				},
+				ink: {
+					DEFAULT: '#1A2A3A',
+					soft: '#4A5868',
+					mute: '#5E6B79',
+				},
+				night: {
+					DEFAULT: '#0A1628',
+					mid: '#1A3356',
+					text: '#C5CFDA',
+					mute: '#9AA8B8',
+				},
+				paper: {
+					DEFAULT: '#F6F5F1',
+					alt: '#EFEDE7',
+					line: '#E3E1DA',
+				},
+				alert: {
+					DEFAULT: '#B91C1C',
+					night: '#F87171',
 				},
 				blue: {
 					50:  '#E6F4FF',
@@ -76,7 +97,15 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 			},
+			transitionTimingFunction: {
+				quint: 'cubic-bezier(0.22, 1, 0.36, 1)',
+			},
+			maxWidth: {
+				site: '1240px',
+			},
 			borderRadius: {
+				card: '20px',
+				ctl: '14px',
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'

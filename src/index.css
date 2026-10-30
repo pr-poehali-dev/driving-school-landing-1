@@ -1,13 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 215 33% 98%;
-    --foreground: 210 47% 17%;
+    --background: 48 20% 95%;
+    --foreground: 210 38% 16%;
 
     --card: 0 0% 100%;
     --card-foreground: 210 47% 17%;
@@ -22,7 +20,7 @@
     --secondary-foreground: 210 47% 17%;
 
     --muted: 210 40% 96%;
-    --muted-foreground: 210 20% 46%;
+    --muted-foreground: 211 13% 42%;
 
     --accent: 210 100% 95%;
     --accent-foreground: 210 47% 17%;
@@ -30,11 +28,16 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 32% 90%;
-    --input: 210 32% 90%;
-    --ring: 215 100% 58%;
+    --border: 45 12% 87%;
+    --input: 45 12% 87%;
+    --ring: 216 87% 52%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
+
+    --ease-quint: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-base: 600ms;
+    --dur-fast: 400ms;
+    --stagger: 70ms;
   }
 
   * {
@@ -50,6 +53,8 @@
     @apply bg-background text-foreground;
     font-family: "Golos Text", sans-serif;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   h1,
@@ -58,17 +63,149 @@
   h4,
   h5,
   h6 {
-    font-family: "Oswald", sans-serif;
+    font-family: "Inter Tight", "Golos Text", sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  :focus-visible {
+    outline: 2px solid #1a6fef;
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background: #2a7fff;
+    color: #fff;
+  }
+}
+
+@layer components {
+  .wrap {
+    @apply mx-auto w-full max-w-site px-5 sm:px-8 lg:px-14 xl:px-20;
+  }
+  .section {
+    @apply py-24 md:py-32 lg:py-40;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-3 font-body text-[13px] font-medium uppercase tracking-[0.08em];
+  }
+  .eyebrow::before {
+    content: "";
+    @apply block h-px w-8 bg-current opacity-60;
+  }
+  .h-display {
+    font-family: "Inter Tight", sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    font-size: clamp(2.5rem, 6.4vw, 5.5rem);
+  }
+  .h-section {
+    font-family: "Inter Tight", sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    font-size: clamp(2rem, 4.2vw, 3.5rem);
+  }
+  .lead {
+    @apply font-body text-[17px] leading-[1.65] md:text-lg;
+  }
+  .num {
+    font-family: "Inter Tight", sans-serif;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .card-lift {
+    transition:
+      transform var(--dur-fast) var(--ease-quint),
+      box-shadow var(--dur-fast) var(--ease-quint),
+      border-color var(--dur-fast) var(--ease-quint);
+  }
+  @media (hover: hover) {
+    .card-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 48px -24px rgba(10, 22, 40, 0.28);
+    }
+  }
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-ctl px-8 py-4 font-heading text-[15px] font-semibold tracking-[-0.005em] text-white;
+    background: #1a6fef;
+    isolation: isolate;
+    transition:
+      transform var(--dur-fast) var(--ease-quint),
+      box-shadow var(--dur-fast) var(--ease-quint);
+  }
+  .btn-primary::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, #1558cc 0%, #1a6fef 45%, #2a7fff 100%);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity var(--dur-base) var(--ease-quint);
+  }
+  @media (hover: hover) {
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px -16px rgba(26, 111, 239, 0.7);
+    }
+    .btn-primary:hover::before {
+      opacity: 1;
+    }
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-ctl border px-7 py-4 font-heading text-[15px] font-semibold;
+    transition:
+      background-color var(--dur-fast) var(--ease-quint),
+      border-color var(--dur-fast) var(--ease-quint),
+      transform var(--dur-fast) var(--ease-quint);
+  }
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size var(--dur-base) var(--ease-quint);
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+  .glow {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(90px);
+    pointer-events: none;
+  }
+  .grid-lines {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse at 30% 40%, #000 20%, transparent 75%);
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition:
+      opacity var(--dur-base) var(--ease-quint),
+      transform var(--dur-base) var(--ease-quint);
+    transition-delay: calc(var(--i, 0) * var(--stagger));
+  }
+  .reveal.is-in {
+    opacity: 1;
+    transform: none;
   }
 }
 
 @layer utilities {
   .animate-on-scroll {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(32px);
     transition:
-      opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .animate-on-scroll.visible {
@@ -80,8 +217,8 @@
     opacity: 0;
     transform: translateX(-30px);
     transition:
-      opacity 0.6s ease-out,
-      transform 0.6s ease-out;
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .animate-from-left.visible {
@@ -173,4 +310,24 @@
 }
 .car-hazard {
   animation: hazard-blink 0.4s ease-in-out 4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .animate-on-scroll,
+  .animate-from-left {
+    transform: none !important;
+    transition: opacity 200ms linear !important;
+    transition-delay: 0ms !important;
+  }
+  .card-lift:hover,
+  .btn-primary:hover {
+    transform: none !important;
+  }
+  .no-motion-static {
+    transform: none !important;
+  }
 }

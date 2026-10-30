@@ -1,15 +1,23 @@
 import { useState, useEffect, useRef } from 'react';
 import Icon from '@/components/ui/icon';
 
+const STORAGE_KEY = 'exit_hint_shown';
+
 const ExitIntentPopup = () => {
-  const [visible, setVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [open, setOpen] = useState(false);
   const shown = useRef(false);
 
   useEffect(() => {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    if (sessionStorage.getItem(STORAGE_KEY)) return;
+
     const show = () => {
       if (shown.current) return;
       shown.current = true;
-      setVisible(true);
+      sessionStorage.setItem(STORAGE_KEY, '1');
+      setMounted(true);
+      requestAnimationFrame(() => requestAnimationFrame(() => setOpen(true)));
     };
 
     const handleMouseLeave = (e: MouseEvent) => {
@@ -25,66 +33,63 @@ const ExitIntentPopup = () => {
     };
   }, []);
 
-  if (!visible) return null;
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && close();
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open]);
 
-  const scrollToForm = () => {
-    setVisible(false);
-    setTimeout(() => {
-      document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
-    }, 200);
+  const close = () => {
+    setOpen(false);
+    setTimeout(() => setMounted(false), 600);
   };
 
   const scrollToPricing = () => {
-    setVisible(false);
-    setTimeout(() => {
-      document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
-    }, 200);
+    close();
+    document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  if (!mounted) return null;
+
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      {/* Оверлей */}
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={() => setVisible(false)}
-      />
+    <div
+      role="dialog"
+      aria-labelledby="exit-hint-title"
+      className={`fixed bottom-6 left-6 z-[90] w-[min(400px,calc(100vw-48px))] rounded-card border border-paper-line bg-white p-7 shadow-[0_32px_64px_-24px_rgba(10,22,40,0.4)] transition-[opacity,transform] duration-[600ms] ease-quint motion-reduce:transform-none ${
+        open ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-6 opacity-0'
+      }`}
+    >
+      <button
+        onClick={close}
+        aria-label="Закрыть"
+        className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-ink-mute transition-colors duration-300 hover:bg-paper hover:text-ink"
+      >
+        <Icon name="X" size={18} strokeWidth={1.75} />
+      </button>
 
-      {/* Карточка */}
-      <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 animate-scale-in">
+      <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#2A7FFF]/25 text-blue-700">
+        <Icon name="AlertCircle" size={20} strokeWidth={1.5} />
+      </span>
+
+      <h3 id="exit-hint-title" className="mt-5 font-heading text-2xl font-semibold tracking-[-0.02em] text-ink">
+        Уходишь?
+      </h3>
+      <p className="mt-2 font-body text-[15px] leading-[1.6] text-ink-soft">
+        В других школах ты <strong className="font-semibold text-alert">переплатишь</strong> за бензин и пересдачи.
+        Останься — узнай реальные цены.
+      </p>
+
+      <div className="mt-6 flex gap-3">
         <button
-          onClick={() => setVisible(false)}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+          onClick={close}
+          className="btn-ghost flex-1 !px-4 !py-3 border-paper-line text-sm text-ink-soft hover:border-ink/30 hover:text-ink"
         >
-          <Icon name="X" size={20} />
+          Остаюсь
         </button>
-
-        {/* Иконка */}
-        <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mb-5">
-          <Icon name="AlertCircle" size={28} className="text-blue-500" />
-        </div>
-
-        <h3 className="font-heading font-bold text-[#1A2A3A] text-2xl mb-3 leading-tight">
-          Уходишь?
-        </h3>
-        <p className="text-gray-500 leading-relaxed mb-6">
-          В других школах ты <strong className="text-red-500">переплатишь</strong> за бензин и пересдачи.
-          Останься — узнай реальные цены.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-3">
-          <button
-            onClick={() => setVisible(false)}
-            className="flex-1 border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-500 py-3 font-heading font-bold text-sm tracking-wide rounded-xl transition-all duration-200"
-          >
-            Остаюсь
-          </button>
-          <button
-            onClick={scrollToPricing}
-            className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 font-heading font-bold text-sm tracking-wide rounded-xl transition-all duration-200 hover:shadow-[0_4px_20px_rgba(42,127,255,0.4)]"
-          >
-            Показать цены
-          </button>
-        </div>
+        <button onClick={scrollToPricing} className="btn-primary flex-1 !px-4 !py-3 text-sm">
+          Показать цены
+        </button>
       </div>
     </div>
   );

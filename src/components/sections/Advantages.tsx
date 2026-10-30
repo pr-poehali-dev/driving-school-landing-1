@@ -1,4 +1,10 @@
+import { useState } from 'react';
 import { useSection } from '@/hooks/useContent';
+import Reveal from '@/components/motion/Reveal';
+import CountUp from '@/components/motion/CountUp';
+import Icon from '@/components/ui/icon';
+
+const CHECK_ICONS = ['Gauge', 'Cog', 'Route', 'Wallet', 'UserRound', 'ShieldCheck'];
 
 const carsMKPP = [
   {
@@ -59,130 +65,150 @@ const Advantages = () => {
   const stats = data.stats as Array<{ value: string; label: string }>;
 
   return (
-    <section id="advantages" className="py-16 md:py-24 bg-white">
-      <div className="max-w-5xl mx-auto px-4">
-
-        {/* Заголовок */}
-        <div className="animate-on-scroll mb-12 relative">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-px bg-blue-500" />
-            <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Что вы получаете</span>
+    <section id="advantages" className="section bg-paper-alt">
+      <div className="wrap">
+        <Reveal className="relative">
+          <span className="eyebrow text-blue-700">Что вы получаете</span>
+          <div className="mt-5 flex items-end justify-between gap-8">
+            <h2 className="h-section text-ink">
+              Всё, что нужно,<br />
+              <span className="text-blue-700">уже включено в цену</span>
+            </h2>
+            <img
+              src="https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png"
+              alt="Время Рулить"
+              className="hidden w-48 flex-shrink-0 object-contain md:block lg:w-56"
+            />
           </div>
-          <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
-            Всё, что нужно,<br />
-            <span className="text-blue-500">уже включено в цену</span>
-          </h2>
-          <img
-            src="https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png"
-            alt="Время Рулить"
-            className="absolute right-0 top-1/2 -translate-y-1/2 w-56 object-contain hidden md:block pointer-events-none"
-            style={{ opacity: 0.85 }}
-          />
-        </div>
+        </Reveal>
 
-        {/* Метрики */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-blue-100 rounded-2xl overflow-hidden mb-10 animate-on-scroll">
+        <div className="mt-14 grid grid-cols-2 border-y border-paper-line md:mt-20 lg:grid-cols-4">
           {stats.map((m, i) => {
             const labelParts = m.label.split(' ');
             const unit = labelParts[0] || '';
             const desc = labelParts.slice(1).join(' ');
             return (
-              <div key={i} className="bg-white px-6 py-5 hover:bg-blue-50 transition-colors duration-200 group">
-                <div className="flex items-baseline gap-1.5 mb-1">
-                  <span className="font-heading font-bold text-[#1A2A3A] group-hover:text-blue-600 transition-colors"
-                    style={{ fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)' }}>{m.value}</span>
-                  <span className="text-blue-500 font-heading font-semibold text-base">{unit}</span>
+              <Reveal
+                key={i}
+                index={i}
+                className={`px-1 py-8 md:px-6 md:py-12 ${i % 2 === 1 ? 'border-l border-paper-line pl-5 md:pl-6' : ''} ${
+                  i >= 2 ? 'border-t border-paper-line lg:border-t-0' : ''
+                } ${i === 2 ? 'lg:border-l' : ''} ${i === 0 ? 'md:pl-0' : ''}`}
+              >
+                <div className="flex items-baseline gap-2">
+                  <CountUp value={m.value} className="text-[48px] text-ink md:text-[72px]" />
+                  <span className="font-heading text-lg font-semibold text-blue-700 md:text-xl">{unit}</span>
                 </div>
-                <p className="text-gray-500 text-xs font-body leading-tight">{desc}</p>
-              </div>
+                <p className="mt-3 max-w-[200px] font-body text-sm leading-snug text-ink-soft">{desc}</p>
+              </Reveal>
             );
           })}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
-
-          {/* Список преимуществ */}
-          <div className="lg:col-span-3 animate-on-scroll">
-            <div className="bg-[#F5F7FA] rounded-2xl p-8">
-              <ul className="space-y-5">
-                {checkList.map((item, i) => (
-                  <li key={i} className={`stagger-${i + 1} flex items-start gap-4 group`}>
-                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center mt-0.5">
-                      <svg viewBox="0 0 20 20" fill="white" width="12" height="12">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </span>
-                    <span className="text-[#1A2A3A] font-medium leading-snug">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Автомобили */}
-          <div className="lg:col-span-2 animate-on-scroll stagger-2">
-            <p className="font-heading font-bold text-[#1A2A3A] text-lg mb-6 uppercase tracking-wide">
-              Автомобили для обучения
-            </p>
-
-            {/* МКПП */}
-            <div className="mb-6">
-              <p className="font-heading font-bold text-[#1A2A3A] text-base mb-1">МКПП</p>
-              <p className="text-gray-400 text-xs mb-4">Механическая коробка передач</p>
-              <div className="flex gap-4 flex-wrap">
-                {carsMKPP.map((car, i) => (
-                  <div key={i} className="flex flex-col items-center gap-2 w-[80px]">
-                    <div className="w-20 h-20 rounded-full bg-[#E6F4FF] overflow-hidden flex items-center justify-center">
-                      <img
-                        src={car.img}
-                        alt={car.alt}
-                        className="w-full h-full object-cover"
-                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                      />
-                    </div>
-                    <span className="text-[#1A2A3A] font-semibold text-xs text-center leading-tight">{car.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* АКПП */}
-            <div className="mb-6">
-              <p className="font-heading font-bold text-[#1A2A3A] text-base mb-1">АКПП</p>
-              <p className="text-gray-400 text-xs mb-4">Автоматическая коробка передач</p>
-              <div className="flex gap-4 flex-wrap">
-                {carsAKPP.map((car, i) => (
-                  <div key={i} className="flex flex-col items-center gap-2 w-[80px]">
-                    <div className="w-20 h-20 rounded-full bg-[#E6F4FF] overflow-hidden flex items-center justify-center">
-                      <img
-                        src={car.img}
-                        alt={car.alt}
-                        className="w-full h-full object-cover"
-                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                      />
-                    </div>
-                    <span className="text-[#1A2A3A] font-semibold text-xs text-center leading-tight">{car.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Лицензия */}
-            <div className="bg-blue-50 border border-blue-100 rounded-xl px-5 py-4">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">🎓</span>
-                <div>
-                  <div className="font-heading font-bold text-[#1A2A3A] text-sm">Лицензия ГИБДД</div>
-                  <div className="text-gray-500 text-xs mt-0.5">Официальная автошкола</div>
+        <div className="mt-14 grid gap-4 sm:grid-cols-2 md:mt-20 md:gap-5 lg:grid-cols-3">
+          {checkList.map((item, i) => (
+            <Reveal key={i} index={i}>
+              <div className="card-lift group flex h-full flex-col rounded-card border border-paper-line bg-white p-6 md:p-8">
+                <div className="flex items-start justify-between">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[#2A7FFF]/25 text-blue-700 transition-colors duration-500 ease-quint group-hover:border-[#2A7FFF]/60">
+                    <Icon name={CHECK_ICONS[i] || 'Check'} size={22} strokeWidth={1.4} />
+                  </span>
+                  <span className="num text-[15px] font-medium text-[#B4C0CC]" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
                 </div>
+                <p className="mt-8 font-heading text-lg font-semibold leading-snug tracking-[-0.01em] text-ink md:text-xl">
+                  {item}
+                </p>
               </div>
-            </div>
-          </div>
-
+            </Reveal>
+          ))}
         </div>
+
+        <CarPicker />
       </div>
     </section>
+  );
+};
+
+const CarPicker = () => {
+  const [mode, setMode] = useState<'mkpp' | 'akpp'>('mkpp');
+  const cars = mode === 'mkpp' ? carsMKPP : carsAKPP;
+  const tabs = [
+    { id: 'mkpp' as const, label: 'МКПП', hint: 'Механическая коробка передач' },
+    { id: 'akpp' as const, label: 'АКПП', hint: 'Автоматическая коробка передач' },
+  ];
+  const active = tabs.find(t => t.id === mode)!;
+
+  return (
+    <Reveal className="mt-24 md:mt-32">
+      <div className="grid gap-10 md:grid-cols-12">
+        <div className="md:col-span-4">
+          <span className="eyebrow text-ink-mute">Автопарк</span>
+          <h3 className="mt-5 font-heading text-[28px] font-semibold leading-[1.15] tracking-[-0.025em] text-ink md:text-[36px]">
+            Автомобили для обучения
+          </h3>
+
+          <div role="tablist" aria-label="Тип коробки передач" className="relative mt-8 inline-grid grid-cols-2 rounded-full border border-paper-line bg-white p-1">
+            <span
+              aria-hidden="true"
+              className="absolute inset-y-1 left-1 w-[calc(50%-4px)] rounded-full bg-night transition-transform duration-500 ease-quint"
+              style={{ transform: mode === 'akpp' ? 'translateX(100%)' : 'translateX(0)' }}
+            />
+            {tabs.map(t => (
+              <button
+                key={t.id}
+                role="tab"
+                aria-selected={mode === t.id}
+                onClick={() => setMode(t.id)}
+                className={`relative z-10 rounded-full px-7 py-2.5 font-heading text-[15px] font-semibold transition-colors duration-500 ease-quint ${
+                  mode === t.id ? 'text-white' : 'text-ink-soft hover:text-ink'
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+          <p className="mt-4 font-body text-sm text-ink-mute">{active.hint}</p>
+
+          <div className="mt-10 flex items-center gap-4 rounded-card border border-paper-line bg-white p-5">
+            <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-[#2A7FFF]/25 text-blue-700">
+              <Icon name="Award" size={22} strokeWidth={1.4} />
+            </span>
+            <div>
+              <div className="font-heading text-base font-semibold text-ink">Лицензия ГИБДД</div>
+              <div className="mt-0.5 font-body text-sm text-ink-mute">Официальная автошкола</div>
+            </div>
+          </div>
+        </div>
+
+        <div key={mode} className="grid gap-4 sm:grid-cols-3 md:col-span-8 md:gap-5">
+          {cars.map((car, i) => (
+            <figure
+              key={car.name}
+              className="group animate-in fade-in-0 slide-in-from-bottom-3 fill-mode-both duration-500"
+              style={{ animationDelay: `${i * 70}ms`, animationTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
+            >
+              <div className="aspect-[4/3] overflow-hidden rounded-card bg-white">
+                <img
+                  src={car.img}
+                  alt={car.alt}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-700 ease-quint group-hover:scale-[1.025]"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+              </div>
+              <figcaption className="mt-4 flex items-center justify-between font-heading text-base font-semibold text-ink">
+                {car.name}
+                <span className="rounded-full border border-paper-line px-2.5 py-0.5 font-body text-[11px] font-medium text-ink-mute">
+                  {active.label}
+                </span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </Reveal>
   );
 };
 

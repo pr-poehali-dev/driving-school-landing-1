@@ -14,6 +14,7 @@ import FAQ from '@/components/sections/FAQ';
 import Footer from '@/components/sections/Footer';
 import DrivingCar from '@/components/driving-car/DrivingCar';
 import ExitIntentPopup from '@/components/ExitIntentPopup';
+import StickyMobileCTA from '@/components/StickyMobileCTA';
 
 const SECTION_IDS = ['hero', 'pain-points', 'instructors', 'triggers', 'advantages', 'pricing', 'reviews', 'map', 'faq', 'contact-form'];
 
@@ -47,10 +48,10 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-white overflow-x-hidden">
+    <div className="relative min-h-screen bg-paper overflow-x-hidden">
       <Header />
 
-      <main className="relative" style={{ paddingTop: '68px' }}>
+      <main className="relative">
         <div className="relative">
           {/* Дорожка с машинкой — правая сторона */}
           <DrivingCar sectionIds={SECTION_IDS} onFaqOpen={handleFaqOpen} />
@@ -74,6 +75,7 @@ const Index = () => {
 
       <Footer />
       <ExitIntentPopup />
+      <StickyMobileCTA />
     </div>
   );
 };

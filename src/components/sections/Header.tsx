@@ -23,13 +23,17 @@ const Header = () => {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
-    document.documentElement.style.setProperty('--header-height', scrolled ? (isMobile ? '64px' : '80px') : (isMobile ? '80px' : '160px'));
+    document.documentElement.style.setProperty(
+      '--header-height',
+      scrolled ? (isMobile ? '64px' : '76px') : (isMobile ? '76px' : '112px')
+    );
   }, [scrolled]);
 
   const scrollTo = (id: string) => {
@@ -38,100 +42,104 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-[0_1px_16px_rgba(0,0,0,0.10)] border-b border-gray-100 transition-all duration-300">
-      <div className={`w-full px-5 md:px-8 flex items-center justify-between transition-all duration-300 ${scrolled ? 'h-16 md:h-20' : 'h-20 md:h-40'}`}>
-
-        {/* Логотип */}
-        <a href="/" className="flex-shrink-0">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color] duration-500 ease-quint border-b ${
+        scrolled || menuOpen
+          ? 'bg-[#F6F5F1]/80 backdrop-blur-xl backdrop-saturate-150 border-paper-line shadow-[0_8px_32px_-20px_rgba(10,22,40,0.35)]'
+          : 'bg-[#F6F5F1] border-transparent'
+      }`}
+    >
+      <div
+        className={`wrap flex items-center justify-between transition-[height] duration-500 ease-quint ${
+          scrolled ? 'h-16 md:h-[76px]' : 'h-[76px] md:h-28'
+        }`}
+      >
+        <a href="/" className="flex-shrink-0" aria-label="Время Рулить — на главную">
           <img
             src={data.logo_url as string}
             alt="Автошкола Время Рулить"
-            className={`w-auto object-contain transition-all duration-300 ${scrolled ? 'h-12 md:h-16' : 'h-16 md:h-40'}`}
-            style={{ maxWidth: scrolled ? '180px' : '260px' }}
+            className={`w-auto object-contain transition-[height] duration-500 ease-quint ${
+              scrolled ? 'h-11 md:h-14' : 'h-14 md:h-24'
+            }`}
           />
         </a>
 
-        {/* Навигация — только десктоп */}
-        <nav className="hidden lg:flex items-center gap-7">
+        <nav className="hidden lg:flex items-center gap-8" aria-label="Основная навигация">
           {NAV.map(n => (
             <button
               key={n.id}
               onClick={() => scrollTo(n.id)}
-              className="font-body text-sm font-medium text-gray-600 transition-colors duration-200 hover:text-blue-500"
+              className="link-underline pb-0.5 font-body text-[15px] font-medium text-ink-soft transition-colors duration-300 hover:text-ink"
             >
               {n.label}
             </button>
           ))}
         </nav>
 
-        {/* Адрес + телефон + CTA — только десктоп */}
-        <div className="hidden lg:flex items-center gap-5">
-          <div className="flex flex-col items-end gap-1">
-            <span className="text-blue-500 text-xs font-body flex items-center gap-1.5">
-              <Icon name="MapPin" size={12} className="text-blue-400" />
+        <div className="hidden lg:flex items-center gap-6">
+          <div className="flex flex-col items-end gap-0.5">
+            <span className="flex items-center gap-1.5 font-body text-xs text-ink-mute">
+              <Icon name="MapPin" size={12} strokeWidth={1.5} className="text-brand-blue" />
               {data.address as string}
             </span>
             <a
               href={phoneHref}
-              className="font-heading font-bold text-base text-[#1A2A3A] transition-colors duration-200 hover:text-blue-500 flex items-center gap-2"
+              className="flex items-center gap-2 font-heading text-[17px] font-semibold tracking-[-0.01em] text-ink transition-colors duration-300 hover:text-blue-700"
             >
-              <Icon name="Phone" size={16} className="text-blue-500" />
               {phone}
             </a>
           </div>
-          <button
-            onClick={() => scrollTo('contact-form')}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2.5 font-heading font-bold text-sm tracking-wide transition-all duration-200 hover:shadow-[0_4px_20px_rgba(59,130,246,0.4)] hover:scale-[1.03]"
-            style={{ borderRadius: 6 }}
-          >
-            ЗАПИСАТЬСЯ
+          <button onClick={() => scrollTo('contact-form')} className="btn-primary !px-6 !py-3 text-sm">
+            <span>Записаться</span>
           </button>
         </div>
 
-        {/* Мобильный блок: телефон + бургер */}
-        <div className="lg:hidden flex items-center gap-3">
+        <div className="lg:hidden flex items-center gap-2">
           <a
             href={phoneHref}
-            className="font-heading font-bold text-[#1A2A3A] text-sm flex items-center gap-1.5 hover:text-blue-500 transition-colors"
+            className="inline-flex h-11 items-center gap-2 rounded-full border border-paper-line bg-white/70 px-4 font-heading text-sm font-semibold text-ink"
           >
-            <Icon name="Phone" size={14} className="text-blue-500" />
+            <Icon name="Phone" size={15} strokeWidth={1.75} className="text-blue-700" />
             <span className="hidden sm:inline">{phone}</span>
             <span className="sm:hidden">Позвонить</span>
           </a>
           <button
-            className="p-1.5 text-[#1A2A3A]"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full text-ink"
             onClick={() => setMenuOpen(!menuOpen)}
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? 'Закрыть меню' : 'Открыть меню'}
           >
-            <Icon name={menuOpen ? 'X' : 'Menu'} size={22} />
+            <Icon name={menuOpen ? 'X' : 'Menu'} size={22} strokeWidth={1.75} />
           </button>
         </div>
       </div>
 
-      {/* Мобильное меню */}
-      {menuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 px-6 py-5 flex flex-col gap-4 shadow-lg">
-          {NAV.map(n => (
-            <button
-              key={n.id}
-              onClick={() => scrollTo(n.id)}
-              className="text-left text-gray-700 font-body font-medium hover:text-blue-500 transition-colors py-1"
-            >
-              {n.label}
+      <div
+        className={`lg:hidden grid transition-[grid-template-rows,opacity] duration-500 ease-quint ${
+          menuOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div className="wrap flex flex-col pb-6 pt-2">
+            {NAV.map(n => (
+              <button
+                key={n.id}
+                onClick={() => scrollTo(n.id)}
+                className="border-b border-paper-line py-4 text-left font-heading text-xl font-semibold tracking-[-0.02em] text-ink"
+              >
+                {n.label}
+              </button>
+            ))}
+            <span className="mt-5 flex items-center gap-1.5 font-body text-sm text-ink-mute">
+              <Icon name="MapPin" size={14} strokeWidth={1.5} className="text-brand-blue" />
+              {data.address as string}
+            </span>
+            <button onClick={() => scrollTo('contact-form')} className="btn-primary mt-5 w-full">
+              <span>Записаться</span>
             </button>
-          ))}
-          <hr className="border-gray-100" />
-          <span className="text-blue-500 text-xs font-body flex items-center gap-1.5">
-            <Icon name="MapPin" size={12} />
-            {data.address as string}
-          </span>
-          <button
-            onClick={() => scrollTo('contact-form')}
-            className="bg-blue-500 text-white py-3 font-heading font-bold text-sm tracking-wide rounded-lg w-full"
-          >
-            ЗАПИСАТЬСЯ
-          </button>
+          </div>
         </div>
-      )}
+      </div>
     </header>
   );
 };

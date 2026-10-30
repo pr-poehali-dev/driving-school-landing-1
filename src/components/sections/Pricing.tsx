@@ -1,14 +1,8 @@
 import Icon from '@/components/ui/icon';
 import { useSection } from '@/hooks/useContent';
+import Reveal from '@/components/motion/Reveal';
+import CountUp from '@/components/motion/CountUp';
 
-const LOGO_URL = 'https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png';
-
-const WATERMARKS = [
-  { top: '8%',  left: '5%'  }, { top: '8%',  left: '30%' }, { top: '8%',  left: '55%' }, { top: '8%',  left: '80%' },
-  { top: '35%', left: '17%' }, { top: '35%', left: '42%' }, { top: '35%', left: '67%' }, { top: '35%', left: '92%' },
-  { top: '62%', left: '5%'  }, { top: '62%', left: '30%' }, { top: '62%', left: '55%' }, { top: '62%', left: '80%' },
-  { top: '88%', left: '17%' }, { top: '88%', left: '42%' }, { top: '88%', left: '67%' }, { top: '88%', left: '92%' },
-];
 
 const Pricing = () => {
   const data = useSection('pricing', {
@@ -31,95 +25,73 @@ const Pricing = () => {
   };
 
   return (
-    <section id="pricing" className="py-16 md:py-24 bg-white relative overflow-hidden">
+    <section
+      id="pricing"
+      className="section relative isolate overflow-hidden bg-[linear-gradient(180deg,#EFEDE7_0px,#0A1628_140px,#0A1628_calc(100%-120px),#16263B_100%)] text-white !pt-48 md:!pt-56"
+    >
+      <div className="grid-lines absolute inset-0 -z-10" aria-hidden="true" />
+      <div className="glow -right-32 top-1/3 -z-10 h-[460px] w-[560px] bg-[#2A7FFF]/20" aria-hidden="true" />
 
-      {/* Водяные знаки — логотипы */}
-      {WATERMARKS.map((pos, i) => (
-        <img
-          key={i}
-          src={LOGO_URL}
-          alt=""
-          aria-hidden="true"
-          className="absolute pointer-events-none select-none"
-          style={{ top: pos.top, left: pos.left, width: 90, opacity: 0.08, transform: 'translate(-50%, -50%)' }}
-        />
-      ))}
-
-      <div className="max-w-5xl mx-auto px-4 relative z-10">
-
-        {/* Заголовок */}
-        <div className="animate-on-scroll mb-12 text-center">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-8 h-px bg-blue-500" />
-            <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Стоимость</span>
-            <div className="w-8 h-px bg-blue-500" />
-          </div>
-          <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
+      <div className="wrap">
+        <Reveal className="text-center">
+          <span className="eyebrow justify-center text-[#4DA8FF]">Стоимость</span>
+          <h2 className="h-section mt-5">
             Одна цена —<br />
-            <span className="text-blue-500">никаких сюрпризов</span>
+            <span className="text-[#4DA8FF]">никаких сюрпризов</span>
           </h2>
-        </div>
+        </Reveal>
 
-        {/* Карточка цены */}
-        <div className="animate-on-scroll max-w-2xl mx-auto">
-          <div className="bg-white rounded-2xl overflow-hidden shadow-[0_4px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_60px_rgba(59,130,246,0.15)] transition-shadow duration-300">
-
-            {/* Шапка карточки */}
-            <div className="bg-gradient-to-r from-[#0a1628] to-[#1a3356] px-8 py-8 relative overflow-hidden">
-              <div className="absolute inset-0 opacity-5"
-                style={{ backgroundImage: 'repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%)', backgroundSize: '12px 12px' }}/>
-              <div className="relative flex items-end gap-4">
-                <div>
-                  <p className="text-blue-300 text-sm font-body mb-1 uppercase tracking-widest">Полный курс</p>
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-heading font-bold text-white" style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', lineHeight: 1 }}>
-                      {data.price as string}
-                    </span>
-                    <span className="font-heading font-bold text-blue-300 text-3xl">₽</span>
-                  </div>
+        <Reveal index={1} className="mx-auto mt-14 max-w-[880px] md:mt-20">
+          <div className="overflow-hidden rounded-card border border-white/10 bg-white/[0.035] backdrop-blur-sm">
+            <div className="grid gap-10 p-7 md:grid-cols-12 md:p-12">
+              <div className="md:col-span-7">
+                <p className="font-body text-[13px] font-medium uppercase tracking-[0.08em] text-night-mute">Полный курс</p>
+                <div className="mt-4 flex items-baseline gap-3">
+                  <CountUp value={data.price as string} className="text-[64px] text-white md:text-[112px]" />
+                  <span className="num text-4xl text-[#4DA8FF] md:text-5xl">₽</span>
                 </div>
-                <div className="ml-auto text-right">
-                  <div className="text-white/60 text-xs font-body line-through mb-1">от {data.old_price as string} ₽</div>
-                  <div className="bg-blue-500 text-white text-xs font-heading font-bold px-3 py-1 rounded-full">
+                <div className="mt-5 flex flex-wrap items-center gap-3">
+                  <span className="font-body text-sm text-night-mute line-through decoration-white/40">
+                    от {data.old_price as string} ₽
+                  </span>
+                  <span className="rounded-full border border-[#4DA8FF]/40 px-3 py-1 font-heading text-sm font-semibold text-[#4DA8FF]">
                     {data.discount as string} ₽
-                  </div>
+                  </span>
                 </div>
               </div>
-              <p className="relative text-white font-heading font-bold text-base sm:text-lg mt-3 tracking-wide">
+
+              <ul className="flex flex-col justify-end gap-5 md:col-span-5 md:border-l md:border-white/10 md:pl-10">
+                {features.map((f, i) => (
+                  <li key={i} className="flex items-start gap-4">
+                    <span className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-white/15 text-[#4DA8FF]">
+                      <Icon name={f.icon} size={18} strokeWidth={1.5} />
+                    </span>
+                    <span className="pt-2 font-body text-[15px] leading-snug text-night-text">{f.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mx-7 border-l-2 border-alert-night bg-white/[0.03] py-5 pl-5 pr-4 md:mx-12">
+              <p className="font-heading text-base font-semibold tracking-[0.01em] text-white sm:text-lg">
                 {data.includes as string}
               </p>
-              <p className="relative text-blue-200/60 text-xs font-body mt-2 leading-relaxed">
+              <p className="mt-2 font-body text-sm leading-[1.6] text-night-mute">
                 {data.fuel_note as string}
               </p>
             </div>
 
-            {/* Список включённого */}
-            <div className="px-8 py-7">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                {features.map((f, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <span className="flex-shrink-0 mt-0.5 text-blue-500">
-                      <Icon name={f.icon} size={20} />
-                    </span>
-                    <span className="text-gray-600 text-sm leading-snug">{f.text}</span>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                onClick={scrollToForm}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white py-4 font-heading font-bold text-lg tracking-wide transition-all duration-200 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgba(59,130,246,0.4)]"
-                style={{ borderRadius: 10 }}
-              >
+            <div className="p-7 md:p-12">
+              <button onClick={scrollToForm} className="btn-primary w-full !py-5 text-base">
                 ЗАПИСАТЬСЯ НА КОНСУЛЬТАЦИЮ
+                <Icon name="ArrowRight" size={18} strokeWidth={1.75} />
               </button>
-              <p className="mt-3 text-gray-400 text-xs text-center font-body">
+              <p className="mt-4 text-center font-body text-sm text-night-mute">
                 Цена, которую видите — цена, которую платите. Без доплат.
               </p>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -1,14 +1,9 @@
 import { useSection } from '@/hooks/useContent';
+import Reveal from '@/components/motion/Reveal';
+import Icon from '@/components/ui/icon';
 
 const LOGO_URL = 'https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png';
 
-/* Позиции логотипов-водяных знаков — симметричная сетка */
-const WATERMARKS = [
-  { top: '8%',  left: '5%'  }, { top: '8%',  left: '30%' }, { top: '8%',  left: '55%' }, { top: '8%',  left: '80%' },
-  { top: '35%', left: '17%' }, { top: '35%', left: '42%' }, { top: '35%', left: '67%' }, { top: '35%', left: '92%' },
-  { top: '62%', left: '5%'  }, { top: '62%', left: '30%' }, { top: '62%', left: '55%' }, { top: '62%', left: '80%' },
-  { top: '88%', left: '17%' }, { top: '88%', left: '42%' }, { top: '88%', left: '67%' }, { top: '88%', left: '92%' },
-];
 
 const Triggers = () => {
   const data = useSection('triggers', {
@@ -29,86 +24,78 @@ const Triggers = () => {
   };
 
   return (
-    <section id="triggers" className="py-16 md:py-24 bg-white relative overflow-hidden">
-
-      {/* Водяные знаки — логотипы */}
-      {WATERMARKS.map((pos, i) => (
-        <img
-          key={i}
-          src={LOGO_URL}
-          alt=""
-          aria-hidden="true"
-          className="absolute pointer-events-none select-none"
-          style={{ top: pos.top, left: pos.left, width: 90, opacity: 0.08, transform: 'translate(-50%, -50%)' }}
-        />
-      ))}
-
-      <div className="max-w-5xl mx-auto px-4 relative z-10">
-
-        {/* Заголовок */}
-        <div className="animate-on-scroll mb-12 relative">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-px bg-blue-500" />
-            <span className="text-blue-500 font-body text-sm uppercase tracking-[0.2em] font-semibold">Персональный подход</span>
+    <section id="triggers" className="section relative overflow-hidden bg-paper">
+      <div className="wrap relative">
+        <Reveal className="relative mb-14 md:mb-20">
+          <span className="eyebrow text-blue-700">Персональный подход</span>
+          <div className="mt-5 flex items-end justify-between gap-8">
+            <h2 className="h-section text-ink">
+              Школу создали инструкторы,<br />
+              <span className="text-blue-700">а не маркетологи</span>
+            </h2>
+            <img src={LOGO_URL} alt="Время Рулить" className="hidden w-48 flex-shrink-0 object-contain md:block lg:w-56" />
           </div>
-          <h2 className="font-heading font-bold text-[#1A2A3A] leading-tight"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}>
-            Школу создали инструкторы,<br />
-            <span className="text-blue-500">а не маркетологи</span>
-          </h2>
-          <img src={LOGO_URL} alt="Время Рулить" className="absolute right-0 top-1/2 -translate-y-1/2 w-56 object-contain hidden md:block pointer-events-none" style={{ opacity: 0.85 }} />
-        </div>
+        </Reveal>
 
-        {/* Карточки — 2 колонки, фото на всю высоту слева */}
-        <div className="flex flex-col gap-6">
-          {triggers.map((t, i) => (
-            <div
-              key={i}
-              className={`animate-on-scroll stagger-${i + 1} group relative bg-white rounded-2xl
-                shadow-[0_4px_24px_rgba(0,0,0,0.08)] hover:shadow-[0_12px_40px_rgba(59,130,246,0.15)]
-                transition-all duration-300 overflow-hidden flex flex-col md:flex-row`}
-              style={{ minHeight: 260 }}
-            >
-              {/* Фото — слева, занимает ~45% ширины, полная высота */}
-              <div className="relative md:w-5/12 h-56 md:h-auto flex-shrink-0 overflow-hidden">
-                {t.image ? (
-                  <img
-                    src={t.image}
-                    alt={t.title}
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-200" />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/10" />
-                <div className="absolute top-3 left-3 bg-blue-500 text-white text-xs font-heading font-bold px-3 py-1 rounded-full">
-                  {t.badge}
+        <div className="flex flex-col gap-8">
+          {triggers.map((t, i) => {
+            const paragraphs = t.description.split('\n').filter((p) => p.trim());
+            return (
+              <div key={i} className="grid items-stretch gap-8 md:grid-cols-12 md:gap-12 lg:gap-16">
+                <Reveal className="md:col-span-5">
+                  <div className="group relative aspect-[4/5] overflow-hidden rounded-card bg-night md:sticky md:top-28">
+                    {t.image ? (
+                      <img
+                        src={t.image}
+                        alt={t.title}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-quint group-hover:scale-[1.025]"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,#1A3356,#0A1628)]" />
+                    )}
+                    <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1.5 font-body text-xs font-medium text-ink backdrop-blur">
+                      {t.badge}
+                    </span>
+                  </div>
+                </Reveal>
+
+                <div className="flex flex-col justify-center md:col-span-7">
+                  <Reveal>
+                    <h3 className="font-heading text-[28px] font-semibold leading-[1.15] tracking-[-0.025em] text-ink md:text-[40px]">
+                      {t.title}
+                    </h3>
+                  </Reveal>
+                  <div className="mt-8 space-y-5">
+                    {paragraphs.map((p, pi) => {
+                      const short = p.length < 60;
+                      return (
+                        <Reveal key={pi} index={pi}>
+                          <p
+                            className={
+                              short
+                                ? 'font-heading text-xl font-semibold tracking-[-0.015em] text-ink md:text-[22px]'
+                                : 'lead max-w-[580px] text-ink-soft'
+                            }
+                          >
+                            {p}
+                          </p>
+                        </Reveal>
+                      );
+                    })}
+                  </div>
+                  {t.cta && (
+                    <Reveal index={paragraphs.length}>
+                      <button onClick={scrollToForm} className="btn-primary mt-10">
+                        {t.cta}
+                        <Icon name="ArrowRight" size={18} strokeWidth={1.75} />
+                      </button>
+                    </Reveal>
+                  )}
                 </div>
               </div>
-
-              {/* Текст — справа, вертикально по центру */}
-              <div className="flex-1 flex flex-col justify-center px-8 py-8">
-                <h3 className="font-heading text-2xl font-bold text-[#1A2A3A] mb-3 leading-snug">
-                  {t.title}
-                </h3>
-                <div className="space-y-3">
-                  {t.description.split('\n').filter((p) => p.trim()).map((p, pi) => (
-                    <p key={pi} className="text-gray-500 text-base leading-relaxed">{p}</p>
-                  ))}
-                </div>
-                {t.cta && (
-                  <button
-                    onClick={scrollToForm}
-                    className="mt-6 self-start bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 font-heading font-bold text-sm tracking-wide rounded-xl transition-all duration-200 hover:shadow-[0_4px_20px_rgba(42,127,255,0.4)]"
-                  >
-                    {t.cta}
-                  </button>
-                )}
-              </div>
-
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500/0 via-blue-500/60 to-blue-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
