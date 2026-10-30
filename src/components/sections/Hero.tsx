@@ -65,31 +65,37 @@ const Hero = () => {
       className="relative isolate w-full overflow-hidden bg-night pt-[76px] text-white md:pt-28"
     >
       <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
-        <div ref={bannerRef} className="absolute inset-0 will-change-transform" style={{ transform: 'scale(1.06)' }}>
+        <div ref={bannerRef} className={`absolute inset-0 will-change-transform ${useVideo ? 'lg:left-[38%]' : ''}`} style={{ transform: 'scale(1.06)' }}>
           <img
-            src={data.banner_image as string}
+            src={useVideo ? '/video/hero-drive-poster.webp?v=2' : (data.banner_image as string)}
             alt=""
-            className="absolute inset-0 h-full w-full object-cover object-center"
+            className="absolute inset-0 h-full w-full object-cover object-[60%_center] lg:object-right"
           />
           {useVideo && (
             <video
               ref={videoRef}
-              className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-700 ease-quint ${
+              className={`absolute inset-0 h-full w-full object-cover object-[60%_center] lg:object-right transition-opacity duration-700 ease-quint ${
                 playing ? 'opacity-100' : 'opacity-0'
               }`}
-              poster="/video/hero-drive-poster.webp"
+              poster="/video/hero-drive-poster.webp?v=2"
               muted
               loop
               playsInline
               preload="auto"
               disablePictureInPicture
             >
-              <source src="/video/hero-drive.webm" type="video/webm" />
-              <source src="/video/hero-drive.mp4" type="video/mp4" />
+              <source src="/video/hero-drive.webm?v=2" type="video/webm" />
+              <source src="/video/hero-drive.mp4?v=2" type="video/mp4" />
             </video>
           )}
         </div>
-        <div className="absolute inset-0 bg-[linear-gradient(100deg,#0A1628_0%,rgba(10,22,40,0.92)_38%,rgba(10,22,40,0.55)_68%,rgba(10,22,40,0.35)_100%)]" />
+        <div
+          className={`absolute inset-0 ${
+            useVideo
+              ? 'bg-[linear-gradient(100deg,#0A1628_0%,rgba(10,22,40,0.92)_38%,rgba(10,22,40,0.55)_68%,rgba(10,22,40,0.35)_100%)] lg:bg-[linear-gradient(90deg,#0A1628_0%,#0A1628_38%,rgba(10,22,40,0.75)_50%,rgba(10,22,40,0.15)_72%,rgba(10,22,40,0.1)_100%)]'
+              : 'bg-[linear-gradient(100deg,#0A1628_0%,rgba(10,22,40,0.92)_38%,rgba(10,22,40,0.55)_68%,rgba(10,22,40,0.35)_100%)]'
+          }`}
+        />
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-night via-night/70 to-transparent" />
         <div className="grid-lines absolute inset-0" />
         <div className="glow -left-40 top-1/3 h-[420px] w-[520px] bg-[#2A7FFF]/25" />
