@@ -20,6 +20,9 @@ const Header = () => {
     logo_url: 'https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png',
   });
   const phone = data.phone as string;
+  const DEFAULT_LOGO = 'https://cdn.poehali.dev/files/b89f6099-f142-4b1d-ba8f-ffb70486bbc0.png';
+  const logoSrc = !data.logo_url || data.logo_url === DEFAULT_LOGO ? '/logo-header.png' : (data.logo_url as string);
+  const big = !scrolled && !menuOpen;
   const phoneHref = `tel:${phone.replace(/[^+\d]/g, '')}`;
 
   useEffect(() => {
@@ -61,37 +64,45 @@ const Header = () => {
           scrolled ? 'h-16 md:h-[76px]' : 'h-[76px] md:h-28'
         }`}
       >
-        <a href="/" className="flex-shrink-0" aria-label="Время Рулить — на главную">
+        <a
+          href="/"
+          className={`relative block h-10 flex-shrink-0 transition-[width] duration-700 ease-quint md:h-12 ${
+            big ? 'w-[118px] md:w-[196px]' : 'w-[82px] md:w-[98px]'
+          }`}
+          aria-label="Время Рулить — на главную"
+        >
           <img
-            src={data.logo_url as string}
+            src={logoSrc}
             alt="Автошкола Время Рулить"
-            className={`w-auto object-contain transition-[height] duration-500 ease-quint ${
-              scrolled ? 'h-11 md:h-14' : 'h-14 md:h-24'
+            className={`absolute left-0 top-0 h-10 w-auto max-w-none origin-top-left object-contain transition-transform duration-700 ease-quint will-change-transform md:h-12 ${
+              big
+                ? 'translate-y-[-2px] scale-[1.45] md:translate-y-[-6px] md:scale-[2]'
+                : 'translate-y-0 scale-100'
             }`}
           />
         </a>
 
-        <nav className="hidden lg:flex items-center gap-8" aria-label="Основная навигация">
+        <nav className="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Основная навигация">
           {NAV.map(n => (
             <button
               key={n.id}
               onClick={() => scrollTo(n.id)}
-              className="link-underline pb-0.5 font-body text-[15px] font-medium text-ink-soft transition-colors duration-300 hover:text-ink"
+              className="link-underline whitespace-nowrap pb-0.5 font-body text-[15px] font-medium text-ink-soft transition-colors duration-300 hover:text-ink"
             >
               {n.label}
             </button>
           ))}
         </nav>
 
-        <div className="hidden lg:flex items-center gap-6">
+        <div className="hidden lg:flex items-center gap-5 xl:gap-6">
           <div className="flex flex-col items-end gap-0.5">
-            <span className="flex items-center gap-1.5 font-body text-xs text-ink-mute">
+            <span className="flex items-center gap-1.5 whitespace-nowrap font-body text-xs text-ink-mute">
               <Icon name="MapPin" size={12} strokeWidth={1.5} className="text-brand-blue" />
               {data.address as string}
             </span>
             <a
               href={phoneHref}
-              className="flex items-center gap-2 font-heading text-[17px] font-semibold tracking-[-0.01em] text-ink transition-colors duration-300 hover:text-blue-700"
+              className="flex items-center gap-2 whitespace-nowrap font-heading text-[17px] font-semibold tracking-[-0.01em] text-ink transition-colors duration-300 hover:text-blue-700"
             >
               {phone}
             </a>
