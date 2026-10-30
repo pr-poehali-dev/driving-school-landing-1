@@ -9,17 +9,17 @@ const CHECK_ICONS = ['Gauge', 'Cog', 'Route', 'Wallet', 'UserRound', 'ShieldChec
 const carsMKPP = [
   {
     name: 'LADA VESTA²',
-    img: '/cars/lada-vesta.webp?v=4',
+    img: '/cars/lada-vesta.webp?v=5',
     alt: 'Обучение вождению на LADA VESTA механика МКПП в автошколе Севастополь',
   },
   {
     name: 'LADA GRANTA',
-    img: '/cars/lada-granta.webp?v=4',
+    img: '/cars/lada-granta.webp?v=5',
     alt: 'Обучение вождению на LADA GRANTA механика МКПП — автошкола Время рулить',
   },
   {
     name: 'Renault Logan',
-    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/63055ac1-7b33-40d9-9ab9-d076ac2e396f.jpg',
+    img: '/cars/renault-logan.webp?v=5',
     alt: 'Обучение вождению на Renault Logan механика МКПП в автошколе Севастополь',
   },
 ];
@@ -27,17 +27,17 @@ const carsMKPP = [
 const carsAKPP = [
   {
     name: 'KIA CEED',
-    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/ae817658-f736-4e06-bf94-3ef1a79e03fb.jpg',
+    img: '/cars/kia-ceed.webp?v=5',
     alt: 'Обучение на автомате KIA CEED АКПП в автошколе Севастополь Время рулить',
   },
   {
     name: 'Chevrolet Aveo',
-    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/25492f91-f4d4-41e1-b1d8-f22cfd5daabc.jpg',
+    img: '/cars/chevrolet-aveo.webp?v=5',
     alt: 'Обучение на автомате Chevrolet Aveo АКПП — автошкола Севастополь',
   },
   {
     name: 'Hyundai Solaris',
-    img: 'https://cdn.poehali.dev/projects/63786bc4-a02f-4910-930c-7ef75df753fd/files/8c78e4fc-e0d5-40ed-a11e-02cba5f866f8.jpg',
+    img: '/cars/hyundai-solaris.webp?v=5',
     alt: 'Обучение на автомате Hyundai Solaris АКПП в автошколе Время рулить Севастополь',
   },
 ];
