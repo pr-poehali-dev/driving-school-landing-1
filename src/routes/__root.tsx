@@ -16,7 +16,7 @@ const KEYWORDS =
 const OG_TITLE = "Автошкола Время рулить — Севастополь";
 const OG_DESCRIPTION =
     "Обучение вождению в Севастополе. 64 000 ₽ всё включено. Инструктор-женщина. Автодром. Рассрочка без банков.";
-const OG_IMAGE = "https://cdn.poehali.dev/files/0c988d32-7078-44aa-a34e-785eef83e869.jpg";
+const OG_IMAGE = "/og-image.jpg";
 
 const LD_SCHOOL = {
     "@context": "https://schema.org",
@@ -122,10 +122,8 @@ export const Route = createRootRoute({
             {property: "og:description", content: OG_DESCRIPTION},
             {property: "og:type", content: "website"},
             {property: "og:locale", content: "ru_RU"},
-            {property: "og:image", content: OG_IMAGE},
             {property: "og:image:alt", content: "Автошкола Время рулить — обучение вождению в Севастополе"},
             {name: "twitter:card", content: "summary_large_image"},
-            {name: "twitter:image", content: OG_IMAGE},
             ...PLATFORM_META,
         ],
         links: [

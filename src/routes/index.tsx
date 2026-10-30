@@ -3,13 +3,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import Index from "@/pages/Index";
 import { ContentProvider, fetchContent } from "@/hooks/useContent";
 import { fetchSeo, seoHead } from "@/lib/seo";
+import { getSiteOrigin } from "@/lib/origin";
 
 export const Route = createFileRoute("/")({
   loader: async () => {
     const [sections, seo] = await Promise.all([fetchContent(), fetchSeo("/")]);
-    return { sections, seo };
+    return { sections, seo, origin: getSiteOrigin() };
   },
-  head: ({ loaderData }) => seoHead(loaderData?.seo),
+  head: ({ loaderData }) => seoHead(loaderData?.seo, loaderData?.origin ?? ""),
   component: IndexRoute,
 });
 
