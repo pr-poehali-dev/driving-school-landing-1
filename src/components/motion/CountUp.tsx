@@ -1,6 +1,8 @@
+import type { CSSProperties } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 type Props = {
+  style?: CSSProperties;
   value: string | number;
   duration?: number;
   className?: string;
@@ -9,7 +11,7 @@ type Props = {
 const formatLike = (n: number, sample: string) =>
   /\s/.test(sample) || n >= 10000 ? n.toLocaleString('ru-RU').replace(/\u00a0/g, ' ') : String(n);
 
-const CountUp = ({ value, duration = 1200, className = '' }: Props) => {
+const CountUp = ({ value, duration = 1200, className = '', style }: Props) => {
   const raw = String(value);
   const target = parseInt(raw.replace(/\D/g, ''), 10);
   const ref = useRef<HTMLSpanElement | null>(null);
@@ -47,7 +49,7 @@ const CountUp = ({ value, duration = 1200, className = '' }: Props) => {
   }, [target, raw, duration]);
 
   return (
-    <span ref={ref} className={`num ${className}`} aria-label={raw}>
+    <span ref={ref} className={`num ${className}`} style={style} aria-label={raw}>
       <span aria-hidden="true">{display}</span>
     </span>
   );

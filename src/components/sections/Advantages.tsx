@@ -91,13 +91,17 @@ const Advantages = () => {
               <Reveal
                 key={i}
                 index={i}
-                className={`px-1 py-8 md:px-6 md:py-12 ${i % 2 === 1 ? 'border-l border-paper-line pl-5 md:pl-6' : ''} ${
+                className={`min-w-0 px-1 py-8 [--stat-max:48px] md:px-6 md:py-12 md:[--stat-max:72px] ${i % 2 === 1 ? 'border-l border-paper-line pl-5 md:pl-6' : ''} ${
                   i >= 2 ? 'border-t border-paper-line lg:border-t-0' : ''
                 } ${i === 2 ? 'lg:border-l' : ''} ${i === 0 ? 'md:pl-0' : ''}`}
               >
-                <div className="flex items-baseline gap-2">
-                  <CountUp value={m.value} className="text-[48px] text-ink md:text-[72px]" />
-                  <span className="font-heading text-lg font-semibold text-blue-700 md:text-xl">{unit}</span>
+                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 [container-type:inline-size]">
+                  <CountUp
+                    value={m.value}
+                    className="whitespace-nowrap text-ink"
+                    style={{ fontSize: `min(var(--stat-max), ${Math.floor(96 / (m.value.length * 0.62 + 0.1))}cqi)` }}
+                  />
+                  <span className="min-w-0 break-words font-heading text-lg font-semibold text-blue-700 md:text-xl">{unit}</span>
                 </div>
                 <p className="mt-3 max-w-[200px] font-body text-sm leading-snug text-ink-soft">{desc}</p>
               </Reveal>
